@@ -9,7 +9,7 @@ test('Defaults should be returned in options.', () => {
       meta: {},
       schema: {},
     },
-    {}
+    {},
   );
 
   equal(options.radius, 0);
@@ -31,7 +31,7 @@ test('All standards must be returned unless undefined.', () => {
     {
       foo: 'FOO',
       bar: 123,
-    }
+    },
   );
 });
 

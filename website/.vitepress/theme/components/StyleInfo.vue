@@ -21,7 +21,7 @@ const exampleHttpApiUrl = computed(() => {
 
 const schemaJsonHttpApiUrl = computed(() => {
   return `https://api.dicebear.com/9.x/${kebabCase(
-    props.styleName
+    props.styleName,
   )}/schema.json`;
 });
 

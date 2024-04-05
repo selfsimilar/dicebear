@@ -39,19 +39,19 @@ export class SvgHelper {
       case 'solid':
         avatar.setBody(
           `<rect fill="${primaryColor}" width="${size}" height="${size}" />` +
-          avatar.getBody()
+            avatar.getBody(),
         );
 
       case 'gradientLinear':
         avatar.setBody(
           `<rect fill="url(#backgroundLinear)" width="${size}" height="${size}" />` +
-          `<defs>` +
-          `<linearGradient id="backgroundLinear" gradientTransform="rotate(${rotation} 0.5 0.5)">` +
-          `<stop stop-color="${primaryColor}"/>` +
-          `<stop offset="1" stop-color="${secondaryColor}"/>` +
-          `</linearGradient>` +
-          `</defs>` +
-          avatar.getBody()
+            `<defs>` +
+            `<linearGradient id="backgroundLinear" gradientTransform="rotate(${rotation} 0.5 0.5)">` +
+            `<stop stop-color="${primaryColor}"/>` +
+            `<stop offset="1" stop-color="${secondaryColor}"/>` +
+            `</linearGradient>` +
+            `</defs>` +
+            avatar.getBody(),
         );
     }
   }
@@ -64,56 +64,50 @@ export class SvgHelper {
     let translateX = (size / 2) * percent * -1;
     let translateY = (size / 2) * percent * -1;
 
-    avatar.setBody(`<g transform="translate(${translateX} ${translateY}) scale(${
-      scale / 100
-    })">${avatar.getBody()}</g>`);
+    avatar.setBody(
+      `<g transform="translate(${translateX} ${translateY}) scale(${
+        scale / 100
+      })">${avatar.getBody()}</g>`,
+    );
   }
 
-  static addTranslate(
-    avatar: AvatarModel,
-    x?: number,
-    y?: number,
-  ) {
+  static addTranslate(avatar: AvatarModel, x?: number, y?: number) {
     const { size } = avatar.getMetadata().canvas;
 
     let translateX = x ? (size * x) / 100 : 0;
     let translateY = y ? (size * y) / 100 : 0;
 
-    avatar.setBody(`<g transform="translate(${translateX} ${translateY})">${avatar.getBody()}</g>`);
+    avatar.setBody(
+      `<g transform="translate(${translateX} ${translateY})">${avatar.getBody()}</g>`,
+    );
   }
 
-  static addRotate(
-    avatar: AvatarModel,
-    rotate: number,
-  ) {
+  static addRotate(avatar: AvatarModel, rotate: number) {
     const { size } = avatar.getMetadata().canvas;
 
-    avatar.setBody(`<g transform="rotate(${rotate} ${size / 2} ${size / 2})">${
-      avatar.getBody()
-    }</g>`);
+    avatar.setBody(
+      `<g transform="rotate(${rotate} ${size / 2} ${size / 2})">${avatar.getBody()}</g>`,
+    );
   }
 
   static addFlip(avatar: AvatarModel): void {
     const { size } = avatar.getMetadata().canvas;
 
-    avatar.setBody(`<g transform="scale(-1 1) translate(${size * -1} 0)">${
-      avatar.getBody()
-    }</g>`);
+    avatar.setBody(
+      `<g transform="scale(-1 1) translate(${size * -1} 0)">${avatar.getBody()}</g>`,
+    );
   }
 
-  static addRadius(
-    avatar: AvatarModel,
-    radius: number,
-  ) {
+  static addRadius(avatar: AvatarModel, radius: number) {
     const { size } = avatar.getMetadata().canvas;
 
     let r = radius ? (size * radius) / 100 : 0;
 
     avatar.setBody(
       `<mask id="viewboxMask">` +
-      `<rect width="${size}" height="${size}" rx="${r}" ry="${r}" fill="#fff" />` +
-      `</mask>` +
-      `<g mask="url(#viewboxMask)">${avatar.getBody()}</g>`
+        `<rect width="${size}" height="${size}" rx="${r}" ry="${r}" fill="#fff" />` +
+        `</mask>` +
+        `<g mask="url(#viewboxMask)">${avatar.getBody()}</g>`,
     );
   }
 
@@ -130,13 +124,14 @@ export class SvgHelper {
     const prng = PRNG.fromRandom();
     const ids: Record<string, string> = {};
 
-    avatar.setBody(avatar.getBody().replace(
-      /(id="|url\(#)([a-z0-9-_]+)([")])/gi,
-      (match, m1, m2, m3) => {
-        ids[m2] = ids[m2] || prng.string(8);
+    avatar.setBody(
+      avatar
+        .getBody()
+        .replace(/(id="|url\(#)([a-z0-9-_]+)([")])/gi, (match, m1, m2, m3) => {
+          ids[m2] = ids[m2] || prng.string(8);
 
-        return `${m1}${ids[m2]}${m3}`;
-      },
-    ));
+          return `${m1}${ids[m2]}${m3}`;
+        }),
+    );
   }
 }

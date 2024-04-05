@@ -36,7 +36,7 @@ export const createCommand: CommandModule = {
         handler: async (argv) => {
           const bar = new cliProgress.SingleBar(
             {},
-            cliProgress.Presets.shades_classic
+            cliProgress.Presets.shades_classic,
           );
 
           const validated = validateInputBySchema(argv, schema);
@@ -58,7 +58,7 @@ export const createCommand: CommandModule = {
 
           const outputPath = path.resolve(
             process.cwd(),
-            argv.outputPath as string
+            argv.outputPath as string,
           );
 
           await fs.ensureDir(outputPath);
@@ -68,7 +68,7 @@ export const createCommand: CommandModule = {
               const fileName = path.resolve(
                 process.cwd(),
                 outputPath,
-                `${name}-${i}.${format}`
+                `${name}-${i}.${format}`,
               );
 
               const avatar = createAvatar(
@@ -78,7 +78,7 @@ export const createCommand: CommandModule = {
                   : {
                       ...validated,
                       seed: createRandomSeed(),
-                    }
+                    },
               );
 
               switch (format) {
@@ -90,8 +90,8 @@ export const createCommand: CommandModule = {
                   await fs.writeFile(
                     fileName,
                     Buffer.from(
-                      await toPng(avatar, { includeExif }).toArrayBuffer()
-                    )
+                      await toPng(avatar, { includeExif }).toArrayBuffer(),
+                    ),
                   );
                   break;
 
@@ -102,8 +102,8 @@ export const createCommand: CommandModule = {
                     Buffer.from(
                       await toJpeg(avatar, {
                         includeExif,
-                      }).toArrayBuffer()
-                    )
+                      }).toArrayBuffer(),
+                    ),
                   );
                   break;
 
@@ -116,7 +116,7 @@ export const createCommand: CommandModule = {
                 const jsonFileName = path.resolve(
                   process.cwd(),
                   outputPath,
-                  `${name}-${i}.json`
+                  `${name}-${i}.json`,
                 );
 
                 await fs.writeJSON(jsonFileName, avatar.toJson(), {

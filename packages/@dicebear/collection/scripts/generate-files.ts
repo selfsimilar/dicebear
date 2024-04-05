@@ -3,10 +3,15 @@ import { glob } from 'glob';
 import { dirname, join } from 'node:path';
 import { readFile, rm, mkdir, writeFile } from 'node:fs/promises';
 import { camelCase, pascalCase } from 'change-case';
-import { OptionalKind, Project, PropertySignatureStructure, VariableDeclarationKind } from 'ts-morph';
+import {
+  OptionalKind,
+  Project,
+  PropertySignatureStructure,
+  VariableDeclarationKind,
+} from 'ts-morph';
 
 const definitionUrl = new URL(
-  dirname(import.meta.resolve('@dicebear/definitions/package.json'))
+  dirname(import.meta.resolve('@dicebear/definitions/package.json')),
 );
 const definitionPath = join(definitionUrl.pathname, 'src');
 
@@ -17,9 +22,11 @@ await rm(targetPath, { recursive: true });
 await mkdir(targetPath);
 
 // find all definition files
-const definitionFiles = (await glob('*.json', {
-  cwd: definitionPath,
-})).sort((a, b) => a.localeCompare(b));
+const definitionFiles = (
+  await glob('*.json', {
+    cwd: definitionPath,
+  })
+).sort((a, b) => a.localeCompare(b));
 
 // generate files
 const project = new Project();
@@ -49,7 +56,9 @@ await Promise.all(
     sourceFile.addInterface({
       name: `${pascalCase(name)}Options`,
       properties: [
-        ...definition.components?.reduce<OptionalKind<PropertySignatureStructure>[]>((acc, component) => {
+        ...(definition.components?.reduce<
+          OptionalKind<PropertySignatureStructure>[]
+        >((acc, component) => {
           let values = component.values
             .map((value) => value.name)
             .sort((a, b) => a.localeCompare(b))
@@ -90,13 +99,15 @@ await Promise.all(
           }
 
           return result;
-        }, []) ?? [],
-        ...definition.colors?.map((color) => {
-          return {
-            name: `${color.name}Color`,
-            type: 'string[]',
-          };
-        }).filter(v => v.name !== 'backgroundColor') ?? [],
+        }, []) ?? []),
+        ...(definition.colors
+          ?.map((color) => {
+            return {
+              name: `${color.name}Color`,
+              type: 'string[]',
+            };
+          })
+          .filter((v) => v.name !== 'backgroundColor') ?? []),
       ],
     });
 
@@ -115,7 +126,7 @@ await Promise.all(
     });
 
     await sourceFile.save();
-  })
+  }),
 );
 
 // generate index file
@@ -125,7 +136,7 @@ for (const file of definitionFiles) {
   const name = file.replace('.json', '');
 
   indexSourceFile.addExportDeclaration({
-    moduleSpecifier: `./${name}.js`
+    moduleSpecifier: `./${name}.js`,
   });
 }
 
@@ -149,7 +160,9 @@ for (const file of definitionFiles) {
 }
 
 asyncSourceFile.addExportDeclaration({
-  namedExports: definitionFiles.map((file) => camelCase(file.replace('.json', ''))),
+  namedExports: definitionFiles.map((file) =>
+    camelCase(file.replace('.json', '')),
+  ),
 });
 
 await asyncSourceFile.save();

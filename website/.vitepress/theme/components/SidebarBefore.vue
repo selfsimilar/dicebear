@@ -16,7 +16,7 @@ watch(
     if (newValue !== oldValue) {
       marker.value?.parentElement?.parentElement?.scrollTo(0, 0);
     }
-  }
+  },
 );
 </script>
 

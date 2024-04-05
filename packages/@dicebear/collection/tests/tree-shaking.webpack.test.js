@@ -25,9 +25,9 @@ test(`Tree shaking with webpack`, async () => {
               stats
                 .toJson()
                 .modules.filter((v) => v.usedExports)
-                .map((v) => v.identifier)
+                .map((v) => v.identifier),
             );
-      }
+      },
     );
   });
 

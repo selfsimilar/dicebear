@@ -54,7 +54,9 @@ function scrollToTop() {
   padding-top: var(--vp-layout-top-height, 0px);
   width: 100%;
   background-color: var(--vp-local-nav-bg-color);
-  transition: border-color 0.5s, background-color 0.5s;
+  transition:
+    border-color 0.5s,
+    background-color 0.5s;
 }
 
 @media (min-width: 960px) {

@@ -9,7 +9,13 @@ export class LicenseHelper {
     const licenseUrl = metadata.license?.url;
     const copyright = LicenseHelper.text(metadata);
 
-    if (!sourceName && !creatorName && !sourceUrl && !licenseUrl && !copyright) {
+    if (
+      !sourceName &&
+      !creatorName &&
+      !sourceUrl &&
+      !licenseUrl &&
+      !copyright
+    ) {
       return '';
     }
 
@@ -22,17 +28,23 @@ export class LicenseHelper {
       ' xmlns:dcterms="http://purl.org/dc/terms/">' +
       '<rdf:RDF>' +
       '<rdf:Description>' +
-      (sourceName ? `<dc:title>${SvgHelper.escape(sourceName)}</dc:title>` : '') +
-      (creatorName ? `<dc:creator>${SvgHelper.escape(creatorName)}</dc:creator>` : '') +
+      (sourceName
+        ? `<dc:title>${SvgHelper.escape(sourceName)}</dc:title>`
+        : '') +
+      (creatorName
+        ? `<dc:creator>${SvgHelper.escape(creatorName)}</dc:creator>`
+        : '') +
       (sourceUrl
         ? `<dc:source xsi:type="dcterms:URI">${SvgHelper.escape(sourceUrl)}</dc:source>`
         : '') +
       (licenseUrl
         ? `<dcterms:license xsi:type="dcterms:URI">${SvgHelper.escape(
-            licenseUrl
+            licenseUrl,
           )}</dcterms:license>`
         : '') +
-      (copyright ? `<dc:rights>${SvgHelper.escape(copyright)}</dc:rights>` : '') +
+      (copyright
+        ? `<dc:rights>${SvgHelper.escape(copyright)}</dc:rights>`
+        : '') +
       '</rdf:Description>' +
       '</rdf:RDF>' +
       '</metadata>'
@@ -40,9 +52,7 @@ export class LicenseHelper {
   }
 
   static text(metadata: Metadata): string {
-    let title = metadata.source?.name
-      ? `„${metadata.source?.name}”`
-      : 'Design';
+    let title = metadata.source?.name ? `„${metadata.source?.name}”` : 'Design';
     let creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
 
     if (metadata.source) {

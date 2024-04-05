@@ -3,7 +3,7 @@ import getRandomBoolean from '@/utils/getRandomBoolean';
 import getRandomNumber from '@/utils/getRandomNumber';
 
 export default function getRandomOptions(
-  configStyleOptions: ConfigStyleOptions
+  configStyleOptions: ConfigStyleOptions,
 ): SelectedStyleOptions {
   const result: SelectedStyleOptions = {};
 

@@ -5,7 +5,7 @@ import { useData } from 'vitepress';
 import { computed, Ref, unref } from 'vue';
 
 export function useAvatarStyleFromOptions(
-  avatarStyleName: string | Ref<string>
+  avatarStyleName: string | Ref<string>,
 ): Ref<AvatarStyle | undefined> {
   const data = useData<ThemeOptions>();
 
@@ -17,7 +17,7 @@ export function useAvatarStyleFromOptions(
 }
 
 export function useAvatarStyleMeta(
-  avatarStyleName: string | Ref<string>
+  avatarStyleName: string | Ref<string>,
 ): Ref<StyleMeta | undefined> {
   const avatarStyle = useAvatarStyleFromOptions(avatarStyleName);
 
@@ -29,7 +29,7 @@ export function useAvatarStyleMeta(
 }
 
 export function useAvatarStyleSchema(
-  avatarStyleName: string | Ref<string>
+  avatarStyleName: string | Ref<string>,
 ): Ref<StyleSchema | undefined> {
   const avatarStyle = useAvatarStyleFromOptions(avatarStyleName);
 
@@ -42,7 +42,7 @@ export function useAvatarStyleSchema(
 
     const coreSchema: StyleSchema = JSON.parse(JSON.stringify(schema));
     const styleSchema: StyleSchema = JSON.parse(
-      JSON.stringify(avatarStyleRaw.schema)
+      JSON.stringify(avatarStyleRaw.schema),
     );
 
     // If both core schema and style schema provide examples, we want to keep only the style schema examples.
@@ -67,13 +67,13 @@ export function useAvatarStyleSchema(
       {
         allOf: [coreSchema, styleSchema],
       },
-      { ignoreAdditionalProperties: true }
+      { ignoreAdditionalProperties: true },
     );
   });
 }
 
 export function useAvatarStyleDefaults(
-  avatarStyleName: Ref<string> | string
+  avatarStyleName: Ref<string> | string,
 ): Ref<Record<string, any> | undefined> {
   const avatarStyleSchema = useAvatarStyleSchema(avatarStyleName);
 

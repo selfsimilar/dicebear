@@ -22,7 +22,7 @@ function toFormat(avatar: Avatar, format: 'png' | 'jpeg'): Result {
 async function toDataUri(
   svg: string,
   format: 'svg' | 'png' | 'jpeg',
-  exif?: Exif
+  exif?: Exif,
 ): Promise<string> {
   if ('svg' === format) {
     return `data:${getMimeType(format)};utf8,${encodeURIComponent(svg)}`;
@@ -36,7 +36,7 @@ async function toDataUri(
 async function toArrayBuffer(
   rawSvg: string,
   format: 'png' | 'jpeg',
-  exif?: Exif
+  exif?: Exif,
 ): Promise<ArrayBufferLike> {
   const canvas = await toCanvas(rawSvg, format, exif);
 
@@ -52,12 +52,12 @@ async function toArrayBuffer(
 async function toCanvas(
   rawSvg: string,
   format: 'png' | 'jpeg',
-  exif?: Exif
+  exif?: Exif,
 ): Promise<HTMLCanvasElement> {
   if (exif) {
     console.warn(
       'The `exif` option is not supported in the browser version of `@dicebear/converter`. \n' +
-        'Please use the node version of `@dicebear/converter` to generate images with exif data.'
+        'Please use the node version of `@dicebear/converter` to generate images with exif data.',
     );
   }
 

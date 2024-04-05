@@ -253,7 +253,7 @@ const isLimited = computed(() => {
               :style-options="
                 getAvatarPropertyPreviewOptions(
                   field.toString(),
-                  item.item.value
+                  item.item.value,
                 )
               "
               class="ml-3"

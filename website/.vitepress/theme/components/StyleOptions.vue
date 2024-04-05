@@ -23,7 +23,7 @@ const properties = computed(() => {
       allOf: [coreSchema, style.value.schema],
       additionalItems: true,
     },
-    { ignoreAdditionalProperties: true }
+    { ignoreAdditionalProperties: true },
   );
 
   if (undefined === schema.properties) {

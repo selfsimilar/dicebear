@@ -19,13 +19,13 @@ const { height: headerHeight } = useElementSize(header);
 const { height: previewHeight } = useElementSize(preview);
 
 const navOffsetTop = computed(
-  () => headerHeight.value + previewHeight.value + 8
+  () => headerHeight.value + previewHeight.value + 8,
 );
 
 const backgroundColor = computed(() =>
   tinycolor(`#${store.selectedStyleOptions.backgroundColor}`)
     .darken(10)
-    .toHexString()
+    .toHexString(),
 );
 
 watchEffect(() => (document.documentElement.lang = i18n.locale.value));
@@ -55,8 +55,12 @@ watchEffect(() => (document.documentElement.lang = i18n.locale.value));
   background: v-bind('backgroundColor');
   background-image: linear-gradient(white, white),
     linear-gradient(v-bind('backgroundColor'), v-bind('backgroundColor'));
-  background-position: center center, left top;
-  background-size: 960px 100%, 100% 100%;
+  background-position:
+    center center,
+    left top;
+  background-size:
+    960px 100%,
+    100% 100%;
   background-repeat: no-repeat;
 
   &-header,

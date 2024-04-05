@@ -27,7 +27,10 @@ export class PRNG {
   }
 
   integer(min: number, max: number): number {
-    return Math.floor(((this.next() - this.MIN) / (this.MAX - this.MIN)) * (max + 1 - min) + min);
+    return Math.floor(
+      ((this.next() - this.MIN) / (this.MAX - this.MIN)) * (max + 1 - min) +
+        min,
+    );
   }
 
   pick<T>(arr: T[], fallback?: T): T | undefined {
@@ -41,25 +44,28 @@ export class PRNG {
   }
 
   shuffle<T>(arr: T[]): T[] {
-      // Each method call should call the `next` function only once.
-      // Therefore, we use a separate instance of the PRNG here.
-      const internalPrng = PRNG.fromSeed(this.next().toString());
+    // Each method call should call the `next` function only once.
+    // Therefore, we use a separate instance of the PRNG here.
+    const internalPrng = PRNG.fromSeed(this.next().toString());
 
-      // Fisher-Yates shuffle algorithm - We do not use the Array.sort method
-      // because it is not stable and produces different results when used in
-      // different browsers. See: https://github.com/dicebear/dicebear/issues/394
-      const workingArray = [...arr];
+    // Fisher-Yates shuffle algorithm - We do not use the Array.sort method
+    // because it is not stable and produces different results when used in
+    // different browsers. See: https://github.com/dicebear/dicebear/issues/394
+    const workingArray = [...arr];
 
-      for (let i = workingArray.length - 1; i > 0; i--) {
-        const j = internalPrng.integer(0, i);
+    for (let i = workingArray.length - 1; i > 0; i--) {
+      const j = internalPrng.integer(0, i);
 
-        [workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]];
-      }
+      [workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]];
+    }
 
-      return workingArray;
+    return workingArray;
   }
 
-  string(length: number, characters: string = 'abcdefghijklmnopqrstuvwxyz1234567890'): string {
+  string(
+    length: number,
+    characters: string = 'abcdefghijklmnopqrstuvwxyz1234567890',
+  ): string {
     // Each method call should call the `next` function only once.
     // Therefore, we use a separate instance of the PRNG here.
     const internalPrng = PRNG.fromSeed(this.next().toString());

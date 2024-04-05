@@ -23,12 +23,12 @@ const options = computed(() => {
 });
 
 const exampleHttpApi = computed(() =>
-  getAvatarApiUrl(store.avatarStyleName, options.value)
+  getAvatarApiUrl(store.avatarStyleName, options.value),
 );
 const exampleHttpApiHtml = computed(
   () => `<img
   src="${getAvatarApiUrl(store.avatarStyleName, options.value)}"
-  alt="avatar" />`
+  alt="avatar" />`,
 );
 const exampleJsLibrary = computed(
   () => `import { createAvatar } from '@dicebear/core';
@@ -37,13 +37,13 @@ import { ${store.avatarStyleName} } from '@dicebear/collection';
 const avatar = createAvatar(${store.avatarStyleName}, ${JSON.stringify(
     options.value,
     null,
-    2
+    2,
   )});
 
-const svg = avatar.toString();`
+const svg = avatar.toString();`,
 );
 const exampleCli = computed(() =>
-  getAvatarApiCommand(store.avatarStyleName, options.value)
+  getAvatarApiCommand(store.avatarStyleName, options.value),
 );
 
 function onOpen() {

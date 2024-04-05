@@ -18,7 +18,7 @@ const props = defineProps({
 });
 
 const options = computed(() =>
-  getAvatarPropertyPreviewOptions(props.name, props.value)
+  getAvatarPropertyPreviewOptions(props.name, props.value),
 );
 </script>
 

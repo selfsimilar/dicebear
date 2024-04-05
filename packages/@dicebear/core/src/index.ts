@@ -13,7 +13,10 @@ export function createStyle<O extends {}>(definition: Definition): Style<O> {
   return Style.fromDefinition(definition);
 }
 
-export function createAvatar<O extends {}>(style: Style<O>, options: Partial<Options<O>> = {}) {
+export function createAvatar<O extends {}>(
+  style: Style<O>,
+  options: Partial<Options<O>> = {},
+) {
   return Core.createAvatar(style, options);
 }
 

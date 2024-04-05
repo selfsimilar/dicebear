@@ -10,7 +10,7 @@ const avatarStyleKey = computed(() => store.avatarStyleName);
 const avatarStyleMeta = useAvatarStyleMeta(avatarStyleKey);
 const avatarStyleName = computed(() => capitalCase(store.avatarStyleName));
 const avatarStyleLink = computed(
-  () => `/styles/${kebabCase(store.avatarStyleName)}/`
+  () => `/styles/${kebabCase(store.avatarStyleName)}/`,
 );
 </script>
 

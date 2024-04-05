@@ -27,7 +27,7 @@ async function download(format: 'svg' | 'png' | 'jpg') {
   open.value = true;
 
   const response = await fetch(
-    getAvatarApiUrl(store.avatarStyleName, options.value, format)
+    getAvatarApiUrl(store.avatarStyleName, options.value, format),
   );
 
   const blob = await response.blob();

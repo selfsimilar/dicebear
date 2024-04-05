@@ -30,7 +30,7 @@ export default defineConfig({
   },
   define: {
     __dicebearEditorVersion: JSON.stringify(
-      `${new Date().toISOString().split('T')[0]}-${commitHash}`
+      `${new Date().toISOString().split('T')[0]}-${commitHash}`,
     ),
   },
 });

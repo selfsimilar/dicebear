@@ -7,7 +7,7 @@ import { createCommand } from './commands/create/index.js';
 
 (async () => {
   const pkg = await fs.readJson(
-    new URL('../package.json', import.meta.url).pathname
+    new URL('../package.json', import.meta.url).pathname,
   );
 
   updateNotifier({ pkg }).notify();

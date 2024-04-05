@@ -12,7 +12,7 @@ const props = withDefaults(
   }>(),
   {
     mode: 'library',
-  }
+  },
 );
 
 const svg = computedAsync(() => {
@@ -22,7 +22,7 @@ const svg = computedAsync(() => {
   switch (props.mode) {
     case 'library':
       return loadAvatarStyle(styleName).then((avatarStyle) =>
-        createAvatar(avatarStyle, styleOptions).toDataUri()
+        createAvatar(avatarStyle, styleOptions).toDataUri(),
       );
     case 'http-api':
       return getAvatarApiUrl(styleName, styleOptions);

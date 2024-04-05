@@ -21,7 +21,7 @@ watch(
       src.value = `data:image/svg+xml;utf8,${encodeURIComponent(props.svg)}`;
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

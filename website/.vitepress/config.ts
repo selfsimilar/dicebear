@@ -46,11 +46,11 @@ export default defineConfigWithTheme<ThemeOptions>({
         // Temporary fix for Safari / Select scrolling on mobile
         'body-scroll-lock': path.resolve(
           __dirname,
-          'shared/utils/body-scroll-lock.ts'
+          'shared/utils/body-scroll-lock.ts',
         ),
         './components/VPLocalNav.vue': path.resolve(
           __dirname,
-          'theme/components/VPLocalNav.vue'
+          'theme/components/VPLocalNav.vue',
         ),
       },
     },
@@ -81,7 +81,8 @@ export default defineConfigWithTheme<ThemeOptions>({
       { icon: 'github', link: 'https://github.com/dicebear/dicebear' },
     ],
     editLink: {
-      pattern: 'https://github.com/dicebear/dicebear/edit/9.x/website/pages/:path',
+      pattern:
+        'https://github.com/dicebear/dicebear/edit/9.x/website/pages/:path',
     },
     sidebar: {
       '/introduction/': sidebarDocs,

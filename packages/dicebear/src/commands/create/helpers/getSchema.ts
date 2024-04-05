@@ -37,6 +37,6 @@ export function getSchema(style: Style<any>): JSONSchema7 {
       ],
       additionalItems: true,
     },
-    { ignoreAdditionalProperties: true }
+    { ignoreAdditionalProperties: true },
   );
 }

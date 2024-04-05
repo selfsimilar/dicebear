@@ -168,7 +168,9 @@ onMounted(async () => {
     font-size: 12px;
     font-weight: 500;
     color: var(--vp-c-text-dark-3);
-    transition: color 0.5s, opacity 0.5s;
+    transition:
+      color 0.5s,
+      opacity 0.5s;
   }
 
   &:hover::before {

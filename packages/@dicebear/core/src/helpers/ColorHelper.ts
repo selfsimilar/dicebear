@@ -1,4 +1,4 @@
-import { PRNG } from "../PRNG";
+import { PRNG } from '../PRNG';
 
 export class ColorHelper {
   static convertColor(color: string): string {
@@ -8,7 +8,7 @@ export class ColorHelper {
   static getBackgroundColors(
     prng: PRNG,
     backgroundColor: string[],
-    backgroundType: 'solid' | 'gradientLinear'
+    backgroundType: 'solid' | 'gradientLinear',
   ): [string, string] {
     let shuffledBackgroundColors = prng.shuffle(backgroundColor);
 
@@ -39,7 +39,8 @@ export class ColorHelper {
     }
 
     const primary = shuffledBackgroundColors[0];
-    const secondary = shuffledBackgroundColors[1] ?? shuffledBackgroundColors[0];
+    const secondary =
+      shuffledBackgroundColors[1] ?? shuffledBackgroundColors[0];
 
     return [
       ColorHelper.convertColor(primary),
@@ -49,17 +50,17 @@ export class ColorHelper {
 
   static getBackgroundRotation(
     prng: PRNG,
-    backgroundRotation: number[]
+    backgroundRotation: number[],
   ): number {
     return prng.integer(
       backgroundRotation.length ? Math.min(...backgroundRotation) : 0,
-      backgroundRotation.length ? Math.max(...backgroundRotation) : 0
+      backgroundRotation.length ? Math.max(...backgroundRotation) : 0,
     );
   }
 
   static getBackgroundType(
     prng: PRNG,
-    backgroundType: Array<'solid' | 'gradientLinear'>
+    backgroundType: Array<'solid' | 'gradientLinear'>,
   ): 'solid' | 'gradientLinear' {
     return prng.pick(backgroundType, 'solid') ?? 'solid';
   }

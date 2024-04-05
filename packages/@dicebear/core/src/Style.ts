@@ -1,7 +1,7 @@
-import { Struct, object } from "superstruct";
-import type { Definition, Properties } from "./types.js";
-import { AvatarModel } from "./models/AvatarModel.js";
-import { PRNG } from "./PRNG.js";
+import { Struct, object } from 'superstruct';
+import type { Definition, Properties } from './types.js';
+import { AvatarModel } from './models/AvatarModel.js';
+import { PRNG } from './PRNG.js';
 
 export class Style<O extends {} = {}> {
   private readonly definition: Definition;
