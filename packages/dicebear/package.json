@@ -13,7 +13,7 @@
     "url": "git+https://github.com/dicebear/dicebear.git"
   },
   "license": "MIT",
-  "author": "Florian Körner <contact@florian-koerner.com>",
+  "author": "Florian Körner <contact@dicebear.com>",
   "type": "module",
   "bin": "./bin/index.js",
   "files": [
