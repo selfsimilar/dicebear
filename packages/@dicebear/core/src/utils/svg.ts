@@ -115,7 +115,7 @@ export function createAttrString(result: StyleCreateResult): string {
 }
 
 export function randomizeIds(result: StyleCreateResult): string {
-  const prng = createPrng();
+  const prng = createPrng(Math.random().toString());
   const ids: Record<string, string> = {};
 
   return result.body.replace(
