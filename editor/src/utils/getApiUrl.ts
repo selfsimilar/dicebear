@@ -1,5 +1,5 @@
 import type { SelectedStyleOptions } from '@/types';
-import { paramCase } from 'change-case';
+import { kebabCase } from 'change-case';
 import getAvatarOptions from '@/utils/getAvatarOptions';
 
 export default function getApiUrl(
@@ -29,7 +29,7 @@ export default function getApiUrl(
     })
     .join('&');
 
-  return `https://api.dicebear.com/6.x/${paramCase(styleName)}/${format}${
+  return `https://api.dicebear.com/6.x/${kebabCase(styleName)}/${format}${
     qs ? `?${qs}` : ''
   }`;
 }

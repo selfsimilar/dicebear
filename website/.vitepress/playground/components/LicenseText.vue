@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAvatarStyleMeta } from '@shared/composables/avatar';
-import { capitalCase, paramCase } from 'change-case';
+import { capitalCase, kebabCase } from 'change-case';
 import { computed } from 'vue';
 import useStore from '../store';
 
@@ -10,7 +10,7 @@ const avatarStyleKey = computed(() => store.avatarStyleName);
 const avatarStyleMeta = useAvatarStyleMeta(avatarStyleKey);
 const avatarStyleName = computed(() => capitalCase(store.avatarStyleName));
 const avatarStyleLink = computed(
-  () => `/styles/${paramCase(store.avatarStyleName)}/`
+  () => `/styles/${kebabCase(store.avatarStyleName)}/`
 );
 </script>
 

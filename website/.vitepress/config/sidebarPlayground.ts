@@ -1,4 +1,4 @@
-import { capitalCase, paramCase } from 'change-case';
+import { capitalCase, kebabCase } from 'change-case';
 import * as collection from '@dicebear/collection';
 import { DefaultTheme } from 'vitepress';
 
