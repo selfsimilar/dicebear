@@ -1,110 +1,136 @@
-import type { Result, Exif, Format, ToFormat } from '../types.js';
+import type { Result, Exif, Avatar, Options } from '../types.js';
 import { promises as fs } from 'node:fs';
 import { getMimeType } from '../utils/mime-type.js';
 import { ensureSize } from '../utils/svg.js';
 import * as tmp from 'tmp-promise';
-import { getEncoder } from '../utils/text.js';
+import { renderAsync } from '@resvg/resvg-js';
+import sharp from 'sharp';
+import { exiftool } from 'exiftool-vendored';
 
-export const toFormat: ToFormat = function (
-  svg: string,
-  format: Format,
-  exif?: Exif
+export function toPng(avatar: Avatar, options: Options = {}): Result {
+  return toFormat(avatar, 'png', options);
+}
+
+export function toJpeg(avatar: Avatar, options: Options = {}): Result {
+  return toFormat(avatar, 'jpeg', options);
+}
+
+function toFormat(
+  avatar: Avatar,
+  format: 'png' | 'jpeg',
+  options: Options
 ): Result {
+  const svg = typeof avatar === 'string' ? avatar : avatar.toString();
+
+  const exifOption = options.includeExif ?? false;
+  const exif = exifOption ? getExif(svg) : {};
+
   return {
-    toDataUri: () => toDataUri(svg, format, exif),
-    toFile: (name: string) => toFile(name, svg, format, exif),
-    toArrayBuffer: () => toArrayBuffer(svg, format, exif),
+    toDataUri: () => toDataUri(svg, format, exif, options),
+    toArrayBuffer: () => toArrayBuffer(svg, format, exif, options),
   };
-};
+}
 
 async function toDataUri(
   svg: string,
-  format: Format,
-  exif?: Exif
+  format: 'svg' | 'png' | 'jpeg',
+  exif: Exif,
+  options: Options
 ): Promise<string> {
   if (format === 'svg') {
     return `data:${getMimeType(format)};utf8,${encodeURIComponent(svg)}`;
   }
 
-  const buffer = await toBuffer(svg, format, exif);
+  const buffer = await toBuffer(svg, format, exif, options);
 
   return `data:${getMimeType(format)};base64,${buffer.toString('base64')}`;
 }
 
-async function toFile(
-  name: string,
-  svg: string,
-  format: Format,
-  exif?: Exif
-): Promise<void> {
-  if (format === 'svg') {
-    await fs.writeFile(name, svg);
-    return;
-  }
-
-  await fs.writeFile(name, await toBuffer(svg, format, exif));
-}
-
 async function toArrayBuffer(
   rawSvg: string,
-  format: Format,
-  exif?: Exif
+  format: 'png' | 'jpeg',
+  exif: Exif,
+  options: Options
 ): Promise<ArrayBufferLike> {
-  if (format === 'svg') {
-    return getEncoder().encode(rawSvg);
-  }
-
-  return (await toBuffer(rawSvg, format, exif)).buffer;
+  return (await toBuffer(rawSvg, format, exif, options)).buffer;
 }
 
 async function toBuffer(
   rawSvg: string,
-  format: Exclude<Format, 'svg'>,
-  exif?: Exif
+  format: 'png' | 'jpeg',
+  exif: Exif,
+  options: Options
 ): Promise<Buffer> {
-  const { renderAsync } = await import('@resvg/resvg-js');
-
-  const interRegular = new URL(
-    '../../fonts/inter/inter-regular.otf',
-    import.meta.url
-  );
-
-  const interBold = new URL(
-    '../../fonts/inter/inter-bold.otf',
-    import.meta.url
-  );
+  const fonts = options.fonts ?? [];
 
   let { svg } = ensureSize(rawSvg);
 
   let buffer = (
     await renderAsync(svg, {
       font: {
-        loadSystemFonts: false,
-        defaultFontFamily: 'Inter',
-        fontFiles: [interRegular.pathname, interBold.pathname],
+        loadSystemFonts: fonts.length === 0,
+        fontFiles: fonts.length > 0 ? fonts : undefined,
       },
     })
   ).asPng();
 
   if ('jpeg' === format) {
-    const sharp = (await import('sharp')).default;
-
     buffer = await sharp(buffer)
       .flatten({ background: '#ffffff' })
       .toFormat(format)
       .toBuffer();
   }
 
-  if (exif) {
-    const exiftool = (await import('exiftool-vendored')).exiftool;
-
+  if (Object.keys(exif).length > 0) {
     buffer = await tmp.withFile(async ({ path }) => {
       await fs.writeFile(path, buffer);
       await exiftool.write(path, exif, ['-overwrite_original']);
-      
+
       return fs.readFile(path);
     });
   }
 
   return buffer;
+}
+
+// https://www.iptc.org/std/photometadata/specification/IPTC-PhotoMetadata
+// https://developers.google.com/search/docs/appearance/structured-data/image-license-metadata
+function getExif(svg: string): Exif {
+  const exif: Exif = {};
+
+  const sourceName = svg.match(/<dc:title[^>]*>(.*?)<\/dc:title>/s);
+  const sourceUrl = svg.match(/<dc:source[^>]*>(.*?)<\/dc:source>/s);
+  const creatorName = svg.match(/<dc:creator[^>]*>(.*?)<\/dc:creator>/s);
+  const licenseUrl = svg.match(
+    /<dcterms:license[^>]*>(.*?)<\/dcterms:license>/s
+  );
+  const copyright = svg.match(/<dc:rights[^>]*>(.*?)<\/dc:rights>/s);
+
+  if (sourceName) {
+    exif['IPTC:ObjectName'] = sourceName[1];
+    exif['XMP-dc:Title'] = sourceName[1];
+  }
+
+  if (sourceUrl) {
+    exif['XMP-plus:LicensorURL'] = sourceUrl[1];
+  }
+
+  if (creatorName) {
+    exif['IPTC:By-line'] = creatorName[1];
+    exif['XMP-dc:Creator'] = creatorName[1];
+
+    exif['IPTC:Credit'] = creatorName[1];
+    exif['XMP-photoshop:Credit'] = creatorName[1];
+  }
+
+  if (licenseUrl) {
+    exif['XMP-xmpRights:WebStatement'] = licenseUrl[1];
+  }
+
+  if (copyright) {
+    exif['IPTC:CopyrightNotice'] = copyright[1];
+    exif['XMP-dc:Rights'] = copyright[1];
+  }
+
+  return exif;
 }

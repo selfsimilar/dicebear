@@ -2,13 +2,20 @@
  * DiceBear (@dicebear/core)
  *
  * Code licensed under MIT (https://github.com/dicebear/dicebear/blob/main/LICENSE)
- * Copyright (c) 2023 Florian Körner
+ * Copyright (c) 2024 Florian Körner
  */
 
-import * as license from './utils/license.js';
-import * as escape from './utils/escape.js';
+import { Core } from './Core.js';
+import { Style } from './Style.js';
+import { Definition, Metadata, Options } from './types.js';
 
-export * from './core.js';
-export * from './schema.js';
-export * from './types.js';
-export { license, escape };
+export function createStyle<O extends {}>(definition: Definition): Style<O> {
+  return Style.fromDefinition(definition);
+}
+
+export function createAvatar<O extends {}>(style: Style<O>, options: Partial<Options<O>> = {}) {
+  return Core.createAvatar(style, options);
+}
+
+export { Core, Style };
+export type { Definition, Metadata, Options };

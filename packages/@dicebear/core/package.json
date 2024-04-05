@@ -1,10 +1,10 @@
 {
   "name": "@dicebear/core",
-  "version": "8.0.1",
+  "version": "9.0.0-alpha.1",
   "description": "An avatar library for designers and developers.",
   "keywords": [
     "avatar",
-    "identicon"
+    "dicebear"
   ],
   "homepage": "https://www.dicebear.com",
   "bugs": {
@@ -16,10 +16,19 @@
   },
   "license": "MIT",
   "author": "Florian Körner <contact@florian-koerner.com>",
+  "sideEffects": false,
   "type": "module",
-  "main": "./lib/index.js",
-  "exports": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "exports": {
+    "types": "./lib/index.d.ts",
+    "default": "./lib/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/index.d.ts"
+      ]
+    }
+  },
   "files": [
     "LICENSE",
     "lib",
@@ -31,20 +40,18 @@
     "prepublishOnly": "npm run build",
     "test": "uvu tests"
   },
-  "dependencies": {
-    "@dicebear/converter": "8.0.1",
-    "@types/json-schema": "^7.0.11"
-  },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
     "del-cli": "^5.0.0",
-    "typescript": "^5.1.6",
     "uvu": "^0.5.6"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "superstruct": "^1.0.4"
   }
 }

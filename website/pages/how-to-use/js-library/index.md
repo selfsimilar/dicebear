@@ -71,9 +71,7 @@ For a quick overview we have created an [license overview](/licenses/) for you.
 ### `createAvatar(style, options)`
 
 **Return type:** Object with [.toString()](#tostring), [.toJson()](#tojson),
-[.toDataUri()](#todatauri), [.toFile(name)](#tofile),
-[.toArrayBuffer()](#toarraybuffer), [.png(options)](#png) and
-[.jpg(options)](#jpg) methods.
+[.toDataUri()](#todatauri) methods.
 
 Every cool avatar starts here! An avatar style is expected as the first
 argument. The second argument is an optional `object` with options. Which
@@ -126,27 +124,9 @@ const json = avatar.toJson(); // [!code focus]
 
 ### `.toDataUri()`
 
-**Return type:** `Promise<string>`
-
-Returns the avatar as [data uri](https://en.wikipedia.org/wiki/Data_URI_scheme).
-
-```js
-import { createAvatar } from '@dicebear/core';
-import { lorelei } from '@dicebear/collection';
-
-const avatar = createAvatar(lorelei, {
-  // ... options
-});
-
-const dataUri = await avatar.toDataUri(); // [!code focus]
-```
-
-### `.toDataUriSync()`
-
 **Return type:** `string`
 
 Returns the avatar as [data uri](https://en.wikipedia.org/wiki/Data_URI_scheme).
-Same as `.toDataUri()` but synchronous.
 
 ```js
 import { createAvatar } from '@dicebear/core';
@@ -156,129 +136,5 @@ const avatar = createAvatar(lorelei, {
   // ... options
 });
 
-const dataUri = avatar.toDataUriSync(); // [!code focus]
+const dataUri = avatar.toDataUri(); // [!code focus]
 ```
-
-### `.toFile(name)` {#tofile}
-
-**Return type:** `Promise<void>`
-
-In browsers, this method downloads the avatar, while in Node.js, the avatar is
-saved to the file system.
-
-```js
-import { createAvatar } from '@dicebear/core';
-import { lorelei } from '@dicebear/collection';
-
-const avatar = createAvatar(lorelei, {
-  // ... options
-});
-
-await avatar.toFile('avatar.svg'); // [!code focus]
-```
-
-### `.toArrayBuffer()`
-
-**Return type:** `Promise<ArrayBuffer>`
-
-Converts the avatar to an
-[ArrayBuffer](https://developer.mozilla.org/en-US/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
-
-```js
-import { createAvatar } from '@dicebear/core';
-import { lorelei } from '@dicebear/collection';
-
-const avatar = createAvatar(lorelei, {
-  // ... options
-});
-
-const arrayBuffer = await avatar.toArrayBuffer(); // [!code focus]
-```
-
-### `.png(options)` {#png}
-
-**Return type:** Object with [.toDataUri()](#todatauri),
-[.toFile(name)](#tofile) and [.toArrayBuffer()](#toarraybuffer) methods.
-
-Converts the avatar from SVG to PNG. Expects an optional `options` argument of
-type `object`. The following options can be passed:
-
-- `includeExif`: If set to `true`, the PNG will contain license information in
-  the metadata. By default `false`. Only works in Node.js.
-
-<!-- prettier-ignore -->
-```js
-import { createAvatar } from '@dicebear/core';
-import { lorelei } from '@dicebear/collection';
-
-const avatar = createAvatar(lorelei, {
-  // ... options
-});
-
-const png = await avatar.png({ // [!code focus:3]
-  // ... options
-});
-
-// The avatar can now be saved as a PNG, for example.
-png.toFile('avatar.png');
-```
-
-:::warning Additional dependencies required!
-
-In Node.js, additional packages need to be installed for this method:
-
-```
-npm install @resvg/resvg-js@^2.0.0 sharp@^0.30.4
-```
-
-The `includeExif` option requires an additional package:
-
-```
-npm install exiftool-vendored@^16.3.0
-```
-
-:::
-
-### `.jpg(options)` {#jpg}
-
-**Return type:** Object with [.toDataUri()](#todatauri),
-[.toFile(name)](#tofile) and [.toArrayBuffer()](#toarraybuffer) methods.
-
-Converts the avatar from SVG to JPEG. Expects an optional `options` argument of
-type `object`. The following options can be passed:
-
-- `includeExif`: If set to `true`, the JPEG will contain license information in
-  the metadata. By default `false`. Only works in Node.js.
-
-<!-- prettier-ignore -->
-```js
-import { createAvatar } from '@dicebear/core';
-import { lorelei } from '@dicebear/collection';
-
-const avatar = createAvatar(lorelei, {
-  // ... options
-});
-
-const jpg = await avatar.jpg({ // [!code focus:3]
-  // ... options
-});
-
-// The avatar can now be saved as a JPEG, for example.
-jpg.toFile('avatar.jpg');
-```
-
-:::warning Additional dependencies required!
-
-In Node.js, additional packages need to be installed for this method:
-
-```
-npm install @resvg/resvg-js@^2.0.0 sharp@^0.30.4
-```
-
-The `includeExif` option requires an additional package:
-
-```
-npm install exiftool-vendored@^16.3.0
-```
-
-:::

@@ -1,23 +1,27 @@
-import type { Result, Exif, Format, ToFormat } from './types.js';
+import type { Result, Exif, Avatar, Options } from './types.js';
 import { getMimeType } from './utils/mime-type.js';
 import { ensureSize } from './utils/svg.js';
-import { getEncoder } from './utils/text.js';
 
-export const toFormat: ToFormat = function (
-  svg: string,
-  format: Format,
-  exif?: Exif
-): Result {
+export function toPng(avatar: Avatar, options: Options = {}): Result {
+  return toFormat(avatar, 'png');
+}
+
+export function toJpeg(avatar: Avatar, options: Options = {}): Result {
+  return toFormat(avatar, 'jpeg');
+}
+
+function toFormat(avatar: Avatar, format: 'png' | 'jpeg'): Result {
+  const svg = typeof avatar === 'string' ? avatar : avatar.toString();
+
   return {
-    toDataUri: () => toDataUri(svg, format, exif),
-    toFile: (name: string) => toFile(name, svg, format, exif),
-    toArrayBuffer: () => toArrayBuffer(svg, format, exif),
+    toDataUri: () => toDataUri(svg, format),
+    toArrayBuffer: () => toArrayBuffer(svg, format),
   };
-};
+}
 
 async function toDataUri(
   svg: string,
-  format: Format,
+  format: 'svg' | 'png' | 'jpeg',
   exif?: Exif
 ): Promise<string> {
   if ('svg' === format) {
@@ -31,13 +35,9 @@ async function toDataUri(
 
 async function toArrayBuffer(
   rawSvg: string,
-  format: Format,
+  format: 'png' | 'jpeg',
   exif?: Exif
 ): Promise<ArrayBufferLike> {
-  if ('svg' === format) {
-    return getEncoder().encode(rawSvg);
-  }
-
   const canvas = await toCanvas(rawSvg, format, exif);
 
   return await new Promise<ArrayBufferLike>((resolve, reject) => {
@@ -49,22 +49,9 @@ async function toArrayBuffer(
   });
 }
 
-async function toFile(
-  name: string,
-  svg: string,
-  format: Format,
-  exif?: Exif
-): Promise<void> {
-  const link = document.createElement('a');
-  link.href = await toDataUri(svg, format, exif);
-  link.download = name;
-  link.click();
-  link.remove();
-}
-
 async function toCanvas(
   rawSvg: string,
-  format: Exclude<Format, 'svg'>,
+  format: 'png' | 'jpeg',
   exif?: Exif
 ): Promise<HTMLCanvasElement> {
   if (exif) {

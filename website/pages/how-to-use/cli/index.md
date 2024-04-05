@@ -47,7 +47,7 @@ dicebear lorelei .
 :::info
 
 We provide a large number of avatar styles from different designers. The designs
-are licensed under different licenses that the designers can choose themselves. 
+are licensed under different licenses that the designers can choose themselves.
 For a quick overview we have created an [license overview](/licenses/) for you.
 
 :::

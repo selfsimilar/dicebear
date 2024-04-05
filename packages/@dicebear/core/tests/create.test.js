@@ -31,8 +31,8 @@ const data = [
   {
     seed,
     backgroundColor: ['ff0000', '00ff00', '0000ff'],
-    backgroundType: ['gradientLinear']
-  }
+    backgroundType: ['gradientLinear'],
+  },
 ];
 
 const style = {
@@ -62,7 +62,7 @@ data.forEach((options, key) => {
         fs.mkdirSync(path.dirname(svgPath), { recursive: true });
       }
 
-      await createAvatar(style, options).toFile(svgPath);
+      fs.writeFileSync(svgPath, createAvatar(style, options).toString());
     }
 
     if (false === fs.existsSync(jsonPath)) {
@@ -80,7 +80,10 @@ data.forEach((options, key) => {
     const json = JSON.parse(fs.readFileSync(jsonPath, { encoding: 'utf-8' }));
 
     equal(createAvatar(style, options).toString(), svg);
-    equal(JSON.parse(JSON.stringify(createAvatar(style, options).toJson())), json);
+    equal(
+      JSON.parse(JSON.stringify(createAvatar(style, options).toJson())),
+      json
+    );
   });
 });
 

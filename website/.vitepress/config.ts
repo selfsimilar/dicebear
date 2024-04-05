@@ -81,7 +81,7 @@ export default defineConfigWithTheme<ThemeOptions>({
       { icon: 'github', link: 'https://github.com/dicebear/dicebear' },
     ],
     editLink: {
-      pattern: 'https://github.com/dicebear/dicebear/edit/8.x/website/pages/:path',
+      pattern: 'https://github.com/dicebear/dicebear/edit/9.x/website/pages/:path',
     },
     sidebar: {
       '/introduction/': sidebarDocs,
@@ -95,5 +95,9 @@ export default defineConfigWithTheme<ThemeOptions>({
   sitemap: {
     hostname: 'https://www.dicebear.com',
   },
-  markdown: {},
+  markdown: {
+    image: {
+      lazyLoading: true,
+    },
+  },
 });

@@ -3,8 +3,7 @@ import { mdiClose, mdiDownload } from '@mdi/js';
 import { computed, mergeProps, ref } from 'vue';
 import { mdiSvg, mdiFilePngBox, mdiFileJpgBox } from '@mdi/js';
 import useStore from '@playground/store';
-import { getAvatarApiUrl, loadAvatarStyle } from '@shared/utils/avatar';
-import { createAvatar } from '@dicebear/core';
+import { getAvatarApiUrl } from '@shared/utils/avatar';
 import Avatar from '@shared/components/Avatar.vue';
 import LicenseText from './LicenseText.vue';
 import Confetti from './Confetti.vue';
@@ -23,22 +22,8 @@ const options = computed(() => {
   };
 });
 
-async function downloadSvg() {
-  const avatarStyle = await loadAvatarStyle(store.avatarStyleName);
-  const avatar = createAvatar(avatarStyle, {
-    ...options.value,
-    size: 512,
-  });
-
-  const timestamp = new Date().getTime();
-
-  await avatar.toFile(`${store.avatarStyleName}-${timestamp}.svg`);
-
-  open.value = true;
-}
-
 // Download via API so that Exif headers are stored in the image.
-async function downloadBinary(format: 'png' | 'jpg') {
+async function download(format: 'svg' | 'png' | 'jpg') {
   open.value = true;
 
   const response = await fetch(
@@ -59,12 +44,16 @@ async function downloadBinary(format: 'png' | 'jpg') {
   URL.revokeObjectURL(file);
 }
 
+function downloadSvg() {
+  download('svg');
+}
+
 function downloadPng() {
-  downloadBinary('png');
+  download('png');
 }
 
 function downloadJpg() {
-  downloadBinary('jpg');
+  download('jpg');
 }
 
 function onClose() {

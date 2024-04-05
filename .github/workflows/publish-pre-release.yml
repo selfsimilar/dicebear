@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    uses: dicebear/dicebear/.github/workflows/test.yml@8.x
+    uses: dicebear/dicebear/.github/workflows/test.yml@9.x
   publish:
     needs: test
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
       - run: npm run build -- --ignore "@dicebear/@(website|editor)"
 
       - run:
-          ./node_modules/.bin/lerna publish from-package
-          --dist-tag next --ignore-scripts --yes
+          ./node_modules/.bin/lerna publish from-package --dist-tag next
+          --ignore-scripts --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

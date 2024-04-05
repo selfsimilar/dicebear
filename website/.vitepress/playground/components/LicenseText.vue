@@ -17,23 +17,27 @@ const avatarStyleLink = computed(
 <template>
   <p>
     <template v-if="avatarStyleMeta?.creator !== 'DiceBear'">
-        The avatar style
+      The avatar style
     </template>
     <a :href="avatarStyleLink">{{ avatarStyleName }}</a>
     <template v-if="avatarStyleMeta?.creator !== 'DiceBear'">
-        <template v-if="avatarStyleMeta?.license?.name !== 'MIT' && avatarStyleMeta?.creator !== 'DiceBear' && avatarStyleMeta?.title">
-            is a remix of:
-        </template>
-        <template v-else>
-            is based on:
-        </template>
-        <a
-          :href="avatarStyleMeta?.source"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ avatarStyleMeta?.title ?? 'Design' }}
-        </a>
+      <template
+        v-if="
+          avatarStyleMeta?.license?.name !== 'MIT' &&
+          avatarStyleMeta?.creator !== 'DiceBear' &&
+          avatarStyleMeta?.title
+        "
+      >
+        is a remix of:
+      </template>
+      <template v-else> is based on: </template>
+      <a
+        :href="avatarStyleMeta?.source"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ avatarStyleMeta?.title ?? 'Design' }}
+      </a>
     </template>
     by
     <a
