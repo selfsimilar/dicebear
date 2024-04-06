@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/croodles-neutral.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/croodles-neutral.json' with { type: 'json' };
 
 interface CroodlesNeutralOptions {
   eyes?: Array<

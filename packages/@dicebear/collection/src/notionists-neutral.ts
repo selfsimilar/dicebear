@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/notionists-neutral.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/notionists-neutral.json' with { type: 'json' };
 
 interface NotionistsNeutralOptions {
   brows?: Array<

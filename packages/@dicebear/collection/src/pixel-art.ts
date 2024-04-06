@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/pixel-art.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/pixel-art.json' with { type: 'json' };
 
 interface PixelArtOptions {
   accessories?: Array<'variant01' | 'variant02' | 'variant03' | 'variant04'>;

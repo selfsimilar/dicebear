@@ -48,7 +48,7 @@ await Promise.all(
     });
 
     sourceFile.addImportDeclaration({
-      moduleSpecifier: `@dicebear/definitions/${name}.json`,
+      moduleSpecifier: `@dicebear/definitions/src/${name}.json`,
       defaultImport: 'definition',
       attributes: [{ name: 'type', value: 'json' }],
     });

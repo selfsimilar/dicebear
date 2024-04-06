@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/icons.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/icons.json' with { type: 'json' };
 
 interface IconsOptions {
   icon?: Array<

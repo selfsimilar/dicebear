@@ -21,11 +21,10 @@
       "types": "./lib/index.d.ts",
       "default": "./lib/index.js"
     },
-    "./*": {
+    "./*.js": {
       "types": "./lib/*.d.js",
       "default": "./lib/*.js"
-    },
-    "./package.json": "./package.json"
+    }
   },
   "typesVersions": {
     "*": {

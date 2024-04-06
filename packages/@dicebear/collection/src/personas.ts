@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/personas.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/personas.json' with { type: 'json' };
 
 interface PersonasOptions {
   body?: Array<'checkered' | 'rounded' | 'small' | 'squared'>;

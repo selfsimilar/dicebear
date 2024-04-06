@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/avataaars.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/avataaars.json' with { type: 'json' };
 
 interface AvataaarsOptions {
   accessories?: Array<

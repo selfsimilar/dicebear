@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/open-peeps.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/open-peeps.json' with { type: 'json' };
 
 interface OpenPeepsOptions {
   accessories?: Array<

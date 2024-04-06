@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/adventurer-neutral.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/adventurer-neutral.json' with { type: 'json' };
 
 interface AdventurerNeutralOptions {
   eyebrows?: Array<

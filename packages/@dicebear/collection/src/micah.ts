@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/micah.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/micah.json' with { type: 'json' };
 
 interface MicahOptions {
   base?: Array<'standard'>;

@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/big-smile.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/big-smile.json' with { type: 'json' };
 
 interface BigSmileOptions {
   accessories?: Array<

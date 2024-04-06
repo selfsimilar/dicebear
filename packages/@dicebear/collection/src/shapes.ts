@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/shapes.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/shapes.json' with { type: 'json' };
 
 interface ShapesOptions {
   shape1?: Array<

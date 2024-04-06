@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/lorelei-neutral.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/lorelei-neutral.json' with { type: 'json' };
 
 interface LoreleiNeutralOptions {
   eyebrows?: Array<

@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/notionists.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/notionists.json' with { type: 'json' };
 
 interface NotionistsOptions {
   base?: Array<'variant01'>;

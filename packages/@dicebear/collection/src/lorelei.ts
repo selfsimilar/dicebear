@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/lorelei.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/lorelei.json' with { type: 'json' };
 
 interface LoreleiOptions {
   beard?: Array<'variant01' | 'variant02'>;

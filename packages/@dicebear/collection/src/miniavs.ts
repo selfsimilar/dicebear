@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/miniavs.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/miniavs.json' with { type: 'json' };
 
 interface MiniavsOptions {
   blushes?: Array<'default'>;

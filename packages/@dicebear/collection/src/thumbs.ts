@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/thumbs.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/thumbs.json' with { type: 'json' };
 
 interface ThumbsOptions {
   eyes?: Array<

@@ -1,5 +1,5 @@
 import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/rings.json' with { type: 'json' };
+import definition from '@dicebear/definitions/src/rings.json' with { type: 'json' };
 
 interface RingsOptions {
   ring?: Array<'container'>;
