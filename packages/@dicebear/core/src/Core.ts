@@ -2,7 +2,7 @@ import type { Options } from './types.js';
 import { assign, mask, pick } from 'superstruct';
 import { Style } from './Style.js';
 import { OptionsStruct } from './structs/OptionsStruct.js';
-import { PRNG } from './PRNG.js';
+import { Prng } from './Prng.js';
 import { AvatarViewModel } from './models/AvatarViewModel.js';
 import { ColorHelper } from './helpers/ColorHelper.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
@@ -29,7 +29,7 @@ export class Core {
     const validatedCoreOptions = mask(options, CoreOptionsStruct);
     const validatedStyleOptions = mask(options, StyleOptionsStruct);
 
-    const prng = PRNG.fromSeed(validatedCoreOptions.seed);
+    const prng = Prng.fromSeed(validatedCoreOptions.seed);
 
     const backgroundType = ColorHelper.getBackgroundType(
       prng,

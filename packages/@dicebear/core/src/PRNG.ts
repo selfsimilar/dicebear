@@ -1,4 +1,4 @@
-export class PRNG {
+export class Prng {
   readonly seed: string;
   private value: number;
 
@@ -10,12 +10,12 @@ export class PRNG {
     this.value = this.hashSeed(seed) || 1;
   }
 
-  static fromSeed(seed: string): PRNG {
-    return new PRNG(seed);
+  static fromSeed(seed: string): Prng {
+    return new Prng(seed);
   }
 
-  static fromRandom(): PRNG {
-    return new PRNG(Math.random().toString());
+  static fromRandom(): Prng {
+    return new Prng(Math.random().toString());
   }
 
   next(): number {
@@ -45,8 +45,8 @@ export class PRNG {
 
   shuffle<T>(arr: T[]): T[] {
     // Each method call should call the `next` function only once.
-    // Therefore, we use a separate instance of the PRNG here.
-    const internalPrng = PRNG.fromSeed(this.next().toString());
+    // Therefore, we use a separate instance of the Prng here.
+    const internalPrng = Prng.fromSeed(this.next().toString());
 
     // Fisher-Yates shuffle algorithm - We do not use the Array.sort method
     // because it is not stable and produces different results when used in
@@ -67,8 +67,8 @@ export class PRNG {
     characters: string = 'abcdefghijklmnopqrstuvwxyz1234567890',
   ): string {
     // Each method call should call the `next` function only once.
-    // Therefore, we use a separate instance of the PRNG here.
-    const internalPrng = PRNG.fromSeed(this.next().toString());
+    // Therefore, we use a separate instance of the Prng here.
+    const internalPrng = Prng.fromSeed(this.next().toString());
 
     let str = '';
 

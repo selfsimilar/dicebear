@@ -1,4 +1,4 @@
-import { PRNG } from '../PRNG';
+import { Prng } from '../Prng';
 
 export class ColorHelper {
   static convertColor(color: string): string {
@@ -6,7 +6,7 @@ export class ColorHelper {
   }
 
   static getBackgroundColors(
-    prng: PRNG,
+    prng: Prng,
     backgroundColor: string[],
     backgroundType: 'solid' | 'gradientLinear',
   ): [string, string] {
@@ -17,7 +17,7 @@ export class ColorHelper {
       // the random sorting logic can be omitted.
       shuffledBackgroundColors = backgroundColor;
 
-      // A function call should in any case make an identical number of calls to the PRNG.
+      // A function call should in any case make an identical number of calls to the Prng.
       prng.next();
     } else if (
       backgroundColor.length == 2 &&
@@ -28,7 +28,7 @@ export class ColorHelper {
       // assume that the order of the background colours was chosen on purpose.
       shuffledBackgroundColors = backgroundColor;
 
-      // A function call should in any case make an identical number of calls to the PRNG.
+      // A function call should in any case make an identical number of calls to the Prng.
       prng.next();
     } else {
       shuffledBackgroundColors = prng.shuffle(backgroundColor);
@@ -49,7 +49,7 @@ export class ColorHelper {
   }
 
   static getBackgroundRotation(
-    prng: PRNG,
+    prng: Prng,
     backgroundRotation: number[],
   ): number {
     return prng.integer(
@@ -59,7 +59,7 @@ export class ColorHelper {
   }
 
   static getBackgroundType(
-    prng: PRNG,
+    prng: Prng,
     backgroundType: Array<'solid' | 'gradientLinear'>,
   ): 'solid' | 'gradientLinear' {
     return prng.pick(backgroundType, 'solid') ?? 'solid';

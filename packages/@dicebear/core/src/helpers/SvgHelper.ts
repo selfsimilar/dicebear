@@ -1,5 +1,5 @@
 import { AvatarModel } from '../models/AvatarModel.js';
-import { PRNG } from '../PRNG.js';
+import { Prng } from '../Prng.js';
 
 export class SvgHelper {
   static escape(content: string): string {
@@ -121,7 +121,7 @@ export class SvgHelper {
   }
 
   static randomizeIds(avatar: AvatarModel): void {
-    const prng = PRNG.fromRandom();
+    const prng = Prng.fromRandom();
     const ids: Record<string, string> = {};
 
     avatar.setBody(
