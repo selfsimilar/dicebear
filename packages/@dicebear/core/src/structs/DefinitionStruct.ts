@@ -1,6 +1,6 @@
 import { array, number, object, optional, string } from 'superstruct';
 import { MetadataStruct } from './MetadataStruct';
-import { ColorStruct } from './ColorStruct';
+import { ColorValue } from './values/ColorValue';
 
 export const DefinitionStruct = object({
   metadata: MetadataStruct,
@@ -46,7 +46,7 @@ export const DefinitionStruct = object({
     array(
       object({
         name: string(),
-        values: array(ColorStruct),
+        values: array(ColorValue),
         notEqualTo: optional(string()),
         contrastTo: optional(string()),
       }),
