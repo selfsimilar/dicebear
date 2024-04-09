@@ -1,26 +1,22 @@
 import {
   Struct,
-  array,
-  coerce,
+  assign,
   defaulted,
   enums,
+  nonempty,
   object,
-  string,
-  tuple,
 } from 'superstruct';
 import type { Definition, Properties } from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
-import { IntegerValue } from './structs/values/IntegerValue.js';
-import { BalanceValue } from './structs/values/BalanceValue.js';
+import { Types } from './structs/Types.js';
 
 export class Style<O extends {} = {}> {
   private readonly definition: Definition;
-  private readonly optionsStruct: Struct<any, any>;
+  private optionsStruct?: Struct<any, any>;
 
   constructor(definition: Definition) {
     this.definition = definition;
-    this.optionsStruct = this.buildOptionsStruct();
   }
 
   static fromDefinition<O extends {}>(definition: Definition): Style<O> {
@@ -36,72 +32,64 @@ export class Style<O extends {} = {}> {
   }
 
   getOptionsStruct(): Struct<any, any> {
-    return this.optionsStruct;
+    return (this.optionsStruct ??= this.buildOptionsStruct());
   }
 
   private buildOptionsStruct(): Struct<any, any> {
-    return object({
-      ...this.definition.components?.reduce(
+    return assign(this.buildComponentsStruct(), this.buildColorsStruct());
+  }
+
+  private buildComponentsStruct(): Struct<any, any> {
+    return object(
+      this.definition.components?.reduce(
         (acc, component) => {
-          acc[component.name] = defaulted(
-            coerce(
-              array(enums(component.values.map((v) => v.name))),
-              string(),
-              (v) => [v],
-            ),
-            component.values.filter((v) => v.default).map((v) => v.name),
+          const { name, values, probability, rotation, offset } = component;
+
+          const componentNameList = values.map((v) => v.name);
+          const componentDefaultList = values
+            .filter((v) => v.default)
+            .map((v) => v.name);
+
+          acc[name] = defaulted(
+            Types.array(enums(componentNameList)),
+            componentDefaultList,
           );
 
-          if (component.probability) {
-            acc[`${component.name}Probability`] = defaulted(
-              IntegerValue,
-              component.probability,
+          if (probability) {
+            acc[`${name}Probability`] = defaulted(Types.integer(), probability);
+          }
+
+          if (rotation) {
+            acc[`${name}Rotation`] = defaulted(
+              nonempty(Types.array(Types.rotation())),
+              rotation,
             );
           }
 
-          if (component.rotation) {
-            acc[`${component.name}Rotation`] = defaulted(
-              coerce(
-                tuple([BalanceValue, BalanceValue]),
-                BalanceValue,
-                (v) => [v, v],
-              ),
-              component.rotation,
-            );
-          }
+          if (offset) {
+            const OffsetType = nonempty(Types.array(Types.integer()));
 
-          if (component.offset) {
-            acc[`${component.name}OffsetX`] = defaulted(
-              coerce(
-                tuple([IntegerValue, IntegerValue]),
-                IntegerValue,
-                (v) => [v, v],
-              ),
-              component.offset.x,
-            );
-
-            acc[`${component.name}OffsetY`] = defaulted(
-              coerce(
-                tuple([IntegerValue, IntegerValue]),
-                BalanceValue,
-                (v) => [v, v],
-              ),
-              component.offset.y,
-            );
+            acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
+            acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
           }
 
           return acc;
         },
         {} as Record<string, Struct<any, any>>,
-      ),
-      ...this.definition.colors?.reduce(
+      ) ?? {},
+    );
+  }
+
+  private buildColorsStruct(): Struct<any, any> {
+    return object(
+      this.definition.colors?.reduce(
         (acc, color) => {
-          acc[color.name] = string();
+          acc[color.name] = defaulted(Types.array(Types.color()), color.values);
 
           return acc;
         },
         {} as Record<string, Struct<any, any>>,
-      ),
-    });
+      ) ?? {},
+    );
   }
 }

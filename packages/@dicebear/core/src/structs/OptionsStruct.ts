@@ -5,37 +5,29 @@ import {
   defaulted,
   min,
   max,
-  array,
   enums,
-  coerce,
-  tuple,
+  nonempty,
 } from 'superstruct';
-import { ColorValue } from './values/ColorValue';
-import { RotationValue } from './values/RotationValue';
-import { BooleanValue } from './values/BooleanValue';
-import { IntegerValue } from './values/IntegerValue';
+import { Types } from './Types';
 
 export const OptionsStruct = object({
   seed: defaulted(string(), ''),
-  flip: defaulted(BooleanValue, false),
-  rotate: defaulted(RotationValue, 360),
-  scale: defaulted(max(min(IntegerValue, 0), 200), 100),
-  radius: defaulted(max(min(IntegerValue, 0), 50), 0),
-  size: optional(min(IntegerValue, 1)),
-  backgroundColor: defaulted(
-    coerce(array(ColorValue), string(), (v) => [v]),
-    [],
-  ),
+  flip: defaulted(Types.boolean(), false),
+  rotate: defaulted(Types.rotation(), 360),
+  scale: defaulted(max(min(Types.integer(), 0), 200), 100),
+  radius: defaulted(max(min(Types.integer(), 0), 50), 0),
+  size: optional(min(Types.integer(), 1)),
+  backgroundColor: defaulted(Types.array(Types.color()), []),
   backgroundType: defaulted(
-    coerce(array(enums(['solid', 'gradientLinear'])), string(), (v) => [v]),
+    nonempty(Types.array(enums(['solid', 'gradientLinear']))),
     ['solid'],
   ),
   backgroundRotation: defaulted(
-    coerce(tuple([RotationValue, RotationValue]), RotationValue, (v) => [v, v]),
-    [0, 360],
+    nonempty(Types.array(Types.rotation())),
+    [-180, 180],
   ),
-  translateX: defaulted(max(min(IntegerValue, -100), 100), 0),
-  translateY: defaulted(max(min(IntegerValue, -100), 100), 0),
-  clip: defaulted(BooleanValue, true),
-  randomizeIds: defaulted(BooleanValue, false),
+  translateX: defaulted(max(min(Types.integer(), -100), 100), 0),
+  translateY: defaulted(max(min(Types.integer(), -100), 100), 0),
+  clip: defaulted(Types.boolean(), true),
+  randomizeIds: defaulted(Types.boolean(), false),
 });
