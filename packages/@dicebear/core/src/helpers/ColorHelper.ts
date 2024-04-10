@@ -1,4 +1,4 @@
-import { Prng } from '../Prng';
+import { Prng } from '../Prng.js';
 
 export class ColorHelper {
   static convertColor(color: string): string {

@@ -1,55 +1,16 @@
-import { array, number, object, optional, string } from 'superstruct';
+import { array, object, optional, string } from 'superstruct';
 import { MetadataStruct } from './MetadataStruct';
-import { Types } from './Types';
+import { ComponentStruct } from './ComponentStruct';
+import { ColorStruct } from './ColorStruct';
+import { DependenciesStruct } from './DependenciesStruct';
 
 export const DefinitionStruct = object({
   metadata: MetadataStruct,
   body: object({
     content: string(),
-    dependencies: optional(
-      object({
-        components: optional(array(string())),
-        colors: optional(array(string())),
-      }),
-    ),
+    dependencies: optional(DependenciesStruct),
   }),
   attributes: optional(array(object({ name: string(), value: string() }))),
-  components: optional(
-    array(
-      object({
-        name: string(),
-        probability: optional(number()),
-        rotation: optional(number()),
-        offset: optional(
-          object({
-            x: optional(number()),
-            y: optional(number()),
-          }),
-        ),
-        values: array(
-          object({
-            name: string(),
-            default: optional(number()),
-            content: string(),
-            dependencies: optional(
-              object({
-                components: optional(array(string())),
-                colors: optional(array(string())),
-              }),
-            ),
-          }),
-        ),
-      }),
-    ),
-  ),
-  colors: optional(
-    array(
-      object({
-        name: string(),
-        values: array(Types.color()),
-        notEqualTo: optional(string()),
-        contrastTo: optional(string()),
-      }),
-    ),
-  ),
+  components: optional(array(ComponentStruct)),
+  colors: optional(array(ColorStruct)),
 });

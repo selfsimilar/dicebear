@@ -5,7 +5,7 @@ export class AvatarViewModel {
   private readonly metadata: Metadata;
   private readonly properties: Properties;
 
-  constructor(metadata: Metadata, svg: string, properties: Properties = {}) {
+  constructor(metadata: Metadata, svg: string, properties: Properties) {
     this.svg = svg;
     this.metadata = metadata;
     this.properties = properties;
@@ -23,7 +23,7 @@ export class AvatarViewModel {
     return {
       svg: this.svg,
       metadata: this.metadata,
-      properties: this.properties,
+      properties: [...this.properties],
     };
   }
 }

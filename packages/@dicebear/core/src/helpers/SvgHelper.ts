@@ -1,5 +1,5 @@
-import { AvatarModel } from '../models/AvatarModel.js';
 import { Prng } from '../Prng.js';
+import { AvatarModel } from '../models/AvatarModel.js';
 
 export class SvgHelper {
   static escape(content: string): string {
@@ -22,8 +22,10 @@ export class SvgHelper {
   }
 
   static setSize(avatar: AvatarModel, size: number): void {
-    avatar.setAttribute('width', size.toString());
-    avatar.setAttribute('height', size.toString());
+    const attributes = avatar.getAttributes();
+
+    attributes.set('width', size.toString());
+    attributes.set('height', size.toString());
   }
 
   static addBackground(
@@ -111,8 +113,8 @@ export class SvgHelper {
     );
   }
 
-  static createAttrString(attributes: Record<string, string>): string {
-    return Object.entries(attributes)
+  static createAttrString(attributes: Map<string, string>): string {
+    return [...attributes]
       .map(
         ([name, value]) =>
           `${SvgHelper.escape(name)}="${SvgHelper.escape(value)}"`,

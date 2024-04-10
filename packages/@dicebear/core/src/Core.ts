@@ -1,4 +1,4 @@
-import type { Options } from './types.js';
+import type { Options, Properties, Property } from './types.js';
 import { assign, mask, pick } from 'superstruct';
 import { Style } from './Style.js';
 import { OptionsStruct } from './structs/OptionsStruct.js';
@@ -47,21 +47,23 @@ export class Core {
       validatedCoreOptions.backgroundRotation,
     );
 
-    const avatar = style.create(prng, validatedStyleOptions, {
-      seed: validatedCoreOptions.seed,
-      flip: validatedCoreOptions.flip,
-      rotate: validatedCoreOptions.rotate,
-      scale: validatedCoreOptions.scale,
-      radius: validatedCoreOptions.radius,
-      size: validatedCoreOptions.size,
-      backgroundColor: backgroundColor,
-      backgroundType: backgroundType,
-      backgroundRotation: backgroundRotation,
-      translateX: validatedCoreOptions.translateX,
-      translateY: validatedCoreOptions.translateY,
-      clip: validatedCoreOptions.clip,
-      randomizeIds: validatedCoreOptions.randomizeIds,
-    });
+    const properties: Properties = new Map<string, Property>([
+      ['seed', validatedCoreOptions.seed],
+      ['flip', validatedCoreOptions.flip],
+      ['rotate', validatedCoreOptions.rotate],
+      ['scale', validatedCoreOptions.scale],
+      ['radius', validatedCoreOptions.radius],
+      ['size', validatedCoreOptions.size],
+      ['backgroundColor', backgroundColor],
+      ['backgroundType', backgroundType],
+      ['backgroundRotation', backgroundRotation],
+      ['translateX', validatedCoreOptions.translateX],
+      ['translateY', validatedCoreOptions.translateY],
+      ['clip', validatedCoreOptions.clip],
+      ['randomizeIds', validatedCoreOptions.randomizeIds],
+    ]);
+
+    const avatar = style.create(prng, validatedStyleOptions, properties);
 
     if (validatedCoreOptions.size) {
       SvgHelper.setSize(avatar, validatedCoreOptions.size);

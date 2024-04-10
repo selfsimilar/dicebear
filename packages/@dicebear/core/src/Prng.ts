@@ -1,5 +1,5 @@
 export class Prng {
-  readonly seed: string;
+  private readonly seed: string;
   private value: number;
 
   private MIN = -2147483648;
@@ -16,6 +16,10 @@ export class Prng {
 
   static fromRandom(): Prng {
     return new Prng(Math.random().toString());
+  }
+
+  getSeed(): string {
+    return this.seed;
   }
 
   next(): number {

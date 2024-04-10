@@ -6,25 +6,43 @@ import {
   nonempty,
   object,
 } from 'superstruct';
-import type { Definition, Properties } from './types.js';
+import type { ComponentValue, Definition, Properties } from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
 import { Types } from './structs/Types.js';
 
-export class Style<O extends {} = {}> {
-  private readonly definition: Definition;
+export class Style<O extends Record<string, unknown> = {}> {
+  private readonly definition: Readonly<Definition>;
   private optionsStruct?: Struct<any, any>;
 
   constructor(definition: Definition) {
     this.definition = definition;
   }
 
-  static fromDefinition<O extends {}>(definition: Definition): Style<O> {
+  static fromDefinition<O extends {}>(
+    definition: Readonly<Definition>,
+  ): Style<O> {
     return new Style<O>(definition);
   }
 
-  create(prng: Prng, options: O, properties: Properties): AvatarModel {
-    return new AvatarModel(this.definition.metadata, '', {}, {});
+  create(
+    prng: Prng,
+    options: Readonly<O>,
+    properties: Properties,
+  ): AvatarModel {
+    const attributes = new Map<string, string>(
+      this.definition.attributes?.map(({ name, value }) => [name, value]),
+    );
+
+    const components = this.pickComponents(prng, options, properties);
+    const colors = this.pickColors(prng, options, properties);
+
+    return new AvatarModel(
+      this.definition.metadata,
+      '',
+      properties,
+      attributes,
+    );
   }
 
   getDefinition(): Definition {
@@ -35,7 +53,42 @@ export class Style<O extends {} = {}> {
     return (this.optionsStruct ??= this.buildOptionsStruct());
   }
 
-  private buildOptionsStruct(): Struct<any, any> {
+  private pickComponents(prng: Prng, options: O, properties: Properties) {
+    const map = new Map<string, ComponentValue | undefined>();
+
+    if (!this.definition.components) {
+      return map;
+    }
+
+    for (const component of this.definition.components) {
+      const componentValueNameOption = options[component.name] as string[];
+      const componentValueName = prng.pick(componentValueNameOption);
+
+      const componentValue = componentValueName
+        ? component.values.find((v) => v.name === componentValueName)
+        : undefined;
+
+      map.set(component.name, componentValue);
+      properties.set(component.name, componentValueName);
+    }
+
+    return map;
+  }
+
+  private pickColors(prng: Prng, options: O, properties: Properties) {
+    const map = new Map<string, string>();
+
+    if (!this.definition.colors) {
+      return map;
+    }
+
+    for (const color of this.definition.colors) {
+    }
+
+    return map;
+  }
+
+  private buildOptionsStruct() {
     return assign(this.buildComponentsStruct(), this.buildColorsStruct());
   }
 
