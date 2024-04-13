@@ -114,20 +114,29 @@
             "maximum": 100
           },
           "rotation": {
-            "type": "number",
-            "description": "The rotation of the component in degrees. If not set, the component is always displayed without rotation.",
-            "minimum": 0,
-            "maximum": 360
+            "type": "array",
+            "description": "The random rotation of the component in degrees. If not set, the component is always displayed without rotation.",
+            "items": {
+              "type": "number",
+              "minimum": -360,
+              "maximum": 360
+            }
           },
           "offset": {
             "type": "object",
-            "description": "The offset of the component in the avatar. If not set, the component is always displayed without offset.",
+            "description": "The random offset of the component in the avatar. If not set, the component is always displayed without offset.",
             "properties": {
               "x": {
-                "type": "number"
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
               },
               "y": {
-                "type": "number"
+                "type": "array",
+                "items": {
+                  "type": "number"
+                }
               }
             }
           },
