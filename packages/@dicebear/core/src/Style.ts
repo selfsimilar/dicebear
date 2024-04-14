@@ -1,20 +1,8 @@
-import {
-  Struct,
-  assign,
-  defaulted,
-  enums,
-  nonempty,
-  object,
-} from 'superstruct';
-import type {
-  ComponentValue,
-  Definition,
-  Dependencies,
-  Properties,
-} from './types.js';
+import { Struct } from 'superstruct';
+import type { Definition, Properties } from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
-import { Types } from './structs/Types.js';
+import { StructHelper } from './helpers/StructHelper.js';
 
 export class Style<O extends Record<string, unknown> = {}> {
   private readonly definition: Readonly<Definition>;
@@ -55,7 +43,9 @@ export class Style<O extends Record<string, unknown> = {}> {
   }
 
   getOptionsStruct(): Struct<any, any> {
-    return (this.optionsStruct ??= this.buildOptionsStruct());
+    return (this.optionsStruct ??= StructHelper.buildStructByDefinition(
+      this.definition,
+    ));
   }
 
   private defineComponentProperties(
@@ -129,63 +119,5 @@ export class Style<O extends Record<string, unknown> = {}> {
     }
 
     return map;
-  }
-
-  private buildOptionsStruct() {
-    return assign(this.buildComponentsStruct(), this.buildColorsStruct());
-  }
-
-  private buildComponentsStruct(): Struct<any, any> {
-    return object(
-      this.definition.components?.reduce(
-        (acc, component) => {
-          const { name, values, probability, rotation, offset } = component;
-
-          const componentNameList = values.map((v) => v.name);
-          const componentDefaultList = values
-            .filter((v) => v.default)
-            .map((v) => v.name);
-
-          acc[name] = defaulted(
-            Types.array(enums(componentNameList)),
-            componentDefaultList,
-          );
-
-          if (probability) {
-            acc[`${name}Probability`] = defaulted(Types.integer(), probability);
-          }
-
-          if (rotation) {
-            acc[`${name}Rotation`] = defaulted(
-              nonempty(Types.array(Types.rotation())),
-              rotation,
-            );
-          }
-
-          if (offset) {
-            const OffsetType = nonempty(Types.array(Types.integer()));
-
-            acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
-            acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
-          }
-
-          return acc;
-        },
-        {} as Record<string, Struct<any, any>>,
-      ) ?? {},
-    );
-  }
-
-  private buildColorsStruct(): Struct<any, any> {
-    return object(
-      this.definition.colors?.reduce(
-        (acc, color) => {
-          acc[color.name] = defaulted(Types.array(Types.color()), color.values);
-
-          return acc;
-        },
-        {} as Record<string, Struct<any, any>>,
-      ) ?? {},
-    );
   }
 }
