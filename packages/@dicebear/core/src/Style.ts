@@ -6,7 +6,12 @@ import {
   nonempty,
   object,
 } from 'superstruct';
-import type { ComponentValue, Definition, Properties } from './types.js';
+import type {
+  ComponentValue,
+  Definition,
+  Dependencies,
+  Properties,
+} from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
 import { Types } from './structs/Types.js';
@@ -34,8 +39,8 @@ export class Style<O extends Record<string, unknown> = {}> {
       this.definition.attributes?.map(({ name, value }) => [name, value]),
     );
 
-    const components = this.pickComponents(prng, options, properties);
-    const colors = this.pickColors(prng, options, properties);
+    this.defineComponentProperties(prng, options, properties);
+    this.defineColorProperties(prng, options, properties);
 
     return new AvatarModel(
       this.definition.metadata,
@@ -53,29 +58,67 @@ export class Style<O extends Record<string, unknown> = {}> {
     return (this.optionsStruct ??= this.buildOptionsStruct());
   }
 
-  private pickComponents(prng: Prng, options: O, properties: Properties) {
-    const map = new Map<string, ComponentValue | undefined>();
-
+  private defineComponentProperties(
+    prng: Prng,
+    options: O,
+    properties: Properties,
+  ) {
     if (!this.definition.components) {
-      return map;
+      return;
     }
 
     for (const component of this.definition.components) {
       const componentValueNameOption = options[component.name] as string[];
       const componentValueName = prng.pick(componentValueNameOption);
+      const componentVisible = prng.bool(component.probability);
 
-      const componentValue = componentValueName
-        ? component.values.find((v) => v.name === componentValueName)
-        : undefined;
+      properties.set(
+        `${component.name}Probability`,
+        componentVisible ? 100 : 0,
+      );
 
-      map.set(component.name, componentValue);
-      properties.set(component.name, componentValueName);
+      properties.set(
+        component.name,
+        componentVisible && componentValueName ? componentValueName : null,
+      );
+
+      if (component.rotation !== undefined) {
+        properties.set(
+          `${component.name}Rotation`,
+          prng.integer(
+            Math.min(...component.rotation),
+            Math.max(...component.rotation),
+          ),
+        );
+      }
+
+      if (component.offset?.x !== undefined) {
+        properties.set(
+          `${component.name}OffsetX`,
+          prng.integer(
+            Math.min(...component.offset.x),
+            Math.max(...component.offset.x),
+          ),
+        );
+      }
+
+      if (component.offset?.y !== undefined) {
+        properties.set(
+          `${component.name}OffsetY`,
+          prng.integer(
+            Math.min(...component.offset.y),
+            Math.max(...component.offset.y),
+          ),
+        );
+      }
     }
-
-    return map;
   }
 
-  private pickColors(prng: Prng, options: O, properties: Properties) {
+  private defineColorProperties(
+    prng: Prng,
+    options: O,
+    properties: Properties,
+  ) {
     const map = new Map<string, string>();
 
     if (!this.definition.colors) {

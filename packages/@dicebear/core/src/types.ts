@@ -7,7 +7,7 @@ import { ComponentStruct } from './structs/ComponentStruct.js';
 import { ComponentValueStruct } from './structs/ComponentValueStruct.js';
 import { DependenciesStruct } from './structs/DependenciesStruct.js';
 
-export type Property = undefined | string | number | boolean | string[];
+export type Property = null | string | number | boolean | string[];
 export type Properties = Map<string, Property>;
 
 export type Color = Infer<typeof ColorStruct>;
