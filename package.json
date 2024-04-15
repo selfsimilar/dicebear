@@ -13,7 +13,8 @@
     "build": "lerna run build",
     "prepare-publish": "lerna version --force-publish --exact",
     "prettier": "prettier --write .",
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "lint": "lerna run lint"
   },
   "devDependencies": {
     "@dicebear/collection": "^9.0.0-alpha.1",

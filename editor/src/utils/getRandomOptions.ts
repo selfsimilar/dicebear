@@ -8,7 +8,9 @@ export default function getRandomOptions(
   const result: SelectedStyleOptions = {};
 
   for (const key in configStyleOptions) {
-    if (false === configStyleOptions.hasOwnProperty(key)) {
+    if (
+      false === Object.prototype.hasOwnProperty.call(configStyleOptions, key)
+    ) {
       continue;
     }
 

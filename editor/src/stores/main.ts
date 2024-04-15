@@ -47,7 +47,9 @@ const useMainStore = defineStore('main', () => {
     const result: SelectedStyleCombinations = {};
 
     for (const key in styleCollection) {
-      if (false === styleCollection.hasOwnProperty(key)) {
+      if (
+        false === Object.prototype.hasOwnProperty.call(styleCollection, key)
+      ) {
         continue;
       }
 

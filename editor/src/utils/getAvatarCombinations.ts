@@ -16,7 +16,9 @@ export default function getAvatarCombinations(
   const configStyleOptions = availableStyles[styleName].options;
 
   for (const key in configStyleOptions) {
-    if (false === configStyleOptions.hasOwnProperty(key)) {
+    if (
+      false === Object.prototype.hasOwnProperty.call(configStyleOptions, key)
+    ) {
       continue;
     }
 

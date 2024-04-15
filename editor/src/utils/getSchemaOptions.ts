@@ -38,7 +38,7 @@ export default function getSchemaOptions(
   };
 
   for (const key in properties) {
-    if (false === properties.hasOwnProperty(key)) {
+    if (false === Object.prototype.hasOwnProperty.call(properties, key)) {
       continue;
     }
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import useMainStore from '@/stores/main';
 import type { Style, StyleMeta } from '@dicebear/core';
-import { computed } from '@vue/reactivity';
+import { computed } from 'vue';
 import availableStyles from '@/config/styles';
 import { useI18n } from 'vue-i18n';
 
@@ -71,7 +71,7 @@ const metaList = computed(() => {
       {{ t('licenses') }}
     </div>
     <p class="footer-licenses" v-if="metaList.length > 0">
-      <template v-for="meta in metaList">
+      <template v-for="meta in metaList" :key="meta.title">
         <a :href="meta.source" target="_blank" rel="noopener noreferrer">{{
           meta.title
         }}</a>
