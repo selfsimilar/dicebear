@@ -20,7 +20,7 @@ export const createCommand: CommandModule = {
   command: `create`,
   describe: `Generate avatars`,
   builder: async (yargs) => {
-    for (let name of Object.keys(collection)) {
+    for (const name of Object.keys(collection)) {
       const style = collection[name as keyof typeof collection] as Style<any>;
       const schema = getSchema(style);
 

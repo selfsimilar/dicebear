@@ -1,14 +1,14 @@
-import type { Result, Exif, Avatar, Options } from './types.js';
+import type { Result, Exif, Avatar, ToJpeg, ToPng } from './types.js';
 import { getMimeType } from './utils/mime-type.js';
 import { ensureSize } from './utils/svg.js';
 
-export function toPng(avatar: Avatar, options: Options = {}): Result {
+export const toPng: ToPng = (avatar: Avatar) => {
   return toFormat(avatar, 'png');
-}
+};
 
-export function toJpeg(avatar: Avatar, options: Options = {}): Result {
+export const toJpeg: ToJpeg = (avatar: Avatar) => {
   return toFormat(avatar, 'jpeg');
-}
+};
 
 function toFormat(avatar: Avatar, format: 'png' | 'jpeg'): Result {
   const svg = typeof avatar === 'string' ? avatar : avatar.toString();
@@ -61,7 +61,7 @@ async function toCanvas(
     );
   }
 
-  let { svg, size } = ensureSize(rawSvg);
+  const { svg, size } = ensureSize(rawSvg);
 
   const canvas = document.createElement('canvas');
   canvas.width = size;
@@ -78,7 +78,7 @@ async function toCanvas(
     context.fillRect(0, 0, size, size);
   }
 
-  var img = document.createElement('img');
+  const img = document.createElement('img');
   img.width = size;
   img.height = size;
 

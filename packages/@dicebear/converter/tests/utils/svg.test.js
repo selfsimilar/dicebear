@@ -1,6 +1,4 @@
 import { ensureSize } from '../../lib/utils/svg.js';
-import * as fs from 'fs';
-import * as path from 'path';
 import { test } from 'uvu';
 import { equal } from 'uvu/assert';
 

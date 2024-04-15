@@ -17,4 +17,6 @@ export type Definition = Infer<typeof DefinitionStruct>;
 export type Dependencies = Infer<typeof DependenciesStruct>;
 export type Metadata = Infer<typeof MetadataStruct>;
 
-export type Options<O extends {} = {}> = O & Infer<typeof OptionsStruct>;
+export type Options<
+  O extends Record<string, unknown> = Record<string, unknown>,
+> = O & Infer<typeof OptionsStruct>;

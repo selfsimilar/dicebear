@@ -1,7 +1,7 @@
 import type { StyleDefinition } from '@dicebear/core';
 import { glob } from 'glob';
 import { dirname, join } from 'node:path';
-import { readFile, rm, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, rm, mkdir } from 'node:fs/promises';
 import { camelCase, pascalCase } from 'change-case';
 import {
   OptionalKind,
@@ -59,13 +59,13 @@ await Promise.all(
         ...(definition.components?.reduce<
           OptionalKind<PropertySignatureStructure>[]
         >((acc, component) => {
-          let values = component.values
+          const values = component.values
             .map((value) => value.name)
             .sort((a, b) => a.localeCompare(b))
             .map((name) => `'${name}'`)
             .join(' | ');
 
-          let result = [
+          const result = [
             ...acc,
             {
               name: component.name,

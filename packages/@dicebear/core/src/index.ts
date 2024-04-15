@@ -9,11 +9,13 @@ import { Core } from './Core.js';
 import { Style } from './Style.js';
 import { Definition, Metadata, Options } from './types.js';
 
-export function createStyle<O extends {}>(definition: Definition): Style<O> {
+export function createStyle<O extends Record<string, unknown>>(
+  definition: Definition,
+): Style<O> {
   return Style.fromDefinition(definition);
 }
 
-export function createAvatar<O extends {}>(
+export function createAvatar<O extends Record<string, unknown>>(
   style: Style<O>,
   options: Partial<Options<O>> = {},
 ) {

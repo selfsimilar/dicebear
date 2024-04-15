@@ -18,10 +18,15 @@
   },
   "devDependencies": {
     "@dicebear/collection": "^9.0.0-alpha.1",
+    "@eslint/js": "^9.0.0",
     "@tsconfig/recommended": "^1.0.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.25.0",
+    "globals": "^15.0.0",
     "lerna": "^8.1.2",
-    "prettier": "^3.2.5",
     "npm-run-all2": "^6.1.2",
-    "typescript": "^5.4.3"
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.3",
+    "typescript-eslint": "^7.6.0"
   }
 }

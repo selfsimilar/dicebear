@@ -44,6 +44,8 @@ export class SvgHelper {
             avatar.getBody(),
         );
 
+        break;
+
       case 'gradientLinear':
         avatar.setBody(
           `<rect fill="url(#backgroundLinear)" width="${size}" height="${size}" />` +
@@ -61,10 +63,10 @@ export class SvgHelper {
   static addScale(avatar: AvatarModel, scale: number): void {
     const { size } = avatar.getMetadata().canvas;
 
-    let percent = scale ? (scale - 100) / 100 : 0;
+    const percent = scale ? (scale - 100) / 100 : 0;
 
-    let translateX = (size / 2) * percent * -1;
-    let translateY = (size / 2) * percent * -1;
+    const translateX = (size / 2) * percent * -1;
+    const translateY = (size / 2) * percent * -1;
 
     avatar.setBody(
       `<g transform="translate(${translateX} ${translateY}) scale(${
@@ -76,8 +78,8 @@ export class SvgHelper {
   static addTranslate(avatar: AvatarModel, x?: number, y?: number) {
     const { size } = avatar.getMetadata().canvas;
 
-    let translateX = x ? (size * x) / 100 : 0;
-    let translateY = y ? (size * y) / 100 : 0;
+    const translateX = x ? (size * x) / 100 : 0;
+    const translateY = y ? (size * y) / 100 : 0;
 
     avatar.setBody(
       `<g transform="translate(${translateX} ${translateY})">${avatar.getBody()}</g>`,
@@ -103,7 +105,7 @@ export class SvgHelper {
   static addRadius(avatar: AvatarModel, radius: number) {
     const { size } = avatar.getMetadata().canvas;
 
-    let r = radius ? (size * radius) / 100 : 0;
+    const r = radius ? (size * radius) / 100 : 0;
 
     avatar.setBody(
       `<mask id="viewboxMask">` +

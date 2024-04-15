@@ -1,10 +1,9 @@
-// @ts-ignore
 import type { Style } from '@dicebear/core';
 import chalk from 'chalk';
 import chalkTemplate from 'chalk-template';
 
-export function outputStyleLicenseBanner(name: string, style: Style<any>) {
-  let banner = ['-'.repeat(64)];
+export function outputStyleLicenseBanner(name: string, style: Style<unknown>) {
+  const banner = ['-'.repeat(64)];
 
   if (style.meta.source?.name && style.meta.creator?.name) {
     banner.push(

@@ -53,7 +53,7 @@ export class LicenseHelper {
 
   static text(metadata: Metadata): string {
     let title = metadata.source?.name ? `„${metadata.source?.name}”` : 'Design';
-    let creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
+    const creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
 
     if (metadata.source) {
       title += ` (${metadata.source})`;

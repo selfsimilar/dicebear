@@ -18,7 +18,7 @@ export function validateInputBySchema(
 
   if (false === validate(data)) {
     if (validate.errors) {
-      for (var error of validate.errors) {
+      for (const error of validate.errors) {
         throw new Error(`${error.keyword} - ${error.message}`);
       }
     }

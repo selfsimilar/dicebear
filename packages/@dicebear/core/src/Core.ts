@@ -8,7 +8,7 @@ import { ColorHelper } from './helpers/ColorHelper.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
 
 export class Core {
-  static createAvatar<O extends {}>(
+  static createAvatar<O extends Record<string, unknown>>(
     style: Style<O>,
     options: Partial<Options<O>> = {},
   ): AvatarViewModel {
@@ -17,7 +17,8 @@ export class Core {
     }
 
     const StyleOptionsStruct = style.getOptionsStruct();
-    const CoreOptionsStruct = StyleOptionsStruct.schema.hasOwnProperty(
+    const CoreOptionsStruct = Object.prototype.hasOwnProperty.call(
+      StyleOptionsStruct.schema,
       'backgroundColor',
     )
       ? (assign(

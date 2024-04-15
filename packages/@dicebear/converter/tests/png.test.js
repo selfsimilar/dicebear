@@ -4,7 +4,6 @@ import * as path from 'path';
 import { fileURLToPath } from 'url';
 import { test } from 'uvu';
 import { not } from 'uvu/assert';
-import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const avatar = fs.readFileSync(path.resolve(__dirname, 'fixtures/avatar.svg'), {

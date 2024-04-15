@@ -1,4 +1,4 @@
-import type { Result, Exif, Avatar, Options } from '../types.js';
+import type { Result, Exif, Avatar, Options, ToPng, ToJpeg } from '../types.js';
 import { promises as fs } from 'node:fs';
 import { getMimeType } from '../utils/mime-type.js';
 import { ensureSize } from '../utils/svg.js';
@@ -7,13 +7,13 @@ import { renderAsync } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import { exiftool } from 'exiftool-vendored';
 
-export function toPng(avatar: Avatar, options: Options = {}): Result {
+export const toPng: ToPng = (avatar: Avatar, options: Options = {}) => {
   return toFormat(avatar, 'png', options);
-}
+};
 
-export function toJpeg(avatar: Avatar, options: Options = {}): Result {
+export const toJpeg: ToJpeg = (avatar: Avatar, options: Options = {}) => {
   return toFormat(avatar, 'jpeg', options);
-}
+};
 
 function toFormat(
   avatar: Avatar,
@@ -63,7 +63,7 @@ async function toBuffer(
 ): Promise<Buffer> {
   const fonts = options.fonts ?? [];
 
-  let { svg } = ensureSize(rawSvg);
+  const { svg } = ensureSize(rawSvg);
 
   let buffer = (
     await renderAsync(svg, {

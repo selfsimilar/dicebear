@@ -1,3 +1,7 @@
+export type ToJpeg = (avatar: Avatar, options: Options) => Result;
+
+export type ToPng = (avatar: Avatar, options: Options) => Result;
+
 export type Avatar = { toString(): string } | string;
 
 export interface Result {

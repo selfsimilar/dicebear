@@ -4,15 +4,17 @@ import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
 import { StructHelper } from './helpers/StructHelper.js';
 
-export class Style<O extends Record<string, unknown> = {}> {
+export class Style<
+  O extends Record<string, unknown> = Record<string, unknown>,
+> {
   private readonly definition: Readonly<Definition>;
-  private optionsStruct?: Struct<any, any>;
+  private optionsStruct?: Struct<unknown, unknown>;
 
   constructor(definition: Definition) {
     this.definition = definition;
   }
 
-  static fromDefinition<O extends {}>(
+  static fromDefinition<O extends Record<string, unknown>>(
     definition: Readonly<Definition>,
   ): Style<O> {
     return new Style<O>(definition);
@@ -42,7 +44,7 @@ export class Style<O extends Record<string, unknown> = {}> {
     return this.definition;
   }
 
-  getOptionsStruct(): Struct<any, any> {
+  getOptionsStruct(): Struct<unknown, unknown> {
     return (this.optionsStruct ??= StructHelper.buildStructByDefinition(
       this.definition,
     ));

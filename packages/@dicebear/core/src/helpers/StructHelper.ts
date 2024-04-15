@@ -8,9 +8,12 @@ import {
 } from 'superstruct';
 import { Definition } from '../types';
 import { Types } from '../structs/Types';
+import type { ObjectSchema } from 'superstruct/dist/utils';
 
 export class StructHelper {
-  static buildStructByDefinition(definition: Definition): Struct<any, any> {
+  static buildStructByDefinition(
+    definition: Definition,
+  ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return assign(
       this.buildComponentsStructByDefinition(definition),
       this.buildColorsStructByDefinition(definition),
@@ -19,59 +22,53 @@ export class StructHelper {
 
   static buildComponentsStructByDefinition(
     definition: Definition,
-  ): Struct<any, any> {
+  ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
-      definition.components?.reduce(
-        (acc, component) => {
-          const { name, values, probability, rotation, offset } = component;
+      definition.components?.reduce((acc, component) => {
+        const { name, values, probability, rotation, offset } = component;
 
-          const componentNameList = values.map((v) => v.name);
-          const componentDefaultList = values
-            .filter((v) => v.default)
-            .map((v) => v.name);
+        const componentNameList = values.map((v) => v.name);
+        const componentDefaultList = values
+          .filter((v) => v.default)
+          .map((v) => v.name);
 
-          acc[name] = defaulted(
-            Types.array(enums(componentNameList)),
-            componentDefaultList,
+        acc[name] = defaulted(
+          Types.array(enums(componentNameList)),
+          componentDefaultList,
+        );
+
+        if (probability) {
+          acc[`${name}Probability`] = defaulted(Types.integer(), probability);
+        }
+
+        if (rotation) {
+          acc[`${name}Rotation`] = defaulted(
+            nonempty(Types.array(Types.rotation())),
+            rotation,
           );
+        }
 
-          if (probability) {
-            acc[`${name}Probability`] = defaulted(Types.integer(), probability);
-          }
+        if (offset) {
+          const OffsetType = nonempty(Types.array(Types.integer()));
 
-          if (rotation) {
-            acc[`${name}Rotation`] = defaulted(
-              nonempty(Types.array(Types.rotation())),
-              rotation,
-            );
-          }
+          acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
+          acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
+        }
 
-          if (offset) {
-            const OffsetType = nonempty(Types.array(Types.integer()));
-
-            acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
-            acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
-          }
-
-          return acc;
-        },
-        {} as Record<string, Struct<any, any>>,
-      ) ?? {},
+        return acc;
+      }, {} as ObjectSchema) ?? {},
     );
   }
 
   static buildColorsStructByDefinition(
     definition: Definition,
-  ): Struct<any, any> {
+  ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
-      definition.colors?.reduce(
-        (acc, color) => {
-          acc[color.name] = defaulted(Types.array(Types.color()), color.values);
+      definition.colors?.reduce((acc, color) => {
+        acc[color.name] = defaulted(Types.array(Types.color()), color.values);
 
-          return acc;
-        },
-        {} as Record<string, Struct<any, any>>,
-      ) ?? {},
+        return acc;
+      }, {} as ObjectSchema) ?? {},
     );
   }
 }

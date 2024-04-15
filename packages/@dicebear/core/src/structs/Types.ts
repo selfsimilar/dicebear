@@ -1,8 +1,20 @@
-import { max, min, integer, coerce, boolean, string, pattern, array, Struct, Infer, any } from "superstruct";
+import {
+  max,
+  min,
+  integer,
+  coerce,
+  boolean,
+  string,
+  pattern,
+  array,
+  Struct,
+  Infer,
+  any,
+} from 'superstruct';
 
 export class Types {
   static boolean() {
-    return coerce(boolean(), string(), v => v === 'true' ||  v === '1');
+    return coerce(boolean(), string(), (v) => v === 'true' || v === '1');
   }
 
   static color() {
@@ -17,7 +29,7 @@ export class Types {
     return max(min(this.integer(), -360), 360);
   }
 
-  static array<T extends Struct<any>>(element: T): Struct<Infer<T>[], T> {
-    return coerce(array(element), any(), (v) => Array.isArray(v) ? v : [v]);
+  static array<T extends Struct<unknown>>(element: T): Struct<Infer<T>[], T> {
+    return coerce(array(element), any(), (v) => (Array.isArray(v) ? v : [v]));
   }
 }
