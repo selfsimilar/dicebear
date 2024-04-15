@@ -1,14 +1,17 @@
 import { Struct } from 'superstruct';
-import type { Definition, Properties } from './types.js';
+import type { Definition, Dependencies, Properties } from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
 import { StructHelper } from './helpers/StructHelper.js';
+import { ColorHelper } from './helpers/ColorHelper.js';
+import { DependencyError } from './errors/DependencyError.js';
 
 export class Style<
   O extends Record<string, unknown> = Record<string, unknown>,
 > {
   private readonly definition: Readonly<Definition>;
-  private optionsStruct?: Struct<unknown, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private optionsStruct?: Struct<any, any>;
 
   constructor(definition: Definition) {
     this.definition = definition;
@@ -44,7 +47,8 @@ export class Style<
     return this.definition;
   }
 
-  getOptionsStruct(): Struct<unknown, unknown> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getOptionsStruct(): Struct<any, any> {
     return (this.optionsStruct ??= StructHelper.buildStructByDefinition(
       this.definition,
     ));
@@ -111,15 +115,54 @@ export class Style<
     options: O,
     properties: Properties,
   ) {
-    const map = new Map<string, string>();
-
     if (!this.definition.colors) {
-      return map;
+      return;
     }
 
     for (const color of this.definition.colors) {
-    }
+      let availableColors = options[color.name] as string[];
 
-    return map;
+      if (color.notEqualTo) {
+        const notEqualTo = properties.get(color.notEqualTo);
+
+        if (typeof notEqualTo !== 'string') {
+          throw new DependencyError(
+            `Color ${color.name} cannot be set if ${color.notEqualTo} is not set.`,
+          );
+        }
+
+        const newAvailableColors = availableColors.filter(
+          (color) => color !== notEqualTo,
+        );
+
+        if (newAvailableColors.length > 0) {
+          availableColors = newAvailableColors;
+        }
+      }
+
+      if (color.contrastTo) {
+        const contrastTo = properties.get(color.contrastTo);
+
+        if (typeof contrastTo !== 'string') {
+          throw new DependencyError(
+            `Color ${color.name} cannot be set if ${color.contrastTo} is not set.`,
+          );
+        }
+
+        const colorValue = ColorHelper.getHighestContrastColor(
+          contrastTo,
+          availableColors,
+        );
+
+        if (colorValue) {
+          availableColors = [colorValue];
+        }
+      }
+
+      const colorValueOption = options[color.name] as string[];
+      const colorValue = prng.pick(colorValueOption);
+
+      properties.set(`${color.name}Color`, colorValue ?? null);
+    }
   }
 }

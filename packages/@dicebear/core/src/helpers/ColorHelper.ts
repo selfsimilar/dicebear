@@ -64,4 +64,42 @@ export class ColorHelper {
   ): 'solid' | 'gradientLinear' {
     return prng.pick(backgroundType, 'solid') ?? 'solid';
   }
+
+  static getHighestContrastColor(
+    color: string,
+    contrastColors: string[],
+  ): string | undefined {
+    const colorContrastRatio = ColorHelper.getContrastRatio(color);
+
+    let highestContrastColor: string | undefined = undefined;
+    let highestContrastRatioDifference = 0;
+
+    for (const contrastColor of contrastColors) {
+      if (contrastColor === 'transparent') {
+        continue;
+      }
+
+      const contrastColorContrastRatio =
+        ColorHelper.getContrastRatio(contrastColor);
+
+      const contrastRatioDifference = Math.abs(
+        colorContrastRatio - contrastColorContrastRatio,
+      );
+
+      if (contrastRatioDifference > highestContrastRatioDifference) {
+        highestContrastColor = contrastColor;
+        highestContrastRatioDifference = contrastRatioDifference;
+      }
+    }
+
+    return highestContrastColor;
+  }
+
+  static getContrastRatio(color: string): number {
+    const r = parseInt(color.substring(0, 2), 16);
+    const g = parseInt(color.substring(2, 4), 16);
+    const b = parseInt(color.substring(4, 6), 16);
+
+    return (r * 299 + g * 587 + b * 114) / 1000;
+  }
 }

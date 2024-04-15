@@ -65,7 +65,9 @@ export class StructHelper {
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
       definition.colors?.reduce((acc, color) => {
-        acc[color.name] = defaulted(Types.array(Types.color()), color.values);
+        acc[color.name] = nonempty(
+          defaulted(Types.array(Types.color()), color.values),
+        );
 
         return acc;
       }, {} as ObjectSchema) ?? {},
