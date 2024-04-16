@@ -1,42 +1,45 @@
-import { Struct } from 'superstruct';
-import type { Definition, Dependencies, Properties } from './types.js';
+import { Struct, mask } from 'superstruct';
+import type { Definition, Properties } from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
 import { StructHelper } from './helpers/StructHelper.js';
 import { ColorHelper } from './helpers/ColorHelper.js';
 import { DependencyError } from './errors/DependencyError.js';
+import { DefinitionModel } from './models/DefinitionModel.js';
+import { DefinitionStruct } from './structs/DefinitionStruct.js';
 
 export class Style<
   O extends Record<string, unknown> = Record<string, unknown>,
 > {
-  private readonly definition: Readonly<Definition>;
+  private readonly definition: Definition;
+  private readonly definitionModel: DefinitionModel;
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private optionsStruct?: Struct<any, any>;
 
   constructor(definition: Definition) {
-    this.definition = definition;
+    this.definition = mask(definition, DefinitionStruct);
+    this.definitionModel = new DefinitionModel(this.definition);
   }
 
   static fromDefinition<O extends Record<string, unknown>>(
-    definition: Readonly<Definition>,
+    definition: Definition,
   ): Style<O> {
     return new Style<O>(definition);
   }
 
-  create(
-    prng: Prng,
-    options: Readonly<O>,
-    properties: Properties,
-  ): AvatarModel {
+  create(prng: Prng, options: O, properties: Properties): AvatarModel {
     const attributes = new Map<string, string>(
-      this.definition.attributes?.map(({ name, value }) => [name, value]),
+      this.definitionModel
+        .getAttributes()
+        .map(({ name, value }) => [name, value]),
     );
 
     this.defineComponentProperties(prng, options, properties);
     this.defineColorProperties(prng, options, properties);
 
     return new AvatarModel(
-      this.definition.metadata,
+      this.definitionModel.getMetadata(),
       '',
       properties,
       attributes,
@@ -47,10 +50,14 @@ export class Style<
     return this.definition;
   }
 
+  getDefinitionModel(): DefinitionModel {
+    return this.definitionModel;
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getOptionsStruct(): Struct<any, any> {
-    return (this.optionsStruct ??= StructHelper.buildStructByDefinition(
-      this.definition,
+    return (this.optionsStruct ??= StructHelper.buildStructByDefinitionModel(
+      this.definitionModel,
     ));
   }
 
@@ -59,11 +66,7 @@ export class Style<
     options: O,
     properties: Properties,
   ) {
-    if (!this.definition.components) {
-      return;
-    }
-
-    for (const component of this.definition.components) {
+    for (const component of this.definitionModel.getComponents()) {
       const componentValueNameOption = options[component.name] as string[];
       const componentValueName = prng.pick(componentValueNameOption);
       const componentVisible = prng.bool(component.probability);
@@ -115,11 +118,7 @@ export class Style<
     options: O,
     properties: Properties,
   ) {
-    if (!this.definition.colors) {
-      return;
-    }
-
-    for (const color of this.definition.colors) {
+    for (const color of this.definitionModel.getColors()) {
       let availableColors = options[color.name] as string[];
 
       if (color.notEqualTo) {

@@ -7,7 +7,7 @@
 
 import { Core } from './Core.js';
 import { Style } from './Style.js';
-import { Definition, Metadata, Options } from './types.js';
+import { Definition, Options } from './types.js';
 
 export function createStyle<O extends Record<string, unknown>>(
   definition: Definition,
@@ -23,4 +23,4 @@ export function createAvatar<O extends Record<string, unknown>>(
 }
 
 export { Core, Style };
-export type { Definition, Metadata, Options };
+export type { Definition, Options };

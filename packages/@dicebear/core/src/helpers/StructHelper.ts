@@ -6,25 +6,25 @@ import {
   nonempty,
   object,
 } from 'superstruct';
-import { Definition } from '../types';
 import { Types } from '../structs/Types';
 import type { ObjectSchema } from 'superstruct/dist/utils';
+import { DefinitionModel } from '../models/DefinitionModel';
 
 export class StructHelper {
-  static buildStructByDefinition(
-    definition: Definition,
+  static buildStructByDefinitionModel(
+    definition: DefinitionModel,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return assign(
-      this.buildComponentsStructByDefinition(definition),
-      this.buildColorsStructByDefinition(definition),
+      this.buildComponentsStructByDefinitionModel(definition),
+      this.buildColorsStructByDefinitionModel(definition),
     );
   }
 
-  static buildComponentsStructByDefinition(
-    definition: Definition,
+  static buildComponentsStructByDefinitionModel(
+    definition: DefinitionModel,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
-      definition.components?.reduce((acc, component) => {
+      definition.getComponents().reduce((acc, component) => {
         const { name, values, probability, rotation, offset } = component;
 
         const componentNameList = values.map((v) => v.name);
@@ -60,11 +60,11 @@ export class StructHelper {
     );
   }
 
-  static buildColorsStructByDefinition(
-    definition: Definition,
+  static buildColorsStructByDefinitionModel(
+    definition: DefinitionModel,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
-      definition.colors?.reduce((acc, color) => {
+      definition.getColors().reduce((acc, color) => {
         acc[color.name] = nonempty(
           defaulted(Types.array(Types.color()), color.values),
         );
