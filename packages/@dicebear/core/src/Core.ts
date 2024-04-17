@@ -1,5 +1,5 @@
 import type { Options, Properties, Property } from './types.js';
-import { assign, mask, pick } from 'superstruct';
+import { mask } from 'superstruct';
 import { Style } from './Style.js';
 import { OptionsStruct } from './structs/OptionsStruct.js';
 import { Prng } from './Prng.js';
@@ -16,80 +16,75 @@ export class Core {
       throw new Error('Style must be an instance of Style');
     }
 
-    const StyleOptionsStruct = style.getOptionsStruct();
-    const CoreOptionsStruct = Object.prototype.hasOwnProperty.call(
-      StyleOptionsStruct.schema,
-      'backgroundColor',
-    )
-      ? (assign(
-          OptionsStruct,
-          pick(StyleOptionsStruct, ['backgroundColor']),
-        ) as typeof OptionsStruct)
-      : OptionsStruct;
+    // Validate options
+    const coreOptions = mask(options, OptionsStruct);
+    const styleOptions = mask(options, style.getOptionsStruct());
 
-    const validatedCoreOptions = mask(options, CoreOptionsStruct);
-    const validatedStyleOptions = mask(options, StyleOptionsStruct);
+    // Create Prng
+    const prng = Prng.fromSeed(coreOptions.seed);
 
-    const prng = Prng.fromSeed(validatedCoreOptions.seed);
-
+    // Define background properties
     const backgroundType = ColorHelper.getBackgroundType(
       prng,
-      validatedCoreOptions.backgroundType,
+      coreOptions.backgroundType,
     );
 
     const backgroundColor = ColorHelper.getBackgroundColors(
       prng,
-      validatedCoreOptions.backgroundColor,
+      // The avatar style can also specify background colors, so first try to
+      // get the background color from the avatar style options, then from the
+      // core options.
+      styleOptions.baclgroundColor ?? coreOptions.backgroundColor,
       backgroundType,
     );
 
     const backgroundRotation = ColorHelper.getBackgroundRotation(
       prng,
-      validatedCoreOptions.backgroundRotation,
+      coreOptions.backgroundRotation,
     );
 
+    // Create properties map
     const properties: Properties = new Map<string, Property>([
-      ['seed', validatedCoreOptions.seed],
-      ['flip', validatedCoreOptions.flip],
-      ['rotate', validatedCoreOptions.rotate],
-      ['scale', validatedCoreOptions.scale],
-      ['radius', validatedCoreOptions.radius ?? 0],
-      ['size', validatedCoreOptions.size ?? null],
+      ['seed', coreOptions.seed],
+      ['flip', coreOptions.flip],
+      ['rotate', coreOptions.rotate],
+      ['scale', coreOptions.scale],
+      ['radius', coreOptions.radius ?? 0],
+      ['size', coreOptions.size ?? null],
       ['backgroundColor', backgroundColor],
       ['backgroundType', backgroundType],
       ['backgroundRotation', backgroundRotation],
-      ['translateX', validatedCoreOptions.translateX],
-      ['translateY', validatedCoreOptions.translateY],
-      ['clip', validatedCoreOptions.clip],
-      ['randomizeIds', validatedCoreOptions.randomizeIds],
+      ['translateX', coreOptions.translateX],
+      ['translateY', coreOptions.translateY],
+      ['clip', coreOptions.clip],
+      ['randomizeIds', coreOptions.randomizeIds],
     ]);
 
-    const avatar = style.create(prng, validatedStyleOptions, properties);
+    // Create avatar
+    const avatar = style.create(prng, styleOptions, properties);
 
-    if (validatedCoreOptions.size) {
-      SvgHelper.setSize(avatar, validatedCoreOptions.size);
+    // Apply options
+    if (coreOptions.size) {
+      SvgHelper.setSize(avatar, coreOptions.size);
     }
 
-    if (
-      validatedCoreOptions.scale !== undefined &&
-      validatedCoreOptions.scale !== 100
-    ) {
-      SvgHelper.addScale(avatar, validatedCoreOptions.scale);
+    if (coreOptions.scale !== undefined && coreOptions.scale !== 100) {
+      SvgHelper.addScale(avatar, coreOptions.scale);
     }
 
-    if (validatedCoreOptions.flip) {
+    if (coreOptions.flip) {
       SvgHelper.addFlip(avatar);
     }
 
-    if (validatedCoreOptions.rotate) {
-      SvgHelper.addRotate(avatar, validatedCoreOptions.rotate);
+    if (coreOptions.rotate) {
+      SvgHelper.addRotate(avatar, coreOptions.rotate);
     }
 
-    if (validatedCoreOptions.translateX || validatedCoreOptions.translateY) {
+    if (coreOptions.translateX || coreOptions.translateY) {
       SvgHelper.addTranslate(
         avatar,
-        validatedCoreOptions.translateX,
-        validatedCoreOptions.translateY,
+        coreOptions.translateX,
+        coreOptions.translateY,
       );
     }
 
@@ -108,14 +103,15 @@ export class Core {
       );
     }
 
-    if (validatedCoreOptions.radius || validatedCoreOptions.clip) {
-      SvgHelper.addRadius(avatar, validatedCoreOptions.radius ?? 0);
+    if (coreOptions.radius || coreOptions.clip) {
+      SvgHelper.addRadius(avatar, coreOptions.radius ?? 0);
     }
 
-    if (validatedCoreOptions.randomizeIds) {
+    if (coreOptions.randomizeIds) {
       SvgHelper.randomizeIds(avatar);
     }
 
+    // Return view model
     return avatar.toView();
   }
 }
