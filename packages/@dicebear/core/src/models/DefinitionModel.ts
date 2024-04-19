@@ -1,18 +1,39 @@
-import type { Color, Component, ComponentValue, Definition } from '../types';
+import { DependencyHelper } from '../helpers/DependencyHelper';
+import type {
+  Color,
+  Component,
+  ComponentValue,
+  Definition,
+  Dependencies,
+  Properties,
+} from '../types';
+
+type IndexedComponents = Map<string, Component>;
+type IndexedComponentValues = Map<string, Map<string, ComponentValue>>;
+type IndexedColors = Map<string, Color>;
+
+type BodyDependencies = Dependencies;
+type ComponentValueDependencies = Map<string, Map<string, Dependencies>>;
 
 export class DefinitionModel {
-  public readonly definition: Definition;
+  private readonly definition: Definition;
 
-  private indexedComponents: Map<string, Component> = new Map();
-  private indexedComponentValues: Map<string, Map<string, ComponentValue>> =
-    new Map();
-  private indexedColors: Map<string, Color> = new Map();
+  private readonly components: IndexedComponents;
+  private readonly componentValues: IndexedComponentValues;
+  private readonly colors: IndexedColors;
+
+  private readonly bodyDependencies: BodyDependencies;
+  private readonly componentValueDependencies: ComponentValueDependencies;
 
   constructor(definition: Definition) {
     this.definition = definition;
 
-    this.indexComponents();
-    this.indexColors();
+    this.components = this.indexComponents();
+    this.componentValues = this.indexComponentValues();
+    this.colors = this.indexColors();
+
+    this.bodyDependencies = this.indexBodyDependencies();
+    this.componentValueDependencies = this.indexComponentValueDependencies();
   }
 
   getMetadata(): Definition['metadata'] {
@@ -36,36 +57,100 @@ export class DefinitionModel {
   }
 
   getComponentByName(name: string): Component | undefined {
-    return this.indexedComponents.get(name);
+    return this.components.get(name);
   }
 
   getComponentValueByName(
     componentName: string,
     name: string,
   ): ComponentValue | undefined {
-    return this.indexedComponentValues.get(componentName)?.get(name);
+    return this.componentValues.get(componentName)?.get(name);
   }
 
   getColorByName(name: string): Color | undefined {
-    return this.indexedColors.get(name);
+    return this.colors.get(name);
   }
 
-  private indexComponents() {
-    for (const component of this.getComponents()) {
-      const componentValuesMap = new Map<string, ComponentValue>();
+  getDependenciesByProperties(properties: Properties): Dependencies {
+    const dependencies: Dependencies = {
+      components: new Set(...this.bodyDependencies.components),
+      colors: new Set(...this.bodyDependencies.colors),
+    };
 
-      for (const componentValue of component.values) {
-        componentValuesMap.set(componentValue.name, componentValue);
+    const unprocessed = [...this.bodyDependencies.components];
+
+    while (unprocessed.length > 0) {
+      const component = unprocessed.pop()!;
+      const componentValue = properties.get(component);
+
+      if (typeof componentValue !== 'string') {
+        continue;
       }
 
-      this.indexedComponents.set(component.name, component);
-      this.indexedComponentValues.set(component.name, componentValuesMap);
+      const componentValueDependencies = this.componentValueDependencies
+        .get(component)
+        ?.get(componentValue);
+
+      if (!componentValueDependencies) {
+        continue;
+      }
+
+      for (const dependency of componentValueDependencies.components) {
+        if (dependencies.components.has(dependency)) {
+          continue;
+        }
+
+        dependencies.components.add(dependency);
+        unprocessed.push(dependency);
+      }
+
+      for (const dependency of componentValueDependencies.colors) {
+        dependencies.colors.add(dependency);
+      }
     }
+
+    return dependencies;
   }
 
-  private indexColors() {
-    for (const color of this.getColors()) {
-      this.indexedColors.set(color.name, color);
-    }
+  private indexBodyDependencies(): BodyDependencies {
+    return DependencyHelper.getDependenciesFromSvg(this.definition.body);
+  }
+
+  private indexComponentValueDependencies(): ComponentValueDependencies {
+    return new Map(
+      this.getComponents().map((component) => [
+        component.name,
+        new Map(
+          component.values.map((componentValue) => [
+            componentValue.name,
+            DependencyHelper.getDependenciesFromSvg(componentValue.content),
+          ]),
+        ),
+      ]),
+    );
+  }
+
+  private indexComponents(): IndexedComponents {
+    return new Map(
+      this.getComponents().map((component) => [component.name, component]),
+    );
+  }
+
+  private indexComponentValues(): IndexedComponentValues {
+    return new Map(
+      this.getComponents().map((component) => [
+        component.name,
+        new Map(
+          component.values.map((componentValue) => [
+            componentValue.name,
+            componentValue,
+          ]),
+        ),
+      ]),
+    );
+  }
+
+  private indexColors(): IndexedColors {
+    return new Map(this.getColors().map((color) => [color.name, color]));
   }
 }

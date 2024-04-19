@@ -38,6 +38,9 @@ export class Style<
     this.defineComponentProperties(prng, options, properties);
     this.defineColorProperties(prng, options, properties);
 
+    const dependencies =
+      this.definitionModel.getDependenciesByProperties(properties);
+
     return new AvatarModel(
       this.definitionModel.getMetadata(),
       '',
