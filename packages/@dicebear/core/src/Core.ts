@@ -6,6 +6,7 @@ import { Prng } from './Prng.js';
 import { AvatarViewModel } from './models/AvatarViewModel.js';
 import { ColorHelper } from './helpers/ColorHelper.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
+import { StringHelper } from './helpers/StringHelper.js';
 
 export class Core {
   static createAvatar<O extends Record<string, unknown>>(
@@ -45,6 +46,7 @@ export class Core {
 
     // Create properties map
     const properties: Properties = new Map<string, Property>([
+      ['initials', StringHelper.getInitials(coreOptions.seed)],
       ['seed', coreOptions.seed],
       ['flip', coreOptions.flip],
       ['rotate', coreOptions.rotate],
@@ -62,6 +64,9 @@ export class Core {
 
     // Create avatar
     const avatar = style.create(prng, styleOptions, properties);
+
+    // Replace placeholders
+    SvgHelper.replacePlaceholders(avatar);
 
     // Apply options
     if (coreOptions.size) {

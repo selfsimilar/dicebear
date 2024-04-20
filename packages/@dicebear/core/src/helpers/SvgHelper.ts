@@ -144,4 +144,12 @@ export class SvgHelper {
         }),
     );
   }
+
+  static replacePlaceholders(avatar: AvatarModel): void {
+    avatar.setBody(
+      avatar.getBody().replace(/\{\{([^}]+)\}\}/gi, (match, m1) => {
+        return avatar.getAttributes().get(m1) || '';
+      }),
+    );
+  }
 }

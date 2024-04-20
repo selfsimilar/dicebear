@@ -1,5 +1,5 @@
 export class StringHelper {
-  static initials(str: string): string {
+  static getInitials(str: string): string {
     const matches = str
       .trim()
       .replace(/\s+/, ' ')
