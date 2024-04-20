@@ -35,12 +35,13 @@ export class SvgHelper {
     type: 'solid' | 'gradientLinear',
     rotation: number,
   ) {
-    const { size } = avatar.getMetadata().canvas;
+    const width = avatar.getViewBoxWidth();
+    const height = avatar.getViewBoxHeight();
 
     switch (type) {
       case 'solid':
         avatar.setBody(
-          `<rect fill="${primaryColor}" width="${size}" height="${size}" />` +
+          `<rect fill="${primaryColor}" width="${width}" height="${height}" />` +
             avatar.getBody(),
         );
 
@@ -48,7 +49,7 @@ export class SvgHelper {
 
       case 'gradientLinear':
         avatar.setBody(
-          `<rect fill="url(#backgroundLinear)" width="${size}" height="${size}" />` +
+          `<rect fill="url(#backgroundLinear)" width="${width}" height="${height}" />` +
             `<defs>` +
             `<linearGradient id="backgroundLinear" gradientTransform="rotate(${rotation} 0.5 0.5)">` +
             `<stop stop-color="${primaryColor}"/>` +
@@ -61,12 +62,13 @@ export class SvgHelper {
   }
 
   static addScale(avatar: AvatarModel, scale: number): void {
-    const { size } = avatar.getMetadata().canvas;
+    const width = avatar.getViewBoxWidth();
+    const height = avatar.getViewBoxHeight();
 
     const percent = scale ? (scale - 100) / 100 : 0;
 
-    const translateX = (size / 2) * percent * -1;
-    const translateY = (size / 2) * percent * -1;
+    const translateX = (width / 2) * percent * -1;
+    const translateY = (height / 2) * percent * -1;
 
     avatar.setBody(
       `<g transform="translate(${translateX} ${translateY}) scale(${
@@ -76,10 +78,11 @@ export class SvgHelper {
   }
 
   static addTranslate(avatar: AvatarModel, x?: number, y?: number) {
-    const { size } = avatar.getMetadata().canvas;
+    const width = avatar.getViewBoxWidth();
+    const height = avatar.getViewBoxHeight();
 
-    const translateX = x ? (size * x) / 100 : 0;
-    const translateY = y ? (size * y) / 100 : 0;
+    const translateX = x ? (width * x) / 100 : 0;
+    const translateY = y ? (height * y) / 100 : 0;
 
     avatar.setBody(
       `<g transform="translate(${translateX} ${translateY})">${avatar.getBody()}</g>`,
@@ -87,29 +90,32 @@ export class SvgHelper {
   }
 
   static addRotate(avatar: AvatarModel, rotate: number) {
-    const { size } = avatar.getMetadata().canvas;
+    const width = avatar.getViewBoxWidth();
+    const height = avatar.getViewBoxHeight();
 
     avatar.setBody(
-      `<g transform="rotate(${rotate} ${size / 2} ${size / 2})">${avatar.getBody()}</g>`,
+      `<g transform="rotate(${rotate} ${width / 2} ${height / 2})">${avatar.getBody()}</g>`,
     );
   }
 
   static addFlip(avatar: AvatarModel): void {
-    const { size } = avatar.getMetadata().canvas;
+    const width = avatar.getViewBoxWidth();
 
     avatar.setBody(
-      `<g transform="scale(-1 1) translate(${size * -1} 0)">${avatar.getBody()}</g>`,
+      `<g transform="scale(-1 1) translate(${width * -1} 0)">${avatar.getBody()}</g>`,
     );
   }
 
   static addRadius(avatar: AvatarModel, radius: number) {
-    const { size } = avatar.getMetadata().canvas;
+    const width = avatar.getViewBoxWidth();
+    const height = avatar.getViewBoxHeight();
 
-    const r = radius ? (size * radius) / 100 : 0;
+    const rx = radius ? (width * radius) / 100 : 0;
+    const ry = radius ? (height * radius) / 100 : 0;
 
     avatar.setBody(
       `<mask id="viewboxMask">` +
-        `<rect width="${size}" height="${size}" rx="${r}" ry="${r}" fill="#fff" />` +
+        `<rect width="${width}" height="${height}" rx="${rx}" ry="${ry}" fill="#fff" />` +
         `</mask>` +
         `<g mask="url(#viewboxMask)">${avatar.getBody()}</g>`,
     );

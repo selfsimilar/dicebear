@@ -11,19 +11,31 @@ export class AvatarViewModel {
     this.properties = properties;
   }
 
+  getMetadata(): Metadata {
+    return this.metadata;
+  }
+
+  getProperties(): Properties {
+    return this.properties;
+  }
+
+  toSvg(): string {
+    return this.svg;
+  }
+
   toDataUri(): string {
     return `data:image/svg+xml;utf8,${encodeURIComponent(this.svg)}`;
   }
 
-  toString(): string {
-    return this.svg;
-  }
-
-  toJson() {
-    return {
+  toJson(): string {
+    return JSON.stringify({
       svg: this.svg,
       metadata: this.metadata,
       properties: [...this.properties],
-    };
+    });
+  }
+
+  toString(): string {
+    return this.toSvg();
   }
 }

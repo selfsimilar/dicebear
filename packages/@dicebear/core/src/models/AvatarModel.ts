@@ -1,42 +1,38 @@
 import { LicenseHelper } from '../helpers/LicenseHelper';
 import { SvgHelper } from '../helpers/SvgHelper';
-import { Metadata, Properties } from '../types';
+import { Definition, Metadata, Properties } from '../types';
 import { AvatarViewModel } from './AvatarViewModel';
 
 type Attributes = Map<string, string>;
 
 export class AvatarModel {
-  private metadata: Metadata;
+  private definition: Definition;
   private body: string;
   private properties: Properties;
   private attributes: Attributes;
 
   constructor(
-    metadata: Metadata,
+    definition: Definition,
     body: string,
     properties: Properties,
     attributes: Attributes,
   ) {
-    this.metadata = metadata;
+    this.definition = definition;
     this.body = body;
     this.properties = properties;
     this.attributes = attributes;
+  }
 
-    // Always set default xmlns and viewBox attributes
-    if (!attributes.has('xmlns')) {
-      this.attributes.set('xmlns', 'http://www.w3.org/2000/svg');
-    }
+  getViewBoxWidth(): number {
+    return this.definition.body.width;
+  }
 
-    if (!attributes.has('viewBox')) {
-      this.attributes.set(
-        'viewBox',
-        `0 0 ${metadata.canvas.size} ${metadata.canvas.size}`,
-      );
-    }
+  getViewBoxHeight(): number {
+    return this.definition.body.height;
   }
 
   getMetadata(): Metadata {
-    return this.metadata;
+    return this.definition.metadata ?? {};
   }
 
   getProperties(): Properties {
@@ -58,11 +54,26 @@ export class AvatarModel {
   }
 
   toView(): AvatarViewModel {
+    this.setMissingDefaultAttributes();
+
     const attributes = SvgHelper.createAttrString(this.getAttributes());
     const metadata = LicenseHelper.xml(this.getMetadata());
 
     const svg = `<svg ${attributes}>${metadata}${this.getBody()}</svg>`;
 
     return new AvatarViewModel(this.getMetadata(), svg, this.getProperties());
+  }
+
+  private setMissingDefaultAttributes() {
+    if (!this.attributes.has('xmlns')) {
+      this.attributes.set('xmlns', 'http://www.w3.org/2000/svg');
+    }
+
+    if (!this.attributes.has('viewBox')) {
+      this.attributes.set(
+        'viewBox',
+        `0 0 ${this.getViewBoxWidth()} ${this.getViewBoxHeight()}`,
+      );
+    }
   }
 }

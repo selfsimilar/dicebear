@@ -1,5 +1,5 @@
 import { Struct, mask } from 'superstruct';
-import type { Definition, Properties } from './types.js';
+import type { Color, Component, Definition, Properties } from './types.js';
 import { AvatarModel } from './models/AvatarModel.js';
 import { Prng } from './Prng.js';
 import { StructHelper } from './helpers/StructHelper.js';
@@ -7,6 +7,7 @@ import { ColorHelper } from './helpers/ColorHelper.js';
 import { DependencyError } from './errors/DependencyError.js';
 import { DefinitionModel } from './models/DefinitionModel.js';
 import { DefinitionStruct } from './structs/DefinitionStruct.js';
+import { SvgHelper } from './helpers/SvgHelper.js';
 
 export class Style<
   O extends Record<string, unknown> = Record<string, unknown>,
@@ -35,18 +36,31 @@ export class Style<
         .map(({ name, value }) => [name, value]),
     );
 
-    this.defineComponentProperties(prng, options, properties);
     this.defineColorProperties(prng, options, properties);
+    this.defineComponentProperties(prng, options, properties);
 
     const dependencies =
       this.definitionModel.getDependenciesByProperties(properties);
 
-    return new AvatarModel(
-      this.definitionModel.getMetadata(),
-      '',
-      properties,
-      attributes,
-    );
+    const colors = this.definitionModel
+      .getColors()
+      .filter((color) => dependencies.colors.has(color.name));
+
+    const components = this.definitionModel
+      .getComponents()
+      .filter((component) => dependencies.components.has(component.name));
+
+    const body = [
+      '<defs>',
+      ...colors.map((color) => this.buildColorGradient(color, properties)),
+      ...components.map((component) =>
+        this.buildComponentSymbol(component, properties),
+      ),
+      '</defs>',
+      this.definitionModel.getBody(),
+    ].join('');
+
+    return new AvatarModel(this.definition, body, properties, attributes);
   }
 
   getDefinition(): Definition {
@@ -62,6 +76,48 @@ export class Style<
     return (this.optionsStruct ??= StructHelper.buildStructByDefinitionModel(
       this.definitionModel,
     ));
+  }
+
+  private buildComponentSymbol(component: Component, properties: Properties) {
+    const componentValueName = properties.get(component.name);
+    const componentRotation = properties.get(`${component.name}Rotation`);
+    const componentOffsetX = properties.get(`${component.name}OffsetX`);
+    const componentOffsetY = properties.get(`${component.name}OffsetY`);
+
+    if (typeof componentValueName !== 'string') {
+      return '';
+    }
+
+    const componentName = SvgHelper.escape(component.name);
+    const componentValue = this.definitionModel.getComponentValueByName(
+      component.name,
+      componentValueName,
+    );
+
+    if (!componentValue) {
+      return '';
+    }
+
+    let componentContent = componentValue.content;
+
+    if (componentRotation || componentOffsetX || componentOffsetY) {
+      componentContent = `<g transform="translate(${componentOffsetX ?? 0}, ${componentOffsetY ?? 0}) rotate(${componentRotation ?? 0} ${component.width / 2} ${component.height / 2})">${componentContent}</g>`;
+    }
+
+    return `<symbol id="component-${componentName}">${componentContent}</symbol>`;
+  }
+
+  private buildColorGradient(color: Color, properties: Properties) {
+    const rawColorValue = properties.get(`${color.name}Color`);
+
+    if (typeof rawColorValue !== 'string') {
+      return '';
+    }
+
+    const colorName = SvgHelper.escape(color.name);
+    const colorValue = ColorHelper.convertColor(rawColorValue);
+
+    return `<linearGradient id="color-${colorName}"><stop stop-color="${colorValue}"/></linearGradient>`;
   }
 
   private defineComponentProperties(

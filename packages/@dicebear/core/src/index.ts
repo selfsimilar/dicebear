@@ -7,6 +7,8 @@
 
 import { Core } from './Core.js';
 import { Style } from './Style.js';
+import { GenericError } from './errors/GenericError.js';
+import { DependencyError } from './errors/DependencyError.js';
 import { Definition, Options } from './types.js';
 
 export function createStyle<O extends Record<string, unknown>>(
@@ -22,5 +24,5 @@ export function createAvatar<O extends Record<string, unknown>>(
   return Core.createAvatar(style, options);
 }
 
-export { Core, Style };
+export { Core, Style, GenericError, DependencyError };
 export type { Definition, Options };

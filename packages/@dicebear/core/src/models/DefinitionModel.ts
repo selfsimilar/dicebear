@@ -113,7 +113,9 @@ export class DefinitionModel {
   }
 
   private indexBodyDependencies(): BodyDependencies {
-    return DependencyHelper.getDependenciesFromSvg(this.definition.body);
+    return DependencyHelper.getDependenciesFromSvg(
+      this.definition.body.content,
+    );
   }
 
   private indexComponentValueDependencies(): ComponentValueDependencies {

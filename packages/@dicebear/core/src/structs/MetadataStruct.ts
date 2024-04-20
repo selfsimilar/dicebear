@@ -1,4 +1,4 @@
-import { number, object, optional, string } from 'superstruct';
+import { object, optional, string } from 'superstruct';
 
 export const MetadataStruct = object({
   license: optional(
@@ -20,7 +20,4 @@ export const MetadataStruct = object({
       url: optional(string()),
     }),
   ),
-  canvas: object({
-    size: number(),
-  }),
 });
