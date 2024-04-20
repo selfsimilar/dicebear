@@ -27,33 +27,4 @@ const rings = () => import('./rings.js');
 const shapes = () => import('./shapes.js');
 const thumbs = () => import('./thumbs.js');
 
-export {
-  adventurerNeutral,
-  adventurer,
-  avataaarsNeutral,
-  avataaars,
-  bigEarsNeutral,
-  bigEars,
-  bigSmile,
-  botttsNeutral,
-  bottts,
-  croodlesNeutral,
-  croodles,
-  funEmoji,
-  icons,
-  identicon,
-  initials,
-  loreleiNeutral,
-  lorelei,
-  micah,
-  miniavs,
-  notionistsNeutral,
-  notionists,
-  openPeeps,
-  personas,
-  pixelArtNeutral,
-  pixelArt,
-  rings,
-  shapes,
-  thumbs,
-};
+export { adventurerNeutral, adventurer, avataaarsNeutral, avataaars, bigEarsNeutral, bigEars, bigSmile, botttsNeutral, bottts, croodlesNeutral, croodles, funEmoji, icons, identicon, initials, loreleiNeutral, lorelei, micah, miniavs, notionistsNeutral, notionists, openPeeps, personas, pixelArtNeutral, pixelArt, rings, shapes, thumbs };

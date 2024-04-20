@@ -1,10 +1,12 @@
-import { createStyle, StyleDefinition } from '@dicebear/core';
-import definition from '@dicebear/definitions/src/initials.json' with { type: 'json' };
+import { createStyle, Definition } from "@dicebear/core";
+import definition from "@dicebear/definitions/src/initials.json" with {
+    type: "json"
+};
 
-interface InitialsOptions {
-  textColor: string[];
-}
+type InitialsOptions = {
+        textColor: string[];
+    };
 
-const initials = createStyle<InitialsOptions>(definition as StyleDefinition);
+const initials = createStyle<InitialsOptions>(definition as Definition);
 
 export { initials };

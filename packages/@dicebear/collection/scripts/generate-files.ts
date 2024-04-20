@@ -1,4 +1,4 @@
-import type { StyleDefinition } from '@dicebear/core';
+import type { Definition } from '@dicebear/core';
 import { glob } from 'glob';
 import { dirname, join } from 'node:path';
 import { readFile, rm, mkdir } from 'node:fs/promises';
@@ -6,9 +6,12 @@ import { camelCase, pascalCase } from 'change-case';
 import {
   OptionalKind,
   Project,
+  Writers,
   PropertySignatureStructure,
   VariableDeclarationKind,
 } from 'ts-morph';
+
+const { objectType } = Writers;
 
 const definitionUrl = new URL(
   dirname(import.meta.resolve('@dicebear/definitions/package.json')),
@@ -38,13 +41,13 @@ await Promise.all(
     });
     const name = file.replace('.json', '');
 
-    const definition = JSON.parse(content) as StyleDefinition;
+    const definition = JSON.parse(content) as Definition;
 
     const sourceFile = project.createSourceFile(join(targetPath, `${name}.ts`));
 
     sourceFile.addImportDeclaration({
       moduleSpecifier: '@dicebear/core',
-      namedImports: ['createStyle', 'StyleDefinition'],
+      namedImports: ['createStyle', 'Definition'],
     });
 
     sourceFile.addImportDeclaration({
@@ -53,62 +56,64 @@ await Promise.all(
       attributes: [{ name: 'type', value: 'json' }],
     });
 
-    sourceFile.addInterface({
+    sourceFile.addTypeAlias({
       name: `${pascalCase(name)}Options`,
-      properties: [
-        ...(definition.components?.reduce<
-          OptionalKind<PropertySignatureStructure>[]
-        >((acc, component) => {
-          const values = component.values
-            .map((value) => value.name)
-            .sort((a, b) => a.localeCompare(b))
-            .map((name) => `'${name}'`)
-            .join(' | ');
+      type: objectType({
+        properties: [
+          ...(definition.components?.reduce<
+            OptionalKind<PropertySignatureStructure>[]
+          >((acc, component) => {
+            const values = component.values
+              .map((value) => value.name)
+              .sort((a, b) => a.localeCompare(b))
+              .map((name) => `'${name}'`)
+              .join(' | ');
 
-          const result = [
-            ...acc,
-            {
-              name: component.name,
-              type: `Array<${values}>`,
-              hasQuestionToken: true,
-            },
-          ];
+            const result = [
+              ...acc,
+              {
+                name: component.name,
+                type: `Array<${values}>`,
+                hasQuestionToken: true,
+              },
+            ];
 
-          if (component.offset) {
-            result.push({
-              name: `${component.name}Offset`,
-              type: 'number',
-              hasQuestionToken: true,
-            });
-          }
+            if (component.offset) {
+              result.push({
+                name: `${component.name}Offset`,
+                type: 'number',
+                hasQuestionToken: true,
+              });
+            }
 
-          if (component.probability) {
-            result.push({
-              name: `${component.name}Probability`,
-              type: 'number',
-              hasQuestionToken: true,
-            });
-          }
+            if (component.probability) {
+              result.push({
+                name: `${component.name}Probability`,
+                type: 'number',
+                hasQuestionToken: true,
+              });
+            }
 
-          if (component.rotation) {
-            result.push({
-              name: `${component.name}Rotation`,
-              type: '[number, number]',
-              hasQuestionToken: true,
-            });
-          }
+            if (component.rotation) {
+              result.push({
+                name: `${component.name}Rotation`,
+                type: '[number, number]',
+                hasQuestionToken: true,
+              });
+            }
 
-          return result;
-        }, []) ?? []),
-        ...(definition.colors
-          ?.map((color) => {
-            return {
-              name: `${color.name}Color`,
-              type: 'string[]',
-            };
-          })
-          .filter((v) => v.name !== 'backgroundColor') ?? []),
-      ],
+            return result;
+          }, []) ?? []),
+          ...(definition.colors
+            ?.map((color) => {
+              return {
+                name: `${color.name}Color`,
+                type: 'string[]',
+              };
+            })
+            .filter((v) => v.name !== 'backgroundColor') ?? []),
+        ],
+      }),
     });
 
     sourceFile.addVariableStatement({
@@ -116,7 +121,7 @@ await Promise.all(
       declarations: [
         {
           name: camelCase(name),
-          initializer: `createStyle<${pascalCase(name)}Options>(definition as StyleDefinition)`,
+          initializer: `createStyle<${pascalCase(name)}Options>(definition as Definition)`,
         },
       ],
     });
