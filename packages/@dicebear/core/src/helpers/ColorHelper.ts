@@ -2,6 +2,14 @@ import { Prng } from '../Prng.js';
 
 export class ColorHelper {
   static convertColor(color: string): string {
+    if (color.startsWith('#')) {
+      return color;
+    }
+
+    if (!color) {
+      return 'transparent';
+    }
+
     return 'transparent' === color ? color : `#${color}`;
   }
 
@@ -86,7 +94,10 @@ export class ColorHelper {
         colorContrastRatio - contrastColorContrastRatio,
       );
 
-      if (contrastRatioDifference > highestContrastRatioDifference) {
+      if (
+        !highestContrastColor ||
+        contrastRatioDifference > highestContrastRatioDifference
+      ) {
         highestContrastColor = contrastColor;
         highestContrastRatioDifference = contrastRatioDifference;
       }

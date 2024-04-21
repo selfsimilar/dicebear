@@ -38,12 +38,11 @@
     "prebuild": "del-cli lib",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "uvu tests"
+    "test": "NODE_V8_COVERAGE=tests/.coverage node --test --experimental-test-coverage tests"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
-    "del-cli": "^5.0.0",
-    "uvu": "^0.5.6"
+    "del-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

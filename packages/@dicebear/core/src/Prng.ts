@@ -15,7 +15,9 @@ export class Prng {
   }
 
   static fromRandom(): Prng {
-    return new Prng(Math.random().toString());
+    const seed = Math.random().toString(36).substring(2, 7);
+
+    return new Prng(seed);
   }
 
   getSeed(): string {
