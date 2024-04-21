@@ -9,16 +9,6 @@ export class LicenseHelper {
     const licenseUrl = metadata.license?.url;
     const copyright = LicenseHelper.text(metadata);
 
-    if (
-      !sourceName &&
-      !creatorName &&
-      !sourceUrl &&
-      !licenseUrl &&
-      !copyright
-    ) {
-      return '';
-    }
-
     // https://nsteffel.github.io/dublin_core_generator/generator.html
     return (
       '<metadata' +
@@ -55,8 +45,8 @@ export class LicenseHelper {
     let title = metadata.source?.name ? `„${metadata.source?.name}”` : 'Design';
     const creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
 
-    if (metadata.source) {
-      title += ` (${metadata.source})`;
+    if (metadata.source?.url) {
+      title += ` (${metadata.source.url})`;
     }
 
     let result = '';
