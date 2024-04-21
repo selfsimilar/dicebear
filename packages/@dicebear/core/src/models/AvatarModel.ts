@@ -1,38 +1,34 @@
 import { LicenseHelper } from '../helpers/LicenseHelper.js';
 import { SvgHelper } from '../helpers/SvgHelper.js';
-import type { Definition, Metadata, Properties } from '../types.js';
+import type { Metadata, Properties } from '../types.js';
 import { AvatarViewModel } from './AvatarViewModel.js';
 
 type Attributes = Map<string, string>;
+type ViewBox = { x: number; y: number; width: number; height: number };
 
 export class AvatarModel {
-  private definition: Definition;
-  private body: string;
-  private properties: Properties;
-  private attributes: Attributes;
+  private viewBoxMap: Record<string, ViewBox> = {};
 
   constructor(
-    definition: Definition,
-    body: string,
-    properties: Properties,
-    attributes: Attributes,
-  ) {
-    this.definition = definition;
-    this.body = body;
-    this.properties = properties;
-    this.attributes = attributes;
-  }
+    private body: string,
+    private readonly attributes: Attributes = new Map(),
+    private readonly properties: Properties = new Map(),
+    private readonly metadata: Metadata = {},
+  ) {}
 
-  getViewBoxWidth(): number {
-    return this.definition.body.width;
-  }
+  getViewBox(): ViewBox {
+    const viewBoxAttribute = this.attributes.get('viewBox');
 
-  getViewBoxHeight(): number {
-    return this.definition.body.height;
+    if (!viewBoxAttribute) {
+      throw new Error('Missing attribute "viewBox"');
+    }
+
+    return (this.viewBoxMap[viewBoxAttribute] ??=
+      this.parseViewBox(viewBoxAttribute));
   }
 
   getMetadata(): Metadata {
-    return this.definition.metadata ?? {};
+    return this.metadata;
   }
 
   getProperties(): Properties {
@@ -54,8 +50,6 @@ export class AvatarModel {
   }
 
   toView(): AvatarViewModel {
-    this.setMissingDefaultAttributes();
-
     const attributes = SvgHelper.createAttrString(this.getAttributes());
     const metadata = LicenseHelper.xml(this.getMetadata());
 
@@ -64,16 +58,11 @@ export class AvatarModel {
     return new AvatarViewModel(this.getMetadata(), svg, this.getProperties());
   }
 
-  private setMissingDefaultAttributes() {
-    if (!this.attributes.has('xmlns')) {
-      this.attributes.set('xmlns', 'http://www.w3.org/2000/svg');
-    }
+  private parseViewBox(viewBox: string): ViewBox {
+    const [x, y, width, height] = viewBox
+      .split(' ')
+      .map((value) => Number(value));
 
-    if (!this.attributes.has('viewBox')) {
-      this.attributes.set(
-        'viewBox',
-        `0 0 ${this.getViewBoxWidth()} ${this.getViewBoxHeight()}`,
-      );
-    }
+    return { x, y, width, height };
   }
 }

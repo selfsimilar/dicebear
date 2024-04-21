@@ -36,6 +36,8 @@ export class Style<
         .map(({ name, value }) => [name, value]),
     );
 
+    this.setMissingDefaultAttributes(attributes);
+
     this.defineColorProperties(prng, options, properties);
     this.defineComponentProperties(prng, options, properties);
 
@@ -60,7 +62,12 @@ export class Style<
       this.definitionModel.getBody(),
     ].join('');
 
-    return new AvatarModel(this.definition, body, properties, attributes);
+    return new AvatarModel(
+      body,
+      attributes,
+      properties,
+      this.definition.metadata,
+    );
   }
 
   getDefinition(): Definition {
@@ -76,6 +83,19 @@ export class Style<
     return (this.optionsStruct ??= StructHelper.buildStructByDefinitionModel(
       this.definitionModel,
     ));
+  }
+
+  private setMissingDefaultAttributes(attributes: Map<string, string>) {
+    if (!attributes.has('xmlns')) {
+      attributes.set('xmlns', 'http://www.w3.org/2000/svg');
+    }
+
+    if (!attributes.has('viewBox')) {
+      attributes.set(
+        'viewBox',
+        `0 0 ${this.definition.body.width} ${this.definition.body.height}`,
+      );
+    }
   }
 
   private buildComponentSymbol(component: Component, properties: Properties) {
