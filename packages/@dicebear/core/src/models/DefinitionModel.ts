@@ -1,4 +1,4 @@
-import { DependencyHelper } from '../helpers/DependencyHelper';
+import { DependencyHelper } from '../helpers/DependencyHelper.js';
 import type {
   Color,
   Component,
@@ -6,7 +6,7 @@ import type {
   Definition,
   Dependencies,
   Properties,
-} from '../types';
+} from '../types.js';
 
 type IndexedComponents = Map<string, Component>;
 type IndexedComponentValues = Map<string, Map<string, ComponentValue>>;

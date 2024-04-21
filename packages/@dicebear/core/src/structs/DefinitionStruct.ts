@@ -1,7 +1,7 @@
 import { array, integer, object, optional, string } from 'superstruct';
-import { MetadataStruct } from './MetadataStruct';
-import { ComponentStruct } from './ComponentStruct';
-import { ColorStruct } from './ColorStruct';
+import { MetadataStruct } from './MetadataStruct.js';
+import { ComponentStruct } from './ComponentStruct.js';
+import { ColorStruct } from './ColorStruct.js';
 
 export const DefinitionStruct = object({
   metadata: optional(MetadataStruct),

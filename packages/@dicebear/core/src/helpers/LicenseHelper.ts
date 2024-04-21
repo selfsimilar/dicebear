@@ -1,4 +1,4 @@
-import { Metadata } from '../types.js';
+import type { Metadata } from '../types.js';
 import { SvgHelper } from './SvgHelper.js';
 
 export class LicenseHelper {

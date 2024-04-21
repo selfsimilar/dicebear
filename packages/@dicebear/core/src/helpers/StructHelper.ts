@@ -6,9 +6,9 @@ import {
   nonempty,
   object,
 } from 'superstruct';
-import { Types } from '../structs/Types';
+import { Types } from '../structs/Types.js';
 import type { ObjectSchema } from 'superstruct/dist/utils';
-import { DefinitionModel } from '../models/DefinitionModel';
+import { DefinitionModel } from '../models/DefinitionModel.js';
 
 export class StructHelper {
   static buildStructByDefinitionModel(
@@ -56,7 +56,7 @@ export class StructHelper {
         }
 
         return acc;
-      }, {} as ObjectSchema) ?? {},
+      }, {} as ObjectSchema),
     );
   }
 
@@ -65,12 +65,12 @@ export class StructHelper {
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
       definition.getColors().reduce((acc, color) => {
-        acc[color.name] = nonempty(
+        acc[`${color.name}Color`] = nonempty(
           defaulted(Types.array(Types.color()), color.values),
         );
 
         return acc;
-      }, {} as ObjectSchema) ?? {},
+      }, {} as ObjectSchema),
     );
   }
 }

@@ -1,4 +1,4 @@
-import { Metadata, Properties } from '../types';
+import type { Metadata, Properties } from '../types.js';
 
 export class AvatarViewModel {
   private readonly svg: string;

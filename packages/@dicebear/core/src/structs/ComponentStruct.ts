@@ -1,5 +1,5 @@
 import { array, integer, object, optional, string } from 'superstruct';
-import { ComponentValueStruct } from './ComponentValueStruct';
+import { ComponentValueStruct } from './ComponentValueStruct.js';
 
 export const ComponentStruct = object({
   name: string(),

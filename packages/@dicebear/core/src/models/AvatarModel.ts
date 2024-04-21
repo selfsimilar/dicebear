@@ -1,7 +1,7 @@
-import { LicenseHelper } from '../helpers/LicenseHelper';
-import { SvgHelper } from '../helpers/SvgHelper';
-import { Definition, Metadata, Properties } from '../types';
-import { AvatarViewModel } from './AvatarViewModel';
+import { LicenseHelper } from '../helpers/LicenseHelper.js';
+import { SvgHelper } from '../helpers/SvgHelper.js';
+import type { Definition, Metadata, Properties } from '../types.js';
+import { AvatarViewModel } from './AvatarViewModel.js';
 
 type Attributes = Map<string, string>;
 

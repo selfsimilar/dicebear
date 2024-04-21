@@ -1,4 +1,4 @@
-import { Dependencies } from '../types';
+import type { Dependencies } from '../types.js';
 
 export class DependencyHelper {
   static getDependenciesFromSvg(svg: string): Dependencies {

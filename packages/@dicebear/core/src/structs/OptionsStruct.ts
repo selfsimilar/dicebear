@@ -8,7 +8,7 @@ import {
   enums,
   nonempty,
 } from 'superstruct';
-import { Types } from './Types';
+import { Types } from './Types.js';
 
 export const OptionsStruct = object({
   seed: defaulted(string(), ''),

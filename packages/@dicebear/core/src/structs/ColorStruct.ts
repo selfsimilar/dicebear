@@ -1,5 +1,5 @@
 import { array, nonempty, object, optional, string } from 'superstruct';
-import { Types } from './Types';
+import { Types } from './Types.js';
 
 export const ColorStruct = object({
   name: string(),
