@@ -4,7 +4,7 @@ import { describe, it } from 'node:test';
 import { StructHelper } from '../../lib/helpers/StructHelper.js';
 import shapeFaceDefinition from '../fixtures/definitions/shape-face.json' assert { type: 'json' };
 import initialsDefinition from '../fixtures/definitions/initials.json' assert { type: 'json' };
-import minimumDefinition from '../fixtures/definitions/minimum.json' assert { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
 import { DefinitionModel } from '../../lib/models/DefinitionModel.js';
 import { Struct } from 'superstruct';
 
@@ -36,12 +36,12 @@ describe('StructHelper', () => {
     assert.ok(typeof initialsStruct.schema.textColor !== 'undefined');
     assert.ok(typeof initialsStruct.schema.backgroundColor !== 'undefined');
 
-    // minimum definition
-    const minimumStruct = StructHelper.buildStructByDefinitionModel(
-      new DefinitionModel(minimumDefinition),
+    // minimal definition
+    const minimalStruct = StructHelper.buildStructByDefinitionModel(
+      new DefinitionModel(minimalDefinition),
     );
 
-    assert.ok(minimumStruct instanceof Struct);
+    assert.ok(minimalStruct instanceof Struct);
   });
 
   it('buildComponentsStructByDefinitionModel', () => {
@@ -66,12 +66,12 @@ describe('StructHelper', () => {
 
     assert.ok(initialsStruct instanceof Struct);
 
-    // minimum definition
-    const minimumStruct = StructHelper.buildStructByDefinitionModel(
-      new DefinitionModel(minimumDefinition),
+    // minimal definition
+    const minimalStruct = StructHelper.buildStructByDefinitionModel(
+      new DefinitionModel(minimalDefinition),
     );
 
-    assert.ok(minimumStruct instanceof Struct);
+    assert.ok(minimalStruct instanceof Struct);
   });
 
   it('buildColorsStructByDefinitionModel', () => {
@@ -95,11 +95,11 @@ describe('StructHelper', () => {
     assert.ok(typeof initialsStruct.schema.textColor !== 'undefined');
     assert.ok(typeof initialsStruct.schema.backgroundColor !== 'undefined');
 
-    // minimum definition
-    const minimumStruct = StructHelper.buildStructByDefinitionModel(
-      new DefinitionModel(minimumDefinition),
+    // minimal definition
+    const minimalStruct = StructHelper.buildStructByDefinitionModel(
+      new DefinitionModel(minimalDefinition),
     );
 
-    assert.ok(minimumStruct instanceof Struct);
+    assert.ok(minimalStruct instanceof Struct);
   });
 });

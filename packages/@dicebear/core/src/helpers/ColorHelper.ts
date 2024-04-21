@@ -70,7 +70,7 @@ export class ColorHelper {
     prng: Prng,
     backgroundType: Array<'solid' | 'gradientLinear'>,
   ): 'solid' | 'gradientLinear' {
-    return prng.pick(backgroundType, 'solid') ?? 'solid';
+    return prng.pick(backgroundType, 'solid');
   }
 
   static getHighestContrastColor(

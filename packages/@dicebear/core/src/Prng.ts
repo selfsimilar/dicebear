@@ -39,6 +39,8 @@ export class Prng {
     );
   }
 
+  pick<T>(arr: T[]): T | undefined;
+  pick<T>(arr: T[], fallback: T): T;
   pick<T>(arr: T[], fallback?: T): T | undefined {
     if (arr.length === 0) {
       this.next();

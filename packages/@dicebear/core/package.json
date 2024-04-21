@@ -38,7 +38,7 @@
     "prebuild": "del-cli lib",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "NODE_V8_COVERAGE=tests/.coverage node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
+    "test": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",

@@ -84,6 +84,10 @@ export class SvgHelper {
     const translateX = x ? (width * x) / 100 : 0;
     const translateY = y ? (height * y) / 100 : 0;
 
+    if (!translateX && !translateY) {
+      return;
+    }
+
     avatar.setBody(
       `<g transform="translate(${translateX} ${translateY})">${avatar.getBody()}</g>`,
     );
@@ -148,7 +152,13 @@ export class SvgHelper {
   static replacePlaceholders(avatar: AvatarModel): void {
     avatar.setBody(
       avatar.getBody().replace(/\{\{([^}]+)\}\}/gi, (match, m1) => {
-        return avatar.getAttributes().get(m1) || '';
+        const placeholder = avatar.getProperties().get(m1);
+
+        if (typeof placeholder === 'string') {
+          return placeholder;
+        }
+
+        return '';
       }),
     );
   }
