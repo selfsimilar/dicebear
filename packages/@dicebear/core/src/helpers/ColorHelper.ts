@@ -74,10 +74,10 @@ export class ColorHelper {
   }
 
   static getHighestContrastColor(
-    color: string,
+    colors: string[],
     contrastColors: string[],
   ): string | undefined {
-    const colorContrastRatio = ColorHelper.getContrastRatio(color);
+    const colorContrastRatio = colors.map(ColorHelper.getContrastRatio);
 
     let highestContrastColor: string | undefined = undefined;
     let highestContrastRatioDifference = 0;
@@ -90,8 +90,10 @@ export class ColorHelper {
       const contrastColorContrastRatio =
         ColorHelper.getContrastRatio(contrastColor);
 
-      const contrastRatioDifference = Math.abs(
-        colorContrastRatio - contrastColorContrastRatio,
+      const contrastRatioDifference = Math.min(
+        ...colorContrastRatio.map((ratio) =>
+          Math.abs(ratio - contrastColorContrastRatio),
+        ),
       );
 
       if (

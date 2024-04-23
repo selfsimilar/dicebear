@@ -97,52 +97,60 @@ describe('ColorHelper', () => {
   });
 
   it('getHighestContrastColor', () => {
-    assert.equal(ColorHelper.getHighestContrastColor('ffffff', []), undefined);
-
     assert.equal(
-      ColorHelper.getHighestContrastColor('ffffff', ['transparent']),
+      ColorHelper.getHighestContrastColor(['ffffff'], []),
       undefined,
     );
 
     assert.equal(
-      ColorHelper.getHighestContrastColor('ffffff', ['ffffff']),
+      ColorHelper.getHighestContrastColor(['ffffff'], ['transparent']),
+      undefined,
+    );
+
+    assert.equal(
+      ColorHelper.getHighestContrastColor(['ffffff'], ['ffffff']),
       'ffffff',
     );
 
     assert.equal(
-      ColorHelper.getHighestContrastColor('ffffff', ['000000']),
+      ColorHelper.getHighestContrastColor(['ffffff'], ['000000']),
       '000000',
     );
 
     assert.equal(
-      ColorHelper.getHighestContrastColor('ffffff', ['000000', 'ffffff']),
+      ColorHelper.getHighestContrastColor(['ffffff'], ['000000', 'ffffff']),
       '000000',
     );
 
     assert.equal(
-      ColorHelper.getHighestContrastColor('ffffff', [
-        'ff0000',
-        '00ff00',
-        '0000ff',
-      ]),
+      ColorHelper.getHighestContrastColor(
+        ['ffffff'],
+        ['ff0000', '00ff00', '0000ff'],
+      ),
       '0000ff',
     );
 
     assert.equal(
-      ColorHelper.getHighestContrastColor('00ff00', [
-        'ff0000',
-        '00ff00',
-        '0000ff',
-      ]),
+      ColorHelper.getHighestContrastColor(
+        ['00ff00'],
+        ['ff0000', '00ff00', '0000ff'],
+      ),
       '0000ff',
     );
 
     assert.equal(
-      ColorHelper.getHighestContrastColor('0000ff', [
-        'ff0000',
-        '00ff00',
-        '0000ff',
-      ]),
+      ColorHelper.getHighestContrastColor(
+        ['0000ff'],
+        ['ff0000', '00ff00', '0000ff'],
+      ),
+      '00ff00',
+    );
+
+    assert.equal(
+      ColorHelper.getHighestContrastColor(
+        ['ffffff', '000000'],
+        ['ff0000', '00ff00', '0000ff'],
+      ),
       '00ff00',
     );
   });

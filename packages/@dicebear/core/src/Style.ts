@@ -206,16 +206,20 @@ export class Style<
       let availableColors = options[`${color.name}Color`] as string[];
 
       if (color.notEqualTo) {
-        const notEqualTo = properties.get(`${color.notEqualTo}Color`);
+        let notEqualTo = properties.get(`${color.notEqualTo}Color`);
 
-        if (typeof notEqualTo !== 'string') {
+        if (typeof notEqualTo === 'string') {
+          notEqualTo = [notEqualTo];
+        }
+
+        if (!Array.isArray(notEqualTo)) {
           throw new DependencyError(
             `Color ${color.name} cannot be set if ${color.notEqualTo} is not set.`,
           );
         }
 
         const newAvailableColors = availableColors.filter(
-          (color) => color !== notEqualTo,
+          (color) => !notEqualTo.includes(color),
         );
 
         if (newAvailableColors.length > 0) {
@@ -224,9 +228,13 @@ export class Style<
       }
 
       if (color.contrastTo) {
-        const contrastTo = properties.get(`${color.contrastTo}Color`);
+        let contrastTo = properties.get(`${color.contrastTo}Color`);
 
-        if (typeof contrastTo !== 'string') {
+        if (typeof contrastTo === 'string') {
+          contrastTo = [contrastTo];
+        }
+
+        if (!Array.isArray(contrastTo)) {
           throw new DependencyError(
             `Color ${color.name} cannot be set if ${color.contrastTo} is not set.`,
           );
