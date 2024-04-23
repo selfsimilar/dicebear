@@ -198,10 +198,15 @@ export class Style<
     properties: Properties,
   ) {
     for (const color of this.definitionModel.getColors()) {
-      let availableColors = options[color.name] as string[];
+      if (color.name === 'background') {
+        // Should be handled by the Core class
+        continue;
+      }
+
+      let availableColors = options[`${color.name}Color`] as string[];
 
       if (color.notEqualTo) {
-        const notEqualTo = properties.get(color.notEqualTo);
+        const notEqualTo = properties.get(`${color.notEqualTo}Color`);
 
         if (typeof notEqualTo !== 'string') {
           throw new DependencyError(
@@ -219,7 +224,7 @@ export class Style<
       }
 
       if (color.contrastTo) {
-        const contrastTo = properties.get(color.contrastTo);
+        const contrastTo = properties.get(`${color.contrastTo}Color`);
 
         if (typeof contrastTo !== 'string') {
           throw new DependencyError(
@@ -237,7 +242,7 @@ export class Style<
         }
       }
 
-      const colorValueOption = options[color.name] as string[];
+      const colorValueOption = options[`${color.name}Color`] as string[];
       const colorValue = prng.pick(colorValueOption);
 
       properties.set(`${color.name}Color`, colorValue ?? null);
