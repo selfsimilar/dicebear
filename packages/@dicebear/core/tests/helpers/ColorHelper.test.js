@@ -76,10 +76,6 @@ describe('ColorHelper', () => {
 
     assert.equal(
       ColorHelper.getBackgroundType(prng, ['solid', 'gradientLinear']),
-      'solid',
-    );
-    assert.equal(
-      ColorHelper.getBackgroundType(prng, ['solid', 'gradientLinear']),
       'gradientLinear',
     );
     assert.equal(
@@ -92,7 +88,11 @@ describe('ColorHelper', () => {
     );
     assert.equal(
       ColorHelper.getBackgroundType(prng, ['solid', 'gradientLinear']),
-      'gradientLinear',
+      'solid',
+    );
+    assert.equal(
+      ColorHelper.getBackgroundType(prng, ['solid', 'gradientLinear']),
+      'solid',
     );
   });
 
@@ -152,6 +152,16 @@ describe('ColorHelper', () => {
         ['ff0000', '00ff00', '0000ff'],
       ),
       '00ff00',
+    );
+
+    assert.equal(
+      ColorHelper.getHighestContrastColor(['f4511e'], ['ffffff', '000000']),
+      'ffffff',
+    );
+
+    assert.equal(
+      ColorHelper.getHighestContrastColor(['f4511e'], ['000000', 'ffffff']),
+      'ffffff',
     );
   });
 });

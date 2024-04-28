@@ -6,8 +6,7 @@ import { ColorStruct } from './structs/ColorStruct.js';
 import { ComponentStruct } from './structs/ComponentStruct.js';
 import { ComponentValueStruct } from './structs/ComponentValueStruct.js';
 
-export type Property = null | string | number | boolean | string[];
-export type Properties = Map<string, Property>;
+export type Properties = Map<string, unknown>;
 
 export type Color = Infer<typeof ColorStruct>;
 export type Component = Infer<typeof ComponentStruct>;

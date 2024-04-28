@@ -15,7 +15,7 @@
     }
   },
   "body": {
-    "content": "<text x=\"50%\" y=\"50%\" font-family=\"system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'\" font-size=\"50\" fill=\"{{colors.text}}\" text-anchor=\"middle\" dy=\"17.8\">{{initials}}</text>",
+    "content": "<text x=\"50%\" y=\"50%\" font-family=\"system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'\" font-size=\"50\" fill=\"url(#color-text)\" text-anchor=\"middle\" dy=\"17.8\">{{initials}}</text>",
     "width": 100,
     "height": 100
   },
@@ -23,27 +23,22 @@
     {
       "name": "background",
       "values": [
-        "00acc1",
-        "1e88e5",
-        "5e35b1",
-        "7cb342",
-        "8e24aa",
-        "039be5",
-        "43a047",
-        "00897b",
-        "3949ab",
-        "c0ca33",
-        "d81b60",
-        "e53935",
-        "f4511e",
-        "fb8c00",
-        "fdd835",
-        "ffb300"
+        "f64c4c",
+        "f2590d",
+        "0bd00b",
+        "0ac247",
+        "0ca2ed",
+        "4781f5",
+        "6e6ef7",
+        "8e5af6",
+        "bb47f5",
+        "f42af4",
+        "f538b6"
       ]
     },
     {
       "name": "text",
-      "values": ["000000", "ffffff"],
+      "values": ["ffffff", "000000"],
       "contrastTo": "background"
     }
   ]

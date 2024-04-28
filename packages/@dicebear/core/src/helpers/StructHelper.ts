@@ -1,8 +1,10 @@
 import {
   Struct,
+  array,
   assign,
   defaulted,
   enums,
+  integer,
   nonempty,
   object,
 } from 'superstruct';
@@ -33,23 +35,23 @@ export class StructHelper {
           .map((v) => v.name);
 
         acc[name] = defaulted(
-          Types.array(enums(componentNameList)),
+          array(enums(componentNameList)),
           componentDefaultList,
         );
 
         if (probability) {
-          acc[`${name}Probability`] = defaulted(Types.integer(), probability);
+          acc[`${name}Probability`] = defaulted(integer(), probability);
         }
 
         if (rotation) {
           acc[`${name}Rotation`] = defaulted(
-            nonempty(Types.array(Types.rotation())),
+            nonempty(array(Types.rotation())),
             rotation,
           );
         }
 
         if (offset) {
-          const OffsetType = nonempty(Types.array(Types.integer()));
+          const OffsetType = nonempty(array(integer()));
 
           acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
           acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
@@ -66,7 +68,7 @@ export class StructHelper {
     return object(
       definition.getColors().reduce((acc, color) => {
         acc[`${color.name}Color`] = nonempty(
-          defaulted(Types.array(Types.color()), color.values),
+          defaulted(array(Types.color()), color.values),
         );
 
         return acc;

@@ -73,8 +73,8 @@ export class DefinitionModel {
 
   getDependenciesByProperties(properties: Properties): Dependencies {
     const dependencies: Dependencies = {
-      components: new Set(...this.bodyDependencies.components),
-      colors: new Set(...this.bodyDependencies.colors),
+      components: new Set(this.bodyDependencies.components),
+      colors: new Set(this.bodyDependencies.colors),
     };
 
     const unprocessed = [...this.bodyDependencies.components];

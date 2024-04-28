@@ -75,6 +75,20 @@ describe('Prng', () => {
 
     assert.equal(prng.pick([]), undefined);
     assert.equal(prng.pick([], 'fallback'), 'fallback');
+
+    // Unsorted array should output the same result
+    const prngUnsorted = Prng.fromSeed('test');
+
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'c');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'b');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'b');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'b');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'b');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'a');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'c');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'b');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'c');
+    assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'a');
   });
 
   it('shuffle', () => {

@@ -1,23 +1,12 @@
 import { Prng } from '../Prng.js';
+import { ColorModel } from '../models/ColorModel.js';
 
 export class ColorHelper {
-  static convertColor(color: string): string {
-    if (color.startsWith('#')) {
-      return color;
-    }
-
-    if (!color) {
-      return 'transparent';
-    }
-
-    return 'transparent' === color ? color : `#${color}`;
-  }
-
   static getBackgroundColors(
     prng: Prng,
-    backgroundColor: string[],
+    backgroundColor: ColorModel[],
     backgroundType: 'solid' | 'gradientLinear',
-  ): [string, string] {
+  ): [ColorModel, ColorModel] {
     let shuffledBackgroundColors = prng.shuffle(backgroundColor);
 
     if (shuffledBackgroundColors.length <= 1) {
@@ -43,17 +32,14 @@ export class ColorHelper {
     }
 
     if (shuffledBackgroundColors.length === 0) {
-      shuffledBackgroundColors = ['transparent'];
+      shuffledBackgroundColors = [new ColorModel('transparent')];
     }
 
     const primary = shuffledBackgroundColors[0];
     const secondary =
       shuffledBackgroundColors[1] ?? shuffledBackgroundColors[0];
 
-    return [
-      ColorHelper.convertColor(primary),
-      ColorHelper.convertColor(secondary),
-    ];
+    return [primary, secondary];
   }
 
   static getBackgroundRotation(
@@ -73,46 +59,40 @@ export class ColorHelper {
     return prng.pick(backgroundType, 'solid');
   }
 
-  static getHighestContrastColor(
-    colors: string[],
-    contrastColors: string[],
-  ): string | undefined {
-    const colorContrastRatio = colors.map(ColorHelper.getContrastRatio);
-
-    let highestContrastColor: string | undefined = undefined;
-    let highestContrastRatioDifference = 0;
+  static getContrastColor(
+    colors: ColorModel[],
+    contrastColors: ColorModel[],
+  ): ColorModel | undefined {
+    let highestContrastColor: ColorModel | undefined = undefined;
+    let highestContrast = 0;
 
     for (const contrastColor of contrastColors) {
-      if (contrastColor === 'transparent') {
+      if (contrastColor.isTransparent()) {
         continue;
       }
 
-      const contrastColorContrastRatio =
-        ColorHelper.getContrastRatio(contrastColor);
-
-      const contrastRatioDifference = Math.min(
-        ...colorContrastRatio.map((ratio) =>
-          Math.abs(ratio - contrastColorContrastRatio),
+      const contrast = Math.min(
+        ...colors.map((color) =>
+          ColorHelper.getContrastRatio(contrastColor, color),
         ),
       );
 
-      if (
-        !highestContrastColor ||
-        contrastRatioDifference > highestContrastRatioDifference
-      ) {
+      if (!highestContrastColor || contrast > highestContrast) {
         highestContrastColor = contrastColor;
-        highestContrastRatioDifference = contrastRatioDifference;
+        highestContrast = contrast;
       }
     }
 
     return highestContrastColor;
   }
 
-  static getContrastRatio(color: string): number {
-    const r = parseInt(color.substring(0, 2), 16);
-    const g = parseInt(color.substring(2, 4), 16);
-    const b = parseInt(color.substring(4, 6), 16);
+  static getContrastRatio(color1: ColorModel, color2: ColorModel) {
+    // https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio
+    const luminance = [
+      color1.getRelativeLuminance(),
+      color2.getRelativeLuminance(),
+    ];
 
-    return (r * 299 + g * 587 + b * 114) / 1000;
+    return (Math.max(...luminance) + 0.05) / (Math.min(...luminance) + 0.05);
   }
 }

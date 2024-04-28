@@ -5,24 +5,23 @@
  * Copyright (c) 2024 Florian Körner
  */
 
-import { Core } from './Core.js';
+import { Avatar } from './Avatar.js';
 import { Style } from './Style.js';
-import { GenericError } from './errors/GenericError.js';
-import { DependencyError } from './errors/DependencyError.js';
+import { AvatarError } from './errors/AvatarError.js';
 import type { Definition, Options } from './types.js';
 
 export function createStyle<O extends Record<string, unknown>>(
   definition: Definition,
 ): Style<O> {
-  return Style.fromDefinition(definition);
+  return new Style<O>(definition);
 }
 
 export function createAvatar<O extends Record<string, unknown>>(
   style: Style<O>,
   options: Partial<Options<O>> = {},
 ) {
-  return Core.createAvatar(style, options);
+  return new Avatar(style, options);
 }
 
-export { Core, Style, GenericError, DependencyError };
+export { Avatar, Style, AvatarError };
 export type { Definition, Options };

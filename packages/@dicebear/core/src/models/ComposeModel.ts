@@ -1,20 +1,26 @@
+import { Prng } from '../Prng.js';
 import { LicenseHelper } from '../helpers/LicenseHelper.js';
 import { SvgHelper } from '../helpers/SvgHelper.js';
-import type { Metadata, Properties } from '../types.js';
-import { AvatarViewModel } from './AvatarViewModel.js';
+import type { Metadata, Options, Properties } from '../types.js';
 
 type Attributes = Map<string, string>;
 type ViewBox = { x: number; y: number; width: number; height: number };
 
-export class AvatarModel {
+export class ComposeModel<O extends Record<string, unknown>> {
+  private readonly properties: Properties = new Map();
+  private readonly attributes: Attributes = new Map();
+
+  private readonly prng: Prng;
+
+  private body: string = '';
   private viewBoxMap: Record<string, ViewBox> = {};
 
   constructor(
-    private body: string,
-    private readonly attributes: Attributes = new Map(),
-    private readonly properties: Properties = new Map(),
-    private readonly metadata: Metadata = {},
-  ) {}
+    private readonly coreOptions: Options,
+    private readonly styleOptions: O,
+  ) {
+    this.prng = Prng.fromSeed(coreOptions.seed);
+  }
 
   getViewBox(): ViewBox {
     const viewBoxAttribute = this.attributes.get('viewBox');
@@ -27,8 +33,16 @@ export class AvatarModel {
       this.parseViewBox(viewBoxAttribute));
   }
 
-  getMetadata(): Metadata {
-    return this.metadata;
+  getPrng(): Prng {
+    return this.prng;
+  }
+
+  getCoreOptions(): Options {
+    return this.coreOptions;
+  }
+
+  getStyleOptions(): O {
+    return this.styleOptions;
   }
 
   getProperties(): Properties {
@@ -49,13 +63,11 @@ export class AvatarModel {
     return this.body;
   }
 
-  toView(): AvatarViewModel {
+  getContent(): string {
     const attributes = SvgHelper.createAttrString(this.getAttributes());
     const metadata = LicenseHelper.xml(this.getMetadata());
 
-    const svg = `<svg ${attributes}>${metadata}${this.getBody()}</svg>`;
-
-    return new AvatarViewModel(this.getMetadata(), svg, this.getProperties());
+    return `<svg ${attributes}>${metadata}${this.getBody()}</svg>`;
   }
 
   private parseViewBox(viewBox: string): ViewBox {

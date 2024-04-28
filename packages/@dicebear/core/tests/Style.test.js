@@ -35,12 +35,6 @@ describe('Style', () => {
     assert.deepEqual(style.getDefinition(), expected);
   });
 
-  it('getDefinitionModel', () => {
-    const style = Style.fromDefinition(initials);
-
-    assert.deepEqual(style.getDefinitionModel().getBody(), initials.body);
-  });
-
   it('getOptionsStruct', () => {
     const style = Style.fromDefinition(initials);
     const struct = style.getOptionsStruct();

@@ -1,13 +1,13 @@
 import { Struct, mask } from 'superstruct';
 import type { Color, Component, Definition, Properties } from './types.js';
-import { AvatarModel } from './models/AvatarModel.js';
+import { AvatarModel, ComposeModel } from './models/ComposeModel.js';
 import { Prng } from './Prng.js';
 import { StructHelper } from './helpers/StructHelper.js';
 import { ColorHelper } from './helpers/ColorHelper.js';
-import { DependencyError } from './errors/DependencyError.js';
 import { DefinitionModel } from './models/DefinitionModel.js';
 import { DefinitionStruct } from './structs/DefinitionStruct.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
+import { ColorModel } from './models/ColorModel.js';
 
 export class Style<
   O extends Record<string, unknown> = Record<string, unknown>,
@@ -23,13 +23,24 @@ export class Style<
     this.definitionModel = new DefinitionModel(this.definition);
   }
 
-  static fromDefinition<O extends Record<string, unknown>>(
-    definition: Definition,
-  ): Style<O> {
-    return new Style<O>(definition);
+  getDefinition(): Definition {
+    return this.definition;
   }
 
-  create(prng: Prng, options: O, properties: Properties): AvatarModel {
+  validateOptions(options: unknown): Required<O> {
+    return mask(options, this.getOptionsStruct());
+  }
+
+  defineProperties(composeModel: ComposeModel<O>) {
+    this.defineColorProperties(composeModel);
+    this.defineComponentProperties(composeModel);
+  }
+
+  create(
+    prng: Prng,
+    options: Required<O>,
+    properties: Properties,
+  ): AvatarModel {
     const attributes = new Map<string, string>(
       this.definitionModel
         .getAttributes()
@@ -37,9 +48,6 @@ export class Style<
     );
 
     this.setMissingDefaultAttributes(attributes);
-
-    this.defineColorProperties(prng, options, properties);
-    this.defineComponentProperties(prng, options, properties);
 
     const dependencies =
       this.definitionModel.getDependenciesByProperties(properties);
@@ -59,7 +67,7 @@ export class Style<
         this.buildComponentSymbol(component, properties),
       ),
       '</defs>',
-      this.definitionModel.getBody(),
+      this.definitionModel.getBody().content,
     ].join('');
 
     return new AvatarModel(
@@ -70,16 +78,7 @@ export class Style<
     );
   }
 
-  getDefinition(): Definition {
-    return this.definition;
-  }
-
-  getDefinitionModel(): DefinitionModel {
-    return this.definitionModel;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getOptionsStruct(): Struct<any, any> {
+  private getOptionsStruct() {
     return (this.optionsStruct ??= StructHelper.buildStructByDefinitionModel(
       this.definitionModel,
     ));
@@ -128,23 +127,21 @@ export class Style<
   }
 
   private buildColorGradient(color: Color, properties: Properties) {
-    const rawColorValue = properties.get(`${color.name}Color`);
+    const colorName = SvgHelper.escape(color.name);
+    const colorValue = properties.get(`${color.name}Color`);
 
-    if (typeof rawColorValue !== 'string') {
+    if (!(colorValue instanceof ColorModel)) {
       return '';
     }
 
-    const colorName = SvgHelper.escape(color.name);
-    const colorValue = ColorHelper.convertColor(rawColorValue);
-
-    return `<linearGradient id="color-${colorName}"><stop stop-color="${colorValue}"/></linearGradient>`;
+    return `<linearGradient id="color-${colorName}"><stop stop-color="rgba(${colorValue.getRgba().join(', ')})"/></linearGradient>`;
   }
 
-  private defineComponentProperties(
-    prng: Prng,
-    options: O,
-    properties: Properties,
-  ) {
+  private defineComponentProperties(composeModel: ComposeModel<O>) {
+    const properties = composeModel.getProperties();
+    const options = composeModel.getStyleOptions();
+    const prng = composeModel.getPrng();
+
     for (const component of this.definitionModel.getComponents()) {
       const componentValueNameOption = options[component.name] as string[];
       const componentValueName = prng.pick(componentValueNameOption);
@@ -192,34 +189,28 @@ export class Style<
     }
   }
 
-  private defineColorProperties(
-    prng: Prng,
-    options: O,
-    properties: Properties,
-  ) {
+  private defineColorProperties(composeModel: ComposeModel<O>) {
+    const properties = composeModel.getProperties();
+    const options = composeModel.getStyleOptions();
+    const prng = composeModel.getPrng();
+
     for (const color of this.definitionModel.getColors()) {
       if (color.name === 'background') {
-        // Should be handled by the Core class
+        // Should be handled by the Avatar class
         continue;
       }
 
-      let availableColors = options[`${color.name}Color`] as string[];
+      const optionKey = `${color.name}Color`;
+      const optionValue = options[optionKey] as string[];
+
+      let availableColors = optionValue.map((c) => new ColorModel(c));
 
       if (color.notEqualTo) {
-        let notEqualTo = properties.get(`${color.notEqualTo}Color`);
-
-        if (typeof notEqualTo === 'string') {
-          notEqualTo = [notEqualTo];
-        }
-
-        if (!Array.isArray(notEqualTo)) {
-          throw new DependencyError(
-            `Color ${color.name} cannot be set if ${color.notEqualTo} is not set.`,
-          );
-        }
+        const propertyKey = `${color.notEqualTo}Color`;
+        const notEqualTo = (properties.get(propertyKey) ?? []) as ColorModel[];
 
         const newAvailableColors = availableColors.filter(
-          (color) => !notEqualTo.includes(color),
+          (color) => !notEqualTo.find((c) => c.getHex() === color.getHex()),
         );
 
         if (newAvailableColors.length > 0) {
@@ -228,19 +219,10 @@ export class Style<
       }
 
       if (color.contrastTo) {
-        let contrastTo = properties.get(`${color.contrastTo}Color`);
+        const propertyKey = `${color.contrastTo}Color`;
+        const contrastTo = (properties.get(propertyKey) ?? []) as ColorModel[];
 
-        if (typeof contrastTo === 'string') {
-          contrastTo = [contrastTo];
-        }
-
-        if (!Array.isArray(contrastTo)) {
-          throw new DependencyError(
-            `Color ${color.name} cannot be set if ${color.contrastTo} is not set.`,
-          );
-        }
-
-        const colorValue = ColorHelper.getHighestContrastColor(
+        const colorValue = ColorHelper.getContrastColor(
           contrastTo,
           availableColors,
         );
@@ -250,10 +232,9 @@ export class Style<
         }
       }
 
-      const colorValueOption = options[`${color.name}Color`] as string[];
-      const colorValue = prng.pick(colorValueOption);
+      const colorValue = prng.pick(availableColors);
 
-      properties.set(`${color.name}Color`, colorValue ?? null);
+      properties.set(`${color.name}Color`, colorValue ? [colorValue] : null);
     }
   }
 }

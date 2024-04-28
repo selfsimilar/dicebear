@@ -1,5 +1,6 @@
 import { Prng } from '../Prng.js';
-import { AvatarModel } from '../models/AvatarModel.js';
+import { AvatarModel } from '../models/ComposeModel.js';
+import { ColorModel } from '../models/ColorModel.js';
 
 export class SvgHelper {
   static escape(content: string): string {
@@ -36,8 +37,8 @@ export class SvgHelper {
 
   static addBackground(
     avatar: AvatarModel,
-    primaryColor: string,
-    secondaryColor: string,
+    primaryColor: ColorModel,
+    secondaryColor: ColorModel,
     type: 'solid' | 'gradientLinear',
     rotation: number,
   ) {
@@ -46,7 +47,7 @@ export class SvgHelper {
     switch (type) {
       case 'solid':
         avatar.setBody(
-          `<rect fill="${primaryColor}" width="${width}" height="${height}" />` +
+          `<rect fill="rgba(${primaryColor.getRgba().join(', ')})" width="${width}" height="${height}" />` +
             avatar.getBody(),
         );
 
@@ -57,8 +58,8 @@ export class SvgHelper {
           `<rect fill="url(#backgroundLinear)" width="${width}" height="${height}" />` +
             `<defs>` +
             `<linearGradient id="backgroundLinear" gradientTransform="rotate(${rotation} 0.5 0.5)">` +
-            `<stop stop-color="${primaryColor}"/>` +
-            `<stop offset="1" stop-color="${secondaryColor}"/>` +
+            `<stop stop-color="rgba(${primaryColor.getRgba().join(', ')})"/>` +
+            `<stop offset="1" stop-color="rgba(${secondaryColor.getRgba().join(', ')})"/>` +
             `</linearGradient>` +
             `</defs>` +
             avatar.getBody(),
