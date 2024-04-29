@@ -1,13 +1,12 @@
 import type { Options, Properties } from './types.js';
 import { mask } from 'superstruct';
 import { Style } from './Style.js';
-import { OptionsStruct } from './structs/OptionsStruct.js';
 import { Prng } from './Prng.js';
-import { ColorHelper } from './helpers/ColorHelper.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
 import { StringHelper } from './helpers/StringHelper.js';
 import { ColorModel } from './models/ColorModel.js';
-import { ComposeModel } from './models/ComposeModel.js';
+import { BuildModel } from './models/BuildModel.js';
+import { StructHelper } from './helpers/StructHelper.js';
 
 export class Avatar<O extends Record<string, unknown>> {
   private readonly properties: Properties = new Map();
@@ -17,16 +16,14 @@ export class Avatar<O extends Record<string, unknown>> {
     private readonly style: Style<O>,
     options: Partial<Options<O>> = {},
   ) {
-    const composeModel = new ComposeModel(
-      this.validateOptions(options),
-      style.validateOptions(options),
-    );
+    const buildModel = new BuildModel(this.validateOptions(options));
 
-    this.defineProperties(composeModel);
+    this.buildProperties(buildModel);
+    this.buildAttributes(buildModel);
+    this.buildBody(buildModel);
 
-    this.build(composeModel);
-
-    this.content = this.buildContent(composeModel);
+    this.properties = buildModel.getProperties();
+    this.content = '';
   }
 
   toString(): string {
@@ -48,54 +45,17 @@ export class Avatar<O extends Record<string, unknown>> {
     );
   }
 
-  private validateOptions(options: unknown): Options {
-    return mask(options, OptionsStruct);
+  private validateOptions(options: unknown): Options<O> {
+    return mask(
+      options,
+      StructHelper.buildStructByDefinition(this.style.getDefinition()),
+    ) as Options<O>;
   }
 
-  private defineProperties(composeModel: ComposeModel<O>) {
-    const properties = composeModel.getProperties();
-    const coreOptions = composeModel.getCoreOptions();
-    const styleOptions = composeModel.getStyleOptions();
-
-    let backgroundColorOption = coreOptions.backgroundColor;
-
-    if (Array.isArray(styleOptions.backgroundColor)) {
-      // The avatar style can also specify background colors.
-      backgroundColorOption = styleOptions.backgroundColor;
-    }
-
-    const backgroundType = ColorHelper.getBackgroundType(
-      composeModel.getPrng(),
-      coreOptions.backgroundType,
-    );
-
-    const backgroundColor = ColorHelper.getBackgroundColors(
-      composeModel.getPrng(),
-      backgroundColorOption.map((v: string) => new ColorModel(v)),
-      backgroundType,
-    );
-
-    const backgroundRotation = ColorHelper.getBackgroundRotation(
-      composeModel.getPrng(),
-      coreOptions.backgroundRotation,
-    );
-
-    properties.set('initials', StringHelper.getInitials(coreOptions.seed));
-    properties.set('seed', coreOptions.seed);
-    properties.set('flip', coreOptions.flip);
-    properties.set('rotate', coreOptions.rotate);
-    properties.set('scale', coreOptions.scale);
-    properties.set('radius', coreOptions.radius ?? 0);
-    properties.set('size', coreOptions.size ?? null);
-    properties.set('backgroundColor', backgroundColor);
-    properties.set('backgroundType', [backgroundType]);
-    properties.set('backgroundRotation', [backgroundRotation]);
-    properties.set('translateX', coreOptions.translateX);
-    properties.set('translateY', coreOptions.translateY);
-    properties.set('clip', coreOptions.clip);
-    properties.set('randomizeIds', coreOptions.randomizeIds);
-
-    this.style.defineProperties(composeModel);
+  private buildAttributes(buildModel: BuildModel<O>) {
+    const prng = buildModel.getPrng();
+    const options = buildModel.getOptions();
+    const attributes = buildModel.getAttributes();
   }
 
   private buildContent(

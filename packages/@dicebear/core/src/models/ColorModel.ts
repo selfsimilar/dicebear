@@ -1,5 +1,3 @@
-import { ColorError } from '../errors/ColorError';
-
 type Rgba = [number, number, number, number];
 
 export class ColorModel {
@@ -72,7 +70,7 @@ export class ColorModel {
       return [r * 17, g * 17, b * 17, 1];
     }
 
-    throw new ColorError(`Invalid color: ${color}`);
+    throw new Error(`Invalid color: ${color}`);
   }
 
   private toHex(color: [number, number, number, number]): string {

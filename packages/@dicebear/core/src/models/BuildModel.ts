@@ -1,12 +1,13 @@
 import { Prng } from '../Prng.js';
 import { LicenseHelper } from '../helpers/LicenseHelper.js';
+import { PropertiesHelper } from '../helpers/PropertiesHelper.js';
 import { SvgHelper } from '../helpers/SvgHelper.js';
-import type { Metadata, Options, Properties } from '../types.js';
+import type { Definition, Options, Properties } from '../types.js';
 
 type Attributes = Map<string, string>;
 type ViewBox = { x: number; y: number; width: number; height: number };
 
-export class ComposeModel<O extends Record<string, unknown>> {
+export class BuildModel<O extends Record<string, unknown>> {
   private readonly properties: Properties = new Map();
   private readonly attributes: Attributes = new Map();
 
@@ -15,11 +16,10 @@ export class ComposeModel<O extends Record<string, unknown>> {
   private body: string = '';
   private viewBoxMap: Record<string, ViewBox> = {};
 
-  constructor(
-    private readonly coreOptions: Options,
-    private readonly styleOptions: O,
-  ) {
-    this.prng = Prng.fromSeed(coreOptions.seed);
+  constructor(definition: Definition, options: Options<O>) {
+    this.prng = Prng.fromSeed(options.seed);
+
+    PropertiesHelper.fillProperties(this, definition);
   }
 
   getViewBox(): ViewBox {
@@ -37,12 +37,8 @@ export class ComposeModel<O extends Record<string, unknown>> {
     return this.prng;
   }
 
-  getCoreOptions(): Options {
-    return this.coreOptions;
-  }
-
-  getStyleOptions(): O {
-    return this.styleOptions;
+  getOptions(): Options<O> {
+    return this.options;
   }
 
   getProperties(): Properties {

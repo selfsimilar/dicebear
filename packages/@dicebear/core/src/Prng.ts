@@ -56,29 +56,6 @@ export class Prng {
     return workingArray[this.integer(0, workingArray.length - 1)];
   }
 
-  shuffle<T>(arr: T[]): T[] {
-    // An array with identical values should always deliver the same result
-    // regardless of the order of the values. We achieve this by creating a
-    // working array and sorting its values at the beginning.
-    const workingArray = [...arr].sort();
-
-    // Each method call should call the `next` function only once.
-    // Therefore, we use a separate instance of the Prng here.
-    const internalPrng = Prng.fromSeed(this.next().toString());
-
-    // Fisher-Yates shuffle algorithm - We do not use the Array.sort method with
-    // a compare function because it is not stable and produces different
-    // results when used in different browsers.
-    // @see https://github.com/dicebear/dicebear/issues/394
-    for (let i = workingArray.length - 1; i > 0; i--) {
-      const j = internalPrng.integer(0, i);
-
-      [workingArray[i], workingArray[j]] = [workingArray[j], workingArray[i]];
-    }
-
-    return workingArray;
-  }
-
   string(
     length: number,
     characters: string = 'abcdefghijklmnopqrstuvwxyz1234567890',

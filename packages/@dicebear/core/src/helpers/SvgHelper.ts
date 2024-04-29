@@ -1,5 +1,5 @@
 import { Prng } from '../Prng.js';
-import { AvatarModel } from '../models/ComposeModel.js';
+import { AvatarModel } from '../models/BuildModel.js';
 import { ColorModel } from '../models/ColorModel.js';
 
 export class SvgHelper {
@@ -35,36 +35,13 @@ export class SvgHelper {
     attributes.set('height', newHeight.toString());
   }
 
-  static addBackground(
-    avatar: AvatarModel,
-    primaryColor: ColorModel,
-    secondaryColor: ColorModel,
-    type: 'solid' | 'gradientLinear',
-    rotation: number,
-  ) {
+  static addBackground(avatar: AvatarModel, color: ColorModel) {
     const { width, height } = avatar.getViewBox();
 
-    switch (type) {
-      case 'solid':
-        avatar.setBody(
-          `<rect fill="rgba(${primaryColor.getRgba().join(', ')})" width="${width}" height="${height}" />` +
-            avatar.getBody(),
-        );
-
-        break;
-
-      case 'gradientLinear':
-        avatar.setBody(
-          `<rect fill="url(#backgroundLinear)" width="${width}" height="${height}" />` +
-            `<defs>` +
-            `<linearGradient id="backgroundLinear" gradientTransform="rotate(${rotation} 0.5 0.5)">` +
-            `<stop stop-color="rgba(${primaryColor.getRgba().join(', ')})"/>` +
-            `<stop offset="1" stop-color="rgba(${secondaryColor.getRgba().join(', ')})"/>` +
-            `</linearGradient>` +
-            `</defs>` +
-            avatar.getBody(),
-        );
-    }
+    avatar.setBody(
+      `<rect fill="rgba(${color.getRgba().join(', ')})" width="${width}" height="${height}" />` +
+        avatar.getBody(),
+    );
   }
 
   static addScale(avatar: AvatarModel, scale: number): void {

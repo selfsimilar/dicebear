@@ -10,23 +10,40 @@ import {
 } from 'superstruct';
 import { Types } from '../structs/Types.js';
 import type { ObjectSchema } from 'superstruct/dist/utils';
-import { DefinitionModel } from '../models/DefinitionModel.js';
+import { OptionsStruct } from '../structs/OptionsStruct.js';
+import { Definition } from '../types.js';
+
+const structByDefinition = new Map<
+  Definition,
+  Struct<{ [x: string]: unknown }, ObjectSchema>
+>();
 
 export class StructHelper {
-  static buildStructByDefinitionModel(
-    definition: DefinitionModel,
+  static buildStructByDefinition(
+    definition: Definition,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
-    return assign(
-      this.buildComponentsStructByDefinitionModel(definition),
-      this.buildColorsStructByDefinitionModel(definition),
+    if (structByDefinition.has(definition)) {
+      return structByDefinition.get(definition)!;
+    }
+
+    const struct = assign(
+      OptionsStruct,
+      this.buildComponentsStructByDefinition(definition),
+      this.buildColorsStructByDefinition(definition),
     );
+
+    structByDefinition.set(definition, struct);
+
+    return struct;
   }
 
-  static buildComponentsStructByDefinitionModel(
-    definition: DefinitionModel,
+  static buildComponentsStructByDefinition(
+    definition: Definition,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
+    const components = definition.components ?? [];
+
     return object(
-      definition.getComponents().reduce((acc, component) => {
+      components.reduce((acc, component) => {
         const { name, values, probability, rotation, offset } = component;
 
         const componentNameList = values.map((v) => v.name);
@@ -62,11 +79,13 @@ export class StructHelper {
     );
   }
 
-  static buildColorsStructByDefinitionModel(
-    definition: DefinitionModel,
+  static buildColorsStructByDefinition(
+    definition: Definition,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
+    const colors = definition.colors ?? [];
+
     return object(
-      definition.getColors().reduce((acc, color) => {
+      colors.reduce((acc, color) => {
         acc[`${color.name}Color`] = nonempty(
           defaulted(array(Types.color()), color.values),
         );
