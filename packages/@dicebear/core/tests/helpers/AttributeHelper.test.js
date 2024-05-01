@@ -4,7 +4,7 @@ import { describe, it } from 'node:test';
 import { Builder } from '../../lib/Builder.js';
 import { AttributeHelper } from '../../lib/helpers/AttributeHelper.js';
 
-import minimalStyle from '../fixtures/definitions/minimal.json' assert { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
 import { createStyle } from '../../lib/index.js';
 
 describe('AttributeHelper', () => {
@@ -33,7 +33,7 @@ describe('AttributeHelper', () => {
   });
 
   it('fillSizeAttributes width = height', () => {
-    const style = createStyle(minimalStyle);
+    const style = createStyle(minimalDefinition);
     const builder = new Builder(style);
 
     builder.getProperties().set('size', 100);

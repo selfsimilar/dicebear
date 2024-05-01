@@ -4,11 +4,11 @@ import { describe, it } from 'node:test';
 import { createStyle } from '../../lib/index.js';
 import { LicenseHelper } from '../../lib/helpers/LicenseHelper.js';
 
-import minimalStyle from '../fixtures/definitions/minimal.json' assert { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
 
 describe('LicenseHelper', () => {
   it('getLicenseAsXml', () => {
-    const memorizableStyle = createStyle(minimalStyle);
+    const memorizableStyle = createStyle(minimalDefinition);
 
     assert.equal(
       LicenseHelper.getLicenseAsXml(memorizableStyle),
@@ -37,7 +37,7 @@ describe('LicenseHelper', () => {
               url: 'https://license.com',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       '<metadata xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"><rdf:RDF><rdf:Description><dc:title>Source</dc:title><dc:creator>Creator</dc:creator><dc:source xsi:type="dcterms:URI">https://source.com</dc:source><dcterms:license xsi:type="dcterms:URI">https://license.com</dcterms:license><dc:rights>Remix of „Source” (https://source.com) by „Creator”, licensed under „License” (https://license.com)</dc:rights></rdf:Description></rdf:RDF></metadata>',
@@ -56,7 +56,7 @@ describe('LicenseHelper', () => {
               url: 'https://license.com',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       '<metadata xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"><rdf:RDF><rdf:Description><dc:title>Source</dc:title><dc:source xsi:type="dcterms:URI">https://source.com</dc:source><dcterms:license xsi:type="dcterms:URI">https://license.com</dcterms:license><dc:rights>Remix of „Source” (https://source.com) by „Unknown”, licensed under „License” (https://license.com)</dc:rights></rdf:Description></rdf:RDF></metadata>',
@@ -76,7 +76,7 @@ describe('LicenseHelper', () => {
               name: 'License',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       '<metadata xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/"><rdf:RDF><rdf:Description><dc:title>Source</dc:title><dc:creator>Creator</dc:creator><dc:rights>Remix of „Source” by „Creator”, licensed under „License”</dc:rights></rdf:Description></rdf:RDF></metadata>',
@@ -84,7 +84,7 @@ describe('LicenseHelper', () => {
   });
 
   it('getLicenseAsText', () => {
-    const memorizableStyle = createStyle(minimalStyle);
+    const memorizableStyle = createStyle(minimalDefinition);
 
     assert.equal(
       LicenseHelper.getLicenseAsText(memorizableStyle),
@@ -113,7 +113,7 @@ describe('LicenseHelper', () => {
               url: 'https://license.com',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       'Remix of „Source” (https://source.com) by „Creator”, licensed under „License” (https://license.com)',
@@ -133,7 +133,7 @@ describe('LicenseHelper', () => {
               name: 'License',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       'Remix of „Source” by „Creator”, licensed under „License”',
@@ -148,7 +148,7 @@ describe('LicenseHelper', () => {
               url: 'https://source.com',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       'Remix of „Source” (https://source.com) by „Unknown”',
@@ -168,7 +168,7 @@ describe('LicenseHelper', () => {
               url: 'https://license.com',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       'Design (https://source.com) by „Unknown”',
@@ -188,7 +188,7 @@ describe('LicenseHelper', () => {
               name: 'MIT',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       '„Source” by „DiceBear”, licensed under „MIT”',
@@ -205,7 +205,7 @@ describe('LicenseHelper', () => {
               name: 'MIT',
             },
           },
-          ...minimalStyle,
+          ...minimalDefinition,
         }),
       ),
       'Design by „DiceBear”, licensed under „MIT”',
