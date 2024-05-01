@@ -1,25 +1,26 @@
-import type { Options, Properties, StyleOptions } from './types.js';
+import type { DefinitionMetadata, Options, StyleOptions } from './types.js';
 import { Style } from './Style.js';
 import { ColorModel } from './models/ColorModel.js';
 import { Builder } from './Builder.js';
 import { PropertiesHelper } from './helpers/PropertiesHelper.js';
 import { AttributesHelper } from './helpers/AttributesHelper.js';
+import { OptionsCollection } from './collections/OptionsCollection.js';
 
 export class Avatar<S extends StyleOptions> {
-  private readonly properties: Properties = new Map();
   private readonly svg: string;
+  private readonly metadata: Exclude<DefinitionMetadata, undefined>;
+  private readonly properties: [string, unknown][];
 
-  constructor(
-    private readonly style: Style<S>,
-    options: Partial<Options<S>> = {},
-  ) {
-    const builder = new Builder(style, options);
+  constructor(style: Style<S>, options: Partial<Options<S>> = {}) {
+    const builder = new Builder(style);
+    const optionsModel = new OptionsCollection(style, options);
 
-    PropertiesHelper.fillProperties(builder);
+    PropertiesHelper.fillProperties(builder, optionsModel);
     AttributesHelper.fillAttributes(builder);
 
-    this.properties = builder.getProperties();
     this.svg = builder.build();
+    this.metadata = style.getMetadata();
+    this.properties = builder.getProperties().all();
   }
 
   toString(): string {
@@ -34,8 +35,8 @@ export class Avatar<S extends StyleOptions> {
     return JSON.stringify(
       {
         svg: this.svg,
-        metadata: this.style.getMetadata(),
-        properties: [...this.properties],
+        metadata: this.metadata,
+        properties: this.properties,
       },
       (k, v) => (v instanceof ColorModel ? v.getHex() : v),
     );

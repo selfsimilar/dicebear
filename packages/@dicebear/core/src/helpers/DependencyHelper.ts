@@ -1,5 +1,6 @@
 import { Style } from '../Style.js';
-import type { Dependencies, Properties } from '../types.js';
+import { PropertiesCollection } from '../collections/PropertiesCollection.js';
+import type { Dependencies } from '../types.js';
 
 export class DependencyHelper {
   static memoizedGetDependenciesFromSvg = new Map<string, Dependencies>();
@@ -31,7 +32,7 @@ export class DependencyHelper {
 
   static getDependenciesFromProperties(
     style: Style,
-    properties: Properties,
+    properties: PropertiesCollection,
   ): Dependencies {
     const bodyDependencies = this.getDependenciesFromSvg(
       style.getBody().content,

@@ -1,38 +1,25 @@
 import type {
-  Attributes,
   DefinitionColorList,
   DefinitionComponentList,
-  Options,
-  Properties,
   StyleOptions,
   ViewBox,
 } from './types.js';
 import { Style } from './Style.js';
 import { LicenseHelper } from './helpers/LicenseHelper.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
-import { OptionsHelper } from './helpers/OptionsHelper.js';
 import { AttributesHelper } from './helpers/AttributesHelper.js';
 import { DependencyHelper } from './helpers/DependencyHelper.js';
+import { PropertiesCollection } from './collections/PropertiesCollection.js';
+import { AttributesCollection } from './collections/AttributesCollection.js';
 
 export class Builder<S extends StyleOptions = StyleOptions> {
-  private readonly properties: Properties = new Map();
-  private readonly attributes: Attributes = new Map();
+  private readonly properties = new PropertiesCollection();
+  private readonly attributes = new AttributesCollection();
 
-  private readonly options: Options<S>;
-
-  constructor(
-    private readonly style: Style<S>,
-    options: Partial<Options<S>>,
-  ) {
-    this.options = OptionsHelper.validateOptions(style, options);
-  }
+  constructor(private readonly style: Style<S>) {}
 
   getViewBox(): ViewBox {
-    const viewBoxAttribute = this.attributes.get('viewBox');
-
-    if (!viewBoxAttribute) {
-      throw new Error('Missing attribute "viewBox"');
-    }
+    const viewBoxAttribute = this.attributes.getString('viewBox');
 
     return AttributesHelper.parseViewBox(viewBoxAttribute);
   }
@@ -41,15 +28,11 @@ export class Builder<S extends StyleOptions = StyleOptions> {
     return this.style;
   }
 
-  getOptions(): Options<S> {
-    return this.options;
-  }
-
-  getProperties(): Properties {
+  getProperties(): PropertiesCollection {
     return this.properties;
   }
 
-  getAttributes(): Attributes {
+  getAttributes(): AttributesCollection {
     return this.attributes;
   }
 

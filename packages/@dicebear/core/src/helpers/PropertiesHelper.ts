@@ -1,45 +1,62 @@
+import type { StyleOptions } from '../types';
 import { Builder } from '../Builder';
 import { Prng } from '../Prng';
+import { OptionsCollection } from '../collections/OptionsCollection';
 import { ColorModel } from '../models/ColorModel';
 import { ColorHelper } from './ColorHelper';
 import { StringHelper } from './StringHelper';
 
 export class PropertiesHelper {
-  public static fillProperties(builder: Builder): void {
-    const prng = Prng.fromSeed(builder.getOptions().seed);
+  public static fillProperties(
+    builder: Builder,
+    options: OptionsCollection,
+  ): void {
+    const prng = Prng.fromSeed(options.get('seed') as string);
 
-    PropertiesHelper.fillCoreProperties(builder, prng);
-    PropertiesHelper.fillColorProperties(builder, prng);
-    PropertiesHelper.fillComponentProperties(builder, prng);
+    PropertiesHelper.fillCoreProperties(builder, options, prng);
+    PropertiesHelper.fillColorProperties(builder, options, prng);
+    PropertiesHelper.fillComponentProperties(builder, options, prng);
   }
 
-  public static fillCoreProperties(builder: Builder, prng: Prng): void {
-    const options = builder.getOptions();
+  public static fillCoreProperties(
+    builder: Builder,
+    options: OptionsCollection,
+    prng: Prng,
+  ): void {
     const properties = builder.getProperties();
 
-    const backgroundColor = prng.pick(options.backgroundColor);
+    const seed = options.getString('seed');
+    const size = options.getString('size');
+
+    const backgroundColor = prng.pick(
+      options.getArray('backgroundColor') as string[],
+    );
+
     const backgroundColorModel = backgroundColor
       ? new ColorModel(backgroundColor)
       : null;
 
-    properties.set('initials', StringHelper.getInitials(options.seed));
-    properties.set('seed', options.seed);
-    properties.set('flip', options.flip);
-    properties.set('rotate', options.rotate);
-    properties.set('scale', options.scale);
-    properties.set('radius', options.radius ?? 0);
-    properties.set('size', options.size ?? null);
+    properties.set('initials', StringHelper.getInitials(seed));
+    properties.set('seed', seed);
+    properties.set('flip', options.getBoolean('flip'));
+    properties.set('rotate', options.getNumber('rotate'));
+    properties.set('scale', options.getNumber('scale'));
+    properties.set('radius', options.getNumber('radius'));
+    properties.set('size', typeof size === 'number' ? size : null);
     properties.set('backgroundColor', backgroundColorModel);
-    properties.set('translateX', options.translateX);
-    properties.set('translateY', options.translateY);
-    properties.set('clip', options.clip);
-    properties.set('randomizeIds', options.randomizeIds);
+    properties.set('translateX', options.getNumber('translateX'));
+    properties.set('translateY', options.getNumber('translateY'));
+    properties.set('clip', options.getBoolean('clip'));
+    properties.set('randomizeIds', options.getBoolean('randomizeIds'));
   }
 
-  public static fillColorProperties(builder: Builder, prng: Prng): void {
+  public static fillColorProperties(
+    builder: Builder,
+    options: OptionsCollection,
+    prng: Prng,
+  ): void {
     const style = builder.getStyle();
     const properties = builder.getProperties();
-    const options = builder.getOptions();
 
     for (const color of style.getColors()) {
       const propertyKey = `${color.name}Color`;
@@ -50,7 +67,7 @@ export class PropertiesHelper {
         continue;
       }
 
-      const optionValue = options[`${color.name}Color`] as string[];
+      const optionValue = options.getArray(`${color.name}Color`) as string[];
 
       let availableColors = optionValue.map((c) => new ColorModel(c));
 
@@ -87,13 +104,19 @@ export class PropertiesHelper {
     }
   }
 
-  public static fillComponentProperties(builder: Builder, prng: Prng): void {
+  public static fillComponentProperties(
+    builder: Builder,
+    options: OptionsCollection,
+    prng: Prng,
+  ): void {
     const style = builder.getStyle();
     const properties = builder.getProperties();
-    const options = builder.getOptions();
 
     for (const component of style.getComponents()) {
-      const componentValueNameOption = options[component.name] as string[];
+      const componentValueNameOption = options.getArray(
+        component.name,
+      ) as string[];
+
       const componentValueName = prng.pick(componentValueNameOption);
       const componentVisible = prng.bool(component.probability);
 

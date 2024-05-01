@@ -1,7 +1,8 @@
 import { Prng } from '../Prng.js';
 import { Builder } from '../Builder.js';
 import { ColorModel } from '../models/ColorModel.js';
-import { Attributes, DefinitionColor, DefinitionComponent } from '../types.js';
+import { DefinitionColor, DefinitionComponent } from '../types.js';
+import { AttributesCollection } from '../collections/AttributesCollection.js';
 
 export class SvgHelper {
   static escape(content: string): string {
@@ -23,11 +24,12 @@ export class SvgHelper {
     });
   }
 
-  static createAttrString(attributes: Attributes): string {
-    return [...attributes]
+  static createAttrString(attributes: AttributesCollection): string {
+    return attributes
+      .all()
       .map(
         ([name, value]) =>
-          `${SvgHelper.escape(name)}="${SvgHelper.escape(value)}"`,
+          `${SvgHelper.escape(name)}="${SvgHelper.escape(value as string)}"`,
       )
       .join(' ');
   }
@@ -48,7 +50,7 @@ export class SvgHelper {
   }
 
   static addScale(builder: Builder, body: string): string {
-    const scale = builder.getOptions().scale;
+    const scale = builder.getProperties().getNumber('scale');
 
     if (scale !== undefined && scale !== 100) {
       return body;
@@ -68,7 +70,8 @@ export class SvgHelper {
 
   static addTranslate(builder: Builder, body: string): string {
     const { width, height } = builder.getViewBox();
-    const { translateX, translateY } = builder.getOptions();
+    const translateX = builder.getProperties().getNumber('translateX');
+    const translateY = builder.getProperties().getNumber('translateY');
 
     const x = translateX ? (width * translateX) / 100 : 0;
     const y = translateY ? (height * translateY) / 100 : 0;
@@ -81,7 +84,7 @@ export class SvgHelper {
   }
 
   static addRotate(builder: Builder, body: string): string {
-    const rotate = builder.getOptions().rotate;
+    const rotate = builder.getProperties().getNumber('rotate');
 
     if (!rotate) {
       return body;
@@ -93,7 +96,7 @@ export class SvgHelper {
   }
 
   static addFlip(builder: Builder, body: string): string {
-    const flip = builder.getOptions().flip;
+    const flip = builder.getProperties().getBoolean('flip');
 
     if (!flip) {
       return body;
@@ -105,8 +108,8 @@ export class SvgHelper {
   }
 
   static addRadius(builder: Builder, body: string): string {
-    const radius = builder.getOptions().radius;
-    const clip = builder.getOptions().clip;
+    const radius = builder.getProperties().getNumber('radius');
+    const clip = builder.getProperties().getBoolean('clip');
 
     if (!radius && !clip) {
       return body;
@@ -126,7 +129,7 @@ export class SvgHelper {
   }
 
   static randomizeIds(builder: Builder, body: string): string {
-    const randomizeIds = builder.getOptions().randomizeIds;
+    const randomizeIds = builder.getProperties().getBoolean('randomizeIds');
 
     if (!randomizeIds) {
       return body;

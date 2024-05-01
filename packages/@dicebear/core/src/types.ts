@@ -15,11 +15,7 @@ type OmitEndsWith<T, U extends string> = {
 
 type ArrayElement<T> = T extends (infer E)[] ? E : never;
 
-// Properties
-export type Properties = Map<string, unknown>;
-
 // Attributes
-export type Attributes = Map<string, string>;
 export type ViewBox = { x: number; y: number; width: number; height: number };
 
 // Definition
@@ -52,7 +48,7 @@ export type Dependencies = {
 export type BaseOptions = Infer<typeof BaseOptionsStruct>;
 export type StyleOptions = Record<string, unknown>;
 
-export type Options<S extends StyleOptions = StyleOptions> = S & BaseOptions;
+export type Options<S extends StyleOptions = StyleOptions> = BaseOptions & S;
 
 export type ColorsFromStyleOptions<S extends StyleOptions = StyleOptions> =
   PickEndsWith<S, 'Color'>;

@@ -27,9 +27,9 @@ export class AttributesHelper {
   }
 
   static fillSizeAttributes(builder: Builder) {
-    const targetSize = builder.getOptions().size;
+    const targetSize = builder.getProperties().get('size');
 
-    if (!targetSize) {
+    if (typeof targetSize !== 'number') {
       return;
     }
 
