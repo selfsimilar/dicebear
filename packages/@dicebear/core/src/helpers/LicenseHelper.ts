@@ -40,9 +40,7 @@ export class LicenseHelper {
             licenseUrl,
           )}</dcterms:license>`
         : '') +
-      (copyright
-        ? `<dc:rights>${SvgHelper.escape(copyright)}</dc:rights>`
-        : '') +
+      `<dc:rights>${SvgHelper.escape(copyright)}</dc:rights>` +
       '</rdf:Description>' +
       '</rdf:RDF>' +
       '</metadata>';
