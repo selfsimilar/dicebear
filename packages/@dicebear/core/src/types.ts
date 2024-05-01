@@ -1,24 +1,61 @@
 import { Infer } from 'superstruct';
 import { DefinitionStruct } from './structs/DefinitionStruct.js';
-import { MetadataStruct } from './structs/MetadataStruct.js';
-import { OptionsStruct } from './structs/OptionsStruct.js';
-import { ColorStruct } from './structs/ColorStruct.js';
-import { ComponentStruct } from './structs/ComponentStruct.js';
-import { ComponentValueStruct } from './structs/ComponentValueStruct.js';
+import { BaseOptionsStruct } from './structs/BaseOptionsStruct.js';
 
+// Utilities
+type PickEndsWith<T, U extends string> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [K in keyof T as K extends `${infer Rest}${U}` ? K : never]: T[K];
+};
+
+type OmitEndsWith<T, U extends string> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [K in keyof T as K extends `${infer Rest}${U}` ? never : K]: T[K];
+};
+
+type ArrayElement<T> = T extends (infer E)[] ? E : never;
+
+// Properties
 export type Properties = Map<string, unknown>;
 
-export type Color = Infer<typeof ColorStruct>;
-export type Component = Infer<typeof ComponentStruct>;
-export type ComponentValue = Infer<typeof ComponentValueStruct>;
-export type Definition = Infer<typeof DefinitionStruct>;
-export type Metadata = Infer<typeof MetadataStruct>;
+// Attributes
+export type Attributes = Map<string, string>;
+export type ViewBox = { x: number; y: number; width: number; height: number };
 
+// Definition
+export type Definition = Infer<typeof DefinitionStruct>;
+
+export type DefinitionMetadata = Definition['metadata'];
+
+export type DefinitionBody = Definition['body'];
+
+export type DefinitionAttributeList = Definition['attributes'];
+export type DefinitionAttribute = ArrayElement<DefinitionAttributeList>;
+
+export type DefinitionColorList = Definition['colors'];
+export type DefinitionColor = ArrayElement<DefinitionColorList>;
+
+export type DefinitionComponentList = Definition['components'];
+export type DefinitionComponent = ArrayElement<DefinitionComponentList>;
+
+export type DefinitionComponentValueList = DefinitionComponent['values'];
+export type DefinitionComponentValue =
+  ArrayElement<DefinitionComponentValueList>;
+
+// Dependencies
 export type Dependencies = {
   components: Set<string>;
   colors: Set<string>;
 };
 
-export type Options<
-  O extends Record<string, unknown> = Record<string, unknown>,
-> = O & Infer<typeof OptionsStruct>;
+// Options
+export type BaseOptions = Infer<typeof BaseOptionsStruct>;
+export type StyleOptions = Record<string, unknown>;
+
+export type Options<S extends StyleOptions = StyleOptions> = S & BaseOptions;
+
+export type ColorsFromStyleOptions<S extends StyleOptions = StyleOptions> =
+  PickEndsWith<S, 'Color'>;
+
+export type ComponentsFromStyleOptions<S extends StyleOptions = StyleOptions> =
+  OmitEndsWith<S, 'Color' | 'Probability' | 'Rotation' | 'OffsetX' | 'OffsetY'>;

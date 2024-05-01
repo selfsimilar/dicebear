@@ -11,7 +11,7 @@ import {
 } from 'superstruct';
 import { Types } from './Types.js';
 
-export const OptionsStruct = object({
+export const BaseOptionsStruct = object({
   seed: defaulted(string(), ''),
   flip: defaulted(boolean(), false),
   rotate: defaulted(Types.rotation(), 360),

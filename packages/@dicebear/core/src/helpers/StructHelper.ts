@@ -1,3 +1,4 @@
+import type { ObjectSchema } from 'superstruct/dist/utils';
 import {
   Struct,
   array,
@@ -9,41 +10,52 @@ import {
   object,
 } from 'superstruct';
 import { Types } from '../structs/Types.js';
-import type { ObjectSchema } from 'superstruct/dist/utils';
-import { OptionsStruct } from '../structs/OptionsStruct.js';
-import { Definition } from '../types.js';
-
-const structByDefinition = new Map<
-  Definition,
-  Struct<{ [x: string]: unknown }, ObjectSchema>
->();
+import { BaseOptionsStruct } from '../structs/BaseOptionsStruct.js';
+import { Style } from '../Style.js';
 
 export class StructHelper {
-  static buildStructByDefinition(
-    definition: Definition,
+  static memoizedCreateOptionsStructFromStyle = new Map<
+    Style,
+    Struct<{ [x: string]: unknown }, ObjectSchema>
+  >();
+
+  static createOptionsStructFromStyle(
+    style: Style,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
-    if (structByDefinition.has(definition)) {
-      return structByDefinition.get(definition)!;
+    if (this.memoizedCreateOptionsStructFromStyle.has(style)) {
+      return this.memoizedCreateOptionsStructFromStyle.get(style)!;
     }
 
     const struct = assign(
-      OptionsStruct,
-      this.buildComponentsStructByDefinition(definition),
-      this.buildColorsStructByDefinition(definition),
+      BaseOptionsStruct,
+      this.createColorsOptionsStructFromStyle(style),
+      this.createComponentsOptionsStructFromStyle(style),
     );
 
-    structByDefinition.set(definition, struct);
+    this.memoizedCreateOptionsStructFromStyle.set(style, struct);
 
     return struct;
   }
 
-  static buildComponentsStructByDefinition(
-    definition: Definition,
+  static createColorsOptionsStructFromStyle(
+    style: Style,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
-    const components = definition.components ?? [];
-
     return object(
-      components.reduce((acc, component) => {
+      style.getColors().reduce((acc, color) => {
+        acc[`${color.name}Color`] = nonempty(
+          defaulted(array(Types.color()), color.values),
+        );
+
+        return acc;
+      }, {} as ObjectSchema),
+    );
+  }
+
+  static createComponentsOptionsStructFromStyle(
+    style: Style,
+  ): Struct<{ [x: string]: unknown }, ObjectSchema> {
+    return object(
+      style.getComponents().reduce((acc, component) => {
         const { name, values, probability, rotation, offset } = component;
 
         const componentNameList = values.map((v) => v.name);
@@ -73,22 +85,6 @@ export class StructHelper {
           acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
           acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
         }
-
-        return acc;
-      }, {} as ObjectSchema),
-    );
-  }
-
-  static buildColorsStructByDefinition(
-    definition: Definition,
-  ): Struct<{ [x: string]: unknown }, ObjectSchema> {
-    const colors = definition.colors ?? [];
-
-    return object(
-      colors.reduce((acc, color) => {
-        acc[`${color.name}Color`] = nonempty(
-          defaulted(array(Types.color()), color.values),
-        );
 
         return acc;
       }, {} as ObjectSchema),

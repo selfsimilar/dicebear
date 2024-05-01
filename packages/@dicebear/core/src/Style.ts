@@ -1,93 +1,108 @@
-import type { Color, Component, Definition, Properties } from './types.js';
-import { Struct, mask } from 'superstruct';
-import { BuildModel } from './models/BuildModel.js';
-import { DefinitionModel } from './models/DefinitionModel.js';
-import { DefinitionStruct } from './structs/DefinitionStruct.js';
-import { SvgHelper } from './helpers/SvgHelper.js';
-import { ColorModel } from './models/ColorModel.js';
+import { mask } from 'superstruct';
+import { DefinitionStruct } from './structs/DefinitionStruct';
+import {
+  ColorsFromStyleOptions,
+  ComponentsFromStyleOptions,
+  Definition,
+  DefinitionAttributeList,
+  DefinitionBody,
+  DefinitionColor,
+  DefinitionColorList,
+  DefinitionComponent,
+  DefinitionComponentList,
+  DefinitionComponentValue,
+  DefinitionMetadata,
+  StyleOptions,
+} from './types';
 
-export class Style<
-  O extends Record<string, unknown> = Record<string, unknown>,
-> {
+type IndexedComponents<S extends StyleOptions> = Map<
+  ComponentsFromStyleOptions<S> | string,
+  DefinitionComponent
+>;
+
+type IndexedComponentValues<S extends StyleOptions> = Map<
+  ComponentsFromStyleOptions<S> | string,
+  Map<string, DefinitionComponentValue>
+>;
+
+type IndexedColors<S extends StyleOptions> = Map<
+  ColorsFromStyleOptions<S> | string,
+  DefinitionColor
+>;
+
+export class Style<S extends StyleOptions = StyleOptions> {
   private readonly definition: Definition;
-  private readonly definitionModel: DefinitionModel;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private optionsStruct?: Struct<any, any>;
+  private readonly indexedComponents: IndexedComponents<S>;
+  private readonly indexedComponentValues: IndexedComponentValues<S>;
+  private readonly indexedColors: IndexedColors<S>;
 
   constructor(definition: Definition) {
     this.definition = mask(definition, DefinitionStruct);
-    this.definitionModel = new DefinitionModel(this.definition);
+
+    this.indexedComponents = this.indexComponents();
+    this.indexedComponentValues = this.indexComponentValues();
+    this.indexedColors = this.indexColors();
   }
 
-  getDefinition(): Definition {
-    return this.definition;
+  getMetadata(): Exclude<DefinitionMetadata, undefined> {
+    return this.definition.metadata ?? {};
   }
 
-  buildBody(buildModel: BuildModel<O>) {
-    const properties = buildModel.getProperties();
+  getBody(): DefinitionBody {
+    return this.definition.body;
+  }
 
-    const dependencies =
-      this.definitionModel.getDependenciesByProperties(properties);
+  getAttributes(): Exclude<DefinitionAttributeList, undefined> {
+    return this.definition.attributes ?? [];
+  }
 
-    const colors = this.definitionModel
-      .getColors()
-      .filter((color) => dependencies.colors.has(color.name));
+  getComponents(): Exclude<DefinitionComponentList, undefined> {
+    return this.definition.components ?? [];
+  }
 
-    const components = this.definitionModel
-      .getComponents()
-      .filter((component) => dependencies.components.has(component.name));
+  getColors(): Exclude<DefinitionColorList, undefined> {
+    return this.definition.colors ?? [];
+  }
 
-    buildModel.setBody(
-      [
-        '<defs>',
-        ...colors.map((color) => this.buildColorGradient(color, properties)),
-        ...components.map((component) =>
-          this.buildComponentSymbol(component, properties),
+  getComponentByName(
+    name: ComponentsFromStyleOptions<S> | string,
+  ): DefinitionComponent | undefined {
+    return this.indexedComponents.get(name);
+  }
+
+  getComponentValueByName(
+    componentName: string,
+    name: string,
+  ): DefinitionComponentValue | undefined {
+    return this.indexedComponentValues.get(componentName)?.get(name);
+  }
+
+  getColorByName(name: string): DefinitionColor | undefined {
+    return this.indexedColors.get(name);
+  }
+
+  private indexComponents(): IndexedComponents<S> {
+    return new Map(
+      this.getComponents().map((component) => [component.name, component]),
+    );
+  }
+
+  private indexComponentValues(): IndexedComponentValues<S> {
+    return new Map(
+      this.getComponents().map((component) => [
+        component.name,
+        new Map(
+          component.values.map((componentValue) => [
+            componentValue.name,
+            componentValue,
+          ]),
         ),
-        '</defs>',
-        this.definitionModel.getBody().content,
-      ].join(''),
+      ]),
     );
   }
 
-  private buildComponentSymbol(component: Component, properties: Properties) {
-    const componentValueName = properties.get(component.name);
-    const componentRotation = properties.get(`${component.name}Rotation`);
-    const componentOffsetX = properties.get(`${component.name}OffsetX`);
-    const componentOffsetY = properties.get(`${component.name}OffsetY`);
-
-    if (typeof componentValueName !== 'string') {
-      return '';
-    }
-
-    const componentName = SvgHelper.escape(component.name);
-    const componentValue = this.definitionModel.getComponentValueByName(
-      component.name,
-      componentValueName,
-    );
-
-    if (!componentValue) {
-      return '';
-    }
-
-    let componentContent = componentValue.content;
-
-    if (componentRotation || componentOffsetX || componentOffsetY) {
-      componentContent = `<g transform="translate(${componentOffsetX ?? 0}, ${componentOffsetY ?? 0}) rotate(${componentRotation ?? 0} ${component.width / 2} ${component.height / 2})">${componentContent}</g>`;
-    }
-
-    return `<symbol id="component-${componentName}">${componentContent}</symbol>`;
-  }
-
-  private buildColorGradient(color: Color, properties: Properties) {
-    const colorName = SvgHelper.escape(color.name);
-    const colorValue = properties.get(`${color.name}Color`);
-
-    if (!(colorValue instanceof ColorModel)) {
-      return '';
-    }
-
-    return `<linearGradient id="color-${colorName}"><stop stop-color="rgba(${colorValue.getRgba().join(', ')})"/></linearGradient>`;
+  private indexColors(): IndexedColors<S> {
+    return new Map(this.getColors().map((color) => [color.name, color]));
   }
 }

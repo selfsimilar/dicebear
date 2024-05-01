@@ -1,16 +1,24 @@
-import type { Metadata } from '../types.js';
+import { Style } from '../Style.js';
 import { SvgHelper } from './SvgHelper.js';
 
 export class LicenseHelper {
-  static xml(metadata: Metadata): string {
+  static memoizedGetLicenseAsXml = new Map<Style, string>();
+  static memoizedGetLicenseAsText = new Map<Style, string>();
+
+  static getLicenseAsXml(style: Style): string {
+    if (this.memoizedGetLicenseAsXml.has(style)) {
+      return this.memoizedGetLicenseAsXml.get(style)!;
+    }
+
+    const metadata = style.getMetadata();
     const sourceName = metadata.source?.name;
     const sourceUrl = metadata.source?.url;
     const creatorName = metadata.creator?.name;
     const licenseUrl = metadata.license?.url;
-    const copyright = LicenseHelper.text(metadata);
+    const copyright = LicenseHelper.getLicenseAsText(style);
 
     // https://nsteffel.github.io/dublin_core_generator/generator.html
-    return (
+    const result =
       '<metadata' +
       ' xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"' +
       ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
@@ -37,11 +45,20 @@ export class LicenseHelper {
         : '') +
       '</rdf:Description>' +
       '</rdf:RDF>' +
-      '</metadata>'
-    );
+      '</metadata>';
+
+    this.memoizedGetLicenseAsXml.set(style, result);
+
+    return result;
   }
 
-  static text(metadata: Metadata): string {
+  static getLicenseAsText(style: Style): string {
+    if (this.memoizedGetLicenseAsText.has(style)) {
+      return this.memoizedGetLicenseAsText.get(style)!;
+    }
+
+    const metadata = style.getMetadata();
+
     let title = metadata.source?.name ? `„${metadata.source?.name}”` : 'Design';
     const creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
 
@@ -68,6 +85,8 @@ export class LicenseHelper {
         result += ` (${metadata.license.url})`;
       }
     }
+
+    this.memoizedGetLicenseAsText.set(style, result);
 
     return result;
   }

@@ -1,25 +1,21 @@
-import type { Definition } from '../types';
-import { BuildModel } from '../models/BuildModel';
+import { Builder } from '../Builder';
+import { Prng } from '../Prng';
 import { ColorModel } from '../models/ColorModel';
 import { ColorHelper } from './ColorHelper';
 import { StringHelper } from './StringHelper';
 
 export class PropertiesHelper {
-  public static fillProperties<O extends Record<string, unknown>>(
-    buildModel: BuildModel<O>,
-    definition: Definition,
-  ): void {
-    PropertiesHelper.fillCoreProperties(buildModel);
-    PropertiesHelper.fillColorProperties(buildModel, definition);
-    PropertiesHelper.fillComponentProperties(buildModel, definition);
+  public static fillProperties(builder: Builder): void {
+    const prng = Prng.fromSeed(builder.getOptions().seed);
+
+    PropertiesHelper.fillCoreProperties(builder, prng);
+    PropertiesHelper.fillColorProperties(builder, prng);
+    PropertiesHelper.fillComponentProperties(builder, prng);
   }
 
-  public static fillCoreProperties<O extends Record<string, unknown>>(
-    buildModel: BuildModel<O>,
-  ): void {
-    const prng = buildModel.getPrng();
-    const options = buildModel.getOptions();
-    const properties = buildModel.getProperties();
+  public static fillCoreProperties(builder: Builder, prng: Prng): void {
+    const options = builder.getOptions();
+    const properties = builder.getProperties();
 
     const backgroundColor = prng.pick(options.backgroundColor);
     const backgroundColorModel = backgroundColor
@@ -40,15 +36,12 @@ export class PropertiesHelper {
     properties.set('randomizeIds', options.randomizeIds);
   }
 
-  public static fillColorProperties<O extends Record<string, unknown>>(
-    buildModel: BuildModel<O>,
-    definition: Definition,
-  ): void {
-    const properties = buildModel.getProperties();
-    const options = buildModel.getOptions();
-    const prng = buildModel.getPrng();
+  public static fillColorProperties(builder: Builder, prng: Prng): void {
+    const style = builder.getStyle();
+    const properties = builder.getProperties();
+    const options = builder.getOptions();
 
-    for (const color of definition.colors ?? []) {
+    for (const color of style.getColors()) {
       const propertyKey = `${color.name}Color`;
 
       if (properties.has(propertyKey)) {
@@ -94,15 +87,12 @@ export class PropertiesHelper {
     }
   }
 
-  public static fillComponentProperties<O extends Record<string, unknown>>(
-    buildModel: BuildModel<O>,
-    definition: Definition,
-  ): void {
-    const properties = buildModel.getProperties();
-    const options = buildModel.getOptions();
-    const prng = buildModel.getPrng();
+  public static fillComponentProperties(builder: Builder, prng: Prng): void {
+    const style = builder.getStyle();
+    const properties = builder.getProperties();
+    const options = builder.getOptions();
 
-    for (const component of definition.components ?? []) {
+    for (const component of style.getComponents()) {
       const componentValueNameOption = options[component.name] as string[];
       const componentValueName = prng.pick(componentValueNameOption);
       const componentVisible = prng.bool(component.probability);
