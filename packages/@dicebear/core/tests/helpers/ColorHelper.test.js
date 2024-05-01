@@ -4,7 +4,7 @@ import { describe, it } from 'node:test';
 import { ColorHelper } from '../../lib/helpers/ColorHelper.js';
 import { ColorModel } from '../../lib/models/ColorModel.js';
 
-describe('AttributeHelper', () => {
+describe('ColorHelper', () => {
   it('getContrastColor', () => {
     const white = new ColorModel('ffffff');
     const red = new ColorModel('ff0000');
