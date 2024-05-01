@@ -4,16 +4,11 @@ import { describe, it } from 'node:test';
 import { createStyle } from '../../lib/index.js';
 import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
 
-describe('OptionsCollection', () => {
-  const style = createStyle({
-    body: {
-      content: '',
-      height: 100,
-      width: 100,
-    },
-  });
+import minimalStyle from '../fixtures/definitions/minimal.json' assert { type: 'json' };
 
+describe('OptionsCollection', () => {
   it('get', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {
       seed: 'John Doe',
     });
@@ -23,6 +18,7 @@ describe('OptionsCollection', () => {
   });
 
   it('has', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {});
 
     assert.equal(collection.has('seed'), true);
@@ -30,6 +26,7 @@ describe('OptionsCollection', () => {
   });
 
   it('all', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {});
 
     assert.deepEqual(collection.all(), [
@@ -48,6 +45,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getString', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {});
 
     assert.equal(collection.getString('seed'), '');
@@ -56,6 +54,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getBoolean', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {});
 
     assert.equal(collection.getBoolean('flip'), false);
@@ -64,6 +63,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getNumber', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {});
 
     assert.equal(collection.getNumber('scale'), 100);
@@ -72,6 +72,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getArray', () => {
+    const style = createStyle(minimalStyle);
     const collection = new OptionsCollection(style, {});
 
     assert.deepEqual(collection.getArray('backgroundColor'), []);

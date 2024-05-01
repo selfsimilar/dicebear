@@ -1,5 +1,5 @@
 import { Style } from '../Style.js';
-import { OptionsHelper } from '../helpers/OptionsHelper.js';
+import { OptionHelper } from '../helpers/OptionHelper.js';
 import { Options, StyleOptions } from '../types.js';
 import { AbstractCollection } from './AbstractCollection.js';
 
@@ -11,7 +11,7 @@ export class OptionsCollection<
   constructor(style: Style<S>, options: Partial<Options<S>>) {
     super();
 
-    const validatedOptions = OptionsHelper.validateOptions(style, options);
+    const validatedOptions = OptionHelper.validateOptions(style, options);
 
     this.collection = new Map(Object.entries(validatedOptions));
   }

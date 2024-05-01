@@ -7,7 +7,7 @@ import type {
 import { Style } from './Style.js';
 import { LicenseHelper } from './helpers/LicenseHelper.js';
 import { SvgHelper } from './helpers/SvgHelper.js';
-import { AttributesHelper } from './helpers/AttributesHelper.js';
+import { AttributeHelper } from './helpers/AttributeHelper.js';
 import { DependencyHelper } from './helpers/DependencyHelper.js';
 import { PropertiesCollection } from './collections/PropertiesCollection.js';
 import { AttributesCollection } from './collections/AttributesCollection.js';
@@ -21,7 +21,7 @@ export class Builder<S extends StyleOptions = StyleOptions> {
   getViewBox(): ViewBox {
     const viewBoxAttribute = this.attributes.getString('viewBox');
 
-    return AttributesHelper.parseViewBox(viewBoxAttribute);
+    return AttributeHelper.parseViewBox(viewBoxAttribute);
   }
 
   getStyle(): Style<S> {

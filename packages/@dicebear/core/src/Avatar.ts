@@ -2,8 +2,8 @@ import type { DefinitionMetadata, Options, StyleOptions } from './types.js';
 import { Style } from './Style.js';
 import { ColorModel } from './models/ColorModel.js';
 import { Builder } from './Builder.js';
-import { PropertiesHelper } from './helpers/PropertiesHelper.js';
-import { AttributesHelper } from './helpers/AttributesHelper.js';
+import { PropertyHelper } from './helpers/PropertyHelper.js';
+import { AttributeHelper } from './helpers/AttributeHelper.js';
 import { OptionsCollection } from './collections/OptionsCollection.js';
 
 export class Avatar<S extends StyleOptions> {
@@ -15,8 +15,8 @@ export class Avatar<S extends StyleOptions> {
     const builder = new Builder(style);
     const optionsCollection = new OptionsCollection(style, options);
 
-    PropertiesHelper.fillProperties(builder, optionsCollection);
-    AttributesHelper.fillAttributes(builder);
+    PropertyHelper.fillProperties(builder, optionsCollection);
+    AttributeHelper.fillAttributes(builder);
 
     this.svg = builder.build();
     this.metadata = style.getMetadata();

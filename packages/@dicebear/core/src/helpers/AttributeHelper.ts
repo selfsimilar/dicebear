@@ -1,7 +1,7 @@
 import { Builder } from '../Builder.js';
 import { ViewBox } from '../types.js';
 
-export class AttributesHelper {
+export class AttributeHelper {
   static memoizedParseViewBox = new Map<string, ViewBox>();
 
   static fillAttributes(builder: Builder) {

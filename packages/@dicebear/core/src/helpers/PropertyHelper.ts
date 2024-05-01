@@ -5,16 +5,16 @@ import { ColorModel } from '../models/ColorModel.js';
 import { ColorHelper } from './ColorHelper.js';
 import { StringHelper } from './StringHelper.js';
 
-export class PropertiesHelper {
+export class PropertyHelper {
   public static fillProperties(
     builder: Builder,
     options: OptionsCollection,
   ): void {
     const prng = Prng.fromSeed(options.get('seed') as string);
 
-    PropertiesHelper.fillCoreProperties(builder, options, prng);
-    PropertiesHelper.fillColorProperties(builder, options, prng);
-    PropertiesHelper.fillComponentProperties(builder, options, prng);
+    this.fillCoreProperties(builder, options, prng);
+    this.fillColorProperties(builder, options, prng);
+    this.fillComponentProperties(builder, options, prng);
   }
 
   public static fillCoreProperties(
