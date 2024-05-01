@@ -13,9 +13,9 @@ export class Avatar<S extends StyleOptions> {
 
   constructor(style: Style<S>, options: Partial<Options<S>> = {}) {
     const builder = new Builder(style);
-    const optionsModel = new OptionsCollection(style, options);
+    const optionsCollection = new OptionsCollection(style, options);
 
-    PropertiesHelper.fillProperties(builder, optionsModel);
+    PropertiesHelper.fillProperties(builder, optionsCollection);
     AttributesHelper.fillAttributes(builder);
 
     this.svg = builder.build();
