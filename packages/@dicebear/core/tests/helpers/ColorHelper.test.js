@@ -11,8 +11,10 @@ describe('AttributeHelper', () => {
     const green = new ColorModel('00ff00');
     const blue = new ColorModel('0000ff');
     const black = new ColorModel('000000');
+    const transparent = new ColorModel('00000000');
 
     assert.equal(ColorHelper.getContrastColor(white, []), undefined);
+    assert.equal(ColorHelper.getContrastColor(white, [transparent]), undefined);
 
     assert.equal(
       ColorHelper.getContrastColor(white, [white]).getHex(),
