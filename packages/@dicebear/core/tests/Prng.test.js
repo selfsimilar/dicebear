@@ -91,16 +91,6 @@ describe('Prng', () => {
     assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'a');
   });
 
-  it('shuffle', () => {
-    const prng = Prng.fromSeed('test');
-
-    assert.deepEqual(prng.shuffle(['a', 'b', 'c']), ['a', 'b', 'c']);
-    assert.deepEqual(prng.shuffle(['a', 'b', 'c']), ['c', 'b', 'a']);
-    assert.deepEqual(prng.shuffle(['a', 'b', 'c']), ['b', 'c', 'a']);
-    assert.deepEqual(prng.shuffle(['a', 'b', 'c']), ['c', 'a', 'b']);
-    assert.deepEqual(prng.shuffle(['a', 'b', 'c']), ['a', 'b', 'c']);
-  });
-
   it('string', () => {
     const prng = Prng.fromSeed('test');
 
