@@ -1,7 +1,7 @@
-import { Style } from '../Style';
-import { OptionsHelper } from '../helpers/OptionsHelper';
-import { Options, StyleOptions } from '../types';
-import { AbstractCollection } from './AbstractCollection';
+import { Style } from '../Style.js';
+import { OptionsHelper } from '../helpers/OptionsHelper.js';
+import { Options, StyleOptions } from '../types.js';
+import { AbstractCollection } from './AbstractCollection.js';
 
 export class OptionsCollection<
   S extends StyleOptions = StyleOptions,

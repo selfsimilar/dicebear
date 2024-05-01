@@ -1,7 +1,7 @@
 import { mask } from 'superstruct';
-import { Style } from '../Style';
-import { Options, StyleOptions } from '../types';
-import { StructHelper } from './StructHelper';
+import { Style } from '../Style.js';
+import { Options, StyleOptions } from '../types.js';
+import { StructHelper } from './StructHelper.js';
 
 export class OptionsHelper {
   static validateOptions<S extends StyleOptions>(

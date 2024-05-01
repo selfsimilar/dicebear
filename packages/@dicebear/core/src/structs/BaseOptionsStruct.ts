@@ -1,6 +1,5 @@
 import {
   object,
-  optional,
   string,
   defaulted,
   min,
@@ -8,6 +7,7 @@ import {
   integer,
   array,
   boolean,
+  nullable,
 } from 'superstruct';
 import { Types } from './Types.js';
 
@@ -17,7 +17,7 @@ export const BaseOptionsStruct = object({
   rotate: defaulted(Types.rotation(), 360),
   scale: defaulted(max(min(integer(), 0), 200), 100),
   radius: defaulted(max(min(integer(), 0), 50), 0),
-  size: optional(min(integer(), 1)),
+  size: defaulted(nullable(min(integer(), 1)), null),
   backgroundColor: defaulted(array(Types.color()), []),
   translateX: defaulted(max(min(integer(), -100), 100), 0),
   translateY: defaulted(max(min(integer(), -100), 100), 0),

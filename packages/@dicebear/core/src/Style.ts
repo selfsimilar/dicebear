@@ -1,5 +1,5 @@
 import { mask } from 'superstruct';
-import { DefinitionStruct } from './structs/DefinitionStruct';
+import { DefinitionStruct } from './structs/DefinitionStruct.js';
 import {
   ComponentsFromStyleOptions,
   Definition,
@@ -10,7 +10,7 @@ import {
   DefinitionComponentValue,
   DefinitionMetadata,
   StyleOptions,
-} from './types';
+} from './types.js';
 
 type IndexedComponentValues<S extends StyleOptions> = Map<
   ComponentsFromStyleOptions<S> | string,

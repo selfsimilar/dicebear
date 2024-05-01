@@ -1,10 +1,9 @@
-import type { StyleOptions } from '../types';
-import { Builder } from '../Builder';
-import { Prng } from '../Prng';
-import { OptionsCollection } from '../collections/OptionsCollection';
-import { ColorModel } from '../models/ColorModel';
-import { ColorHelper } from './ColorHelper';
-import { StringHelper } from './StringHelper';
+import { Builder } from '../Builder.js';
+import { Prng } from '../Prng.js';
+import { OptionsCollection } from '../collections/OptionsCollection.js';
+import { ColorModel } from '../models/ColorModel.js';
+import { ColorHelper } from './ColorHelper.js';
+import { StringHelper } from './StringHelper.js';
 
 export class PropertiesHelper {
   public static fillProperties(
