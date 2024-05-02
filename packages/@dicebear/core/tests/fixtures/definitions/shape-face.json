@@ -52,11 +52,20 @@
       "name": "face",
       "width": 115,
       "height": 100,
-      "rotation": [-10, 10],
+      "rotation": [
+        -10,
+        10
+      ],
       "probability": 100,
       "offset": {
-        "x": [-10, 10],
-        "y": [-10, 10]
+        "x": [
+          -10,
+          10
+        ],
+        "y": [
+          -10,
+          10
+        ]
       },
       "values": [
         {
@@ -80,13 +89,20 @@
   "colors": [
     {
       "name": "background",
-      "values": ["3d84a8", "ea5455", "ffd460"]
+      "values": [
+        "3d84a8",
+        "ea5455",
+        "ffd460"
+      ]
     },
     {
       "name": "face",
-      "differentFromColor": "background",
-      "contrastColor": "background",
-      "values": ["3d84a8", "ea5455", "ffd460"]
+      "contrastTo": "background",
+      "values": [
+        "3d84a8",
+        "ea5455",
+        "ffd460"
+      ]
     }
   ]
 }

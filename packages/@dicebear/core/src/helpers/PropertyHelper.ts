@@ -25,7 +25,7 @@ export class PropertyHelper {
     const properties = builder.getProperties();
 
     const seed = options.getString('seed');
-    const size = options.getString('size');
+    const size = options.get('size');
 
     const backgroundColor = prng.pick(
       options.getArray('backgroundColor') as string[],
@@ -71,15 +71,17 @@ export class PropertyHelper {
       let availableColors = optionValue.map((c) => new ColorModel(c));
 
       if (color.notEqualTo) {
-        const notEqualTo = properties.get(`${color.notEqualTo}Color`);
+        for (const notEqualTo of color.notEqualTo) {
+          const notEqualToColor = properties.get(`${notEqualTo}Color`);
 
-        if (notEqualTo instanceof ColorModel) {
-          const newAvailableColors = availableColors.filter(
-            (color) => notEqualTo.getHex() === color.getHex(),
-          );
+          if (notEqualToColor instanceof ColorModel) {
+            const newAvailableColors = availableColors.filter(
+              (color) => notEqualToColor.getHex() !== color.getHex(),
+            );
 
-          if (newAvailableColors.length > 0) {
-            availableColors = newAvailableColors;
+            if (newAvailableColors.length > 0) {
+              availableColors = newAvailableColors;
+            }
           }
         }
       }

@@ -44,7 +44,7 @@ export const DefinitionStruct = object({
       object({
         name: string(),
         values: nonempty(array(Types.color())),
-        notEqualTo: optional(string()),
+        notEqualTo: optional(array(string())),
         contrastTo: optional(string()),
       }),
     ),
