@@ -42,9 +42,13 @@ export class StructHelper {
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
       style.getColors().reduce((acc, color) => {
-        acc[`${color.name}Color`] = nonempty(
-          defaulted(array(Types.color()), color.values),
-        );
+        const colorValue = defaulted(array(Types.color()), color.values);
+
+        if (color.name === 'background') {
+          acc[`${color.name}Color`] = colorValue;
+        } else {
+          acc[`${color.name}Color`] = nonempty(colorValue);
+        }
 
         return acc;
       }, {} as ObjectSchema),
