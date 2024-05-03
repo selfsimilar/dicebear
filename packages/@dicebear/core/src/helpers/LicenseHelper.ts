@@ -1,24 +1,18 @@
-import { Style } from '../Style.js';
+import { DefinitionMetadata } from '../types.js';
 import { SvgHelper } from './SvgHelper.js';
 
 export class LicenseHelper {
-  static memoizedGetLicenseAsXml = new Map<Style, string>();
-  static memoizedGetLicenseAsText = new Map<Style, string>();
-
-  static getLicenseAsXml(style: Style): string {
-    if (this.memoizedGetLicenseAsXml.has(style)) {
-      return this.memoizedGetLicenseAsXml.get(style)!;
-    }
-
-    const metadata = style.getMetadata();
+  static getLicenseAsXml(
+    metadata: Exclude<DefinitionMetadata, undefined>,
+  ): string {
     const sourceName = metadata.source?.name;
     const sourceUrl = metadata.source?.url;
     const creatorName = metadata.creator?.name;
     const licenseUrl = metadata.license?.url;
-    const copyright = LicenseHelper.getLicenseAsText(style);
+    const copyright = LicenseHelper.getLicenseAsText(metadata);
 
     // https://nsteffel.github.io/dublin_core_generator/generator.html
-    const result =
+    return (
       '<metadata' +
       ' xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"' +
       ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
@@ -43,20 +37,13 @@ export class LicenseHelper {
       `<dc:rights>${SvgHelper.escape(copyright)}</dc:rights>` +
       '</rdf:Description>' +
       '</rdf:RDF>' +
-      '</metadata>';
-
-    this.memoizedGetLicenseAsXml.set(style, result);
-
-    return result;
+      '</metadata>'
+    );
   }
 
-  static getLicenseAsText(style: Style): string {
-    if (this.memoizedGetLicenseAsText.has(style)) {
-      return this.memoizedGetLicenseAsText.get(style)!;
-    }
-
-    const metadata = style.getMetadata();
-
+  static getLicenseAsText(
+    metadata: Exclude<DefinitionMetadata, undefined>,
+  ): string {
     let title = metadata.source?.name ? `„${metadata.source?.name}”` : 'Design';
     const creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
 
@@ -83,8 +70,6 @@ export class LicenseHelper {
         result += ` (${metadata.license.url})`;
       }
     }
-
-    this.memoizedGetLicenseAsText.set(style, result);
 
     return result;
   }

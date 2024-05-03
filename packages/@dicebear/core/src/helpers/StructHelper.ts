@@ -19,7 +19,7 @@ export class StructHelper {
     Struct<{ [x: string]: unknown }, ObjectSchema>
   >();
 
-  static createOptionsStructFromStyle(
+  static createOptionsStruct(
     style: Style,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     if (this.memoizedCreateOptionsStructFromStyle.has(style)) {
@@ -28,8 +28,8 @@ export class StructHelper {
 
     const struct = assign(
       BaseOptionsStruct,
-      this.createColorsOptionsStructFromStyle(style),
-      this.createComponentsOptionsStructFromStyle(style),
+      this.createColorsOptionsStruct(style),
+      this.createComponentsOptionsStruct(style),
     );
 
     this.memoizedCreateOptionsStructFromStyle.set(style, struct);
@@ -37,7 +37,7 @@ export class StructHelper {
     return struct;
   }
 
-  static createColorsOptionsStructFromStyle(
+  static createColorsOptionsStruct(
     style: Style,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(
@@ -51,7 +51,7 @@ export class StructHelper {
     );
   }
 
-  static createComponentsOptionsStructFromStyle(
+  static createComponentsOptionsStruct(
     style: Style,
   ): Struct<{ [x: string]: unknown }, ObjectSchema> {
     return object(

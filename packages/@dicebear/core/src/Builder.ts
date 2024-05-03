@@ -38,7 +38,7 @@ export class Builder<S extends StyleOptions = StyleOptions> {
 
   build(): string {
     const attributes = SvgHelper.createAttrString(this.getAttributes());
-    const metadata = LicenseHelper.getLicenseAsXml(this.style);
+    const metadata = LicenseHelper.getLicenseAsXml(this.style.getMetadata());
     const body = this.buildBody();
 
     return `<svg ${attributes}>${metadata}${body}</svg>`;

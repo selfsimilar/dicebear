@@ -8,9 +8,6 @@ export class OptionHelper {
     style: Style<S>,
     options: unknown,
   ): Options<S> {
-    return mask(
-      options,
-      StructHelper.createOptionsStructFromStyle(style),
-    ) as Options<S>;
+    return mask(options, StructHelper.createOptionsStruct(style)) as Options<S>;
   }
 }
