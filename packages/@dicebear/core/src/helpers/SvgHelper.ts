@@ -6,22 +6,17 @@ import { AttributesCollection } from '../collections/AttributesCollection.js';
 
 export class SvgHelper {
   static escape(content: string): string {
-    return content.replace(/[&'"><]/g, function (m) {
-      switch (m) {
-        case '&':
-          return '&amp;';
-        case "'":
-          return '&apos;';
-        case '"':
-          return '&quot;';
-        case '<':
-          return '&lt;';
-        case '>':
-          return '&gt;';
-        default:
-          return m;
-      }
-    });
+    return content.replace(
+      /[&'"><]/g,
+      (match) =>
+        ({
+          '&': '&amp;',
+          "'": '&apos;',
+          '"': '&quot;',
+          '>': '&gt;',
+          '<': '&lt;',
+        })[match] as string,
+    );
   }
 
   static createAttrString(attributes: AttributesCollection): string {
@@ -52,14 +47,13 @@ export class SvgHelper {
   static addScale(builder: Builder, body: string): string {
     const scale = builder.getProperties().getNumber('scale');
 
-    if (scale !== undefined && scale !== 100) {
+    if (scale === undefined || scale === 100) {
       return body;
     }
 
     const { width, height } = builder.getViewBox();
 
-    const percent = scale ? (scale - 100) / 100 : 0;
-
+    const percent = (scale - 100) / 100;
     const translateX = (width / 2) * percent * -1;
     const translateY = (height / 2) * percent * -1;
 
@@ -153,7 +147,7 @@ export class SvgHelper {
       const placeholder = builder.getProperties().get(m1);
 
       if (typeof placeholder === 'string') {
-        return placeholder;
+        return this.escape(placeholder);
       }
 
       return '';
@@ -177,11 +171,7 @@ export class SvgHelper {
 
     const componentValue = builder
       .getStyle()
-      .getComponentValueByName(component.name, componentValueName);
-
-    if (!componentValue) {
-      return '';
-    }
+      .getComponentValueByName(component.name, componentValueName)!;
 
     let componentContent = componentValue.content;
 

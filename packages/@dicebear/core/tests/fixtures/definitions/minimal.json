@@ -2,7 +2,7 @@
   "$schema": "https://static.dicebear.com/schema/definition.json#",
   "body": {
     "content": "",
-    "width": 1024,
-    "height": 1024
+    "width": 1,
+    "height": 1
   }
 }

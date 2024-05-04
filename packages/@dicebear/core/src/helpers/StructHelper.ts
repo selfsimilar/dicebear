@@ -86,8 +86,13 @@ export class StructHelper {
         if (offset) {
           const OffsetType = nonempty(array(integer()));
 
-          acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
-          acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
+          if (offset.x) {
+            acc[`${name}OffsetX`] = defaulted(OffsetType, offset.x);
+          }
+
+          if (offset.y) {
+            acc[`${name}OffsetY`] = defaulted(OffsetType, offset.y);
+          }
         }
 
         return acc;
