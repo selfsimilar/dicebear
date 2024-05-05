@@ -28,6 +28,10 @@ export class Style<S extends StyleOptions = StyleOptions> {
     this.indexedComponentValues = this.indexComponentValues();
   }
 
+  static create<S extends StyleOptions>(definition: Definition): Style<S> {
+    return new Style<S>(definition);
+  }
+
   getMetadata(): Exclude<DefinitionMetadata, undefined> {
     return this.definition.metadata ?? {};
   }

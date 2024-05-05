@@ -10,11 +10,11 @@ export class Prng {
     this.value = this.hashSeed(seed) || 1;
   }
 
-  static fromSeed(seed: string): Prng {
+  static create(seed: string): Prng {
     return new Prng(seed);
   }
 
-  static fromRandom(): Prng {
+  static createAtRandom(): Prng {
     const seed = Math.random().toString(36).substring(2, 7);
 
     return new Prng(seed);
@@ -62,7 +62,7 @@ export class Prng {
   ): string {
     // Each method call should call the `next` function only once.
     // Therefore, we use a separate instance of the Prng here.
-    const internalPrng = Prng.fromSeed(this.next().toString());
+    const internalPrng = Prng.create(this.next().toString());
 
     let str = '';
 

@@ -10,7 +10,7 @@ export class PropertyHelper {
     builder: Builder,
     options: OptionsCollection,
   ): void {
-    const prng = Prng.fromSeed(options.get('seed') as string);
+    const prng = Prng.create(options.get('seed') as string);
 
     this.fillCoreProperties(builder, options, prng);
     this.fillColorProperties(builder, options, prng);

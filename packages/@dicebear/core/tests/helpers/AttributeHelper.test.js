@@ -23,7 +23,7 @@ describe('AttributeHelper', () => {
       ],
     });
 
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
 
     AttributeHelper.fillAttributes(builder);
 
@@ -34,7 +34,7 @@ describe('AttributeHelper', () => {
 
   it('fillSizeAttributes width = height', () => {
     const style = createStyle(minimalDefinition);
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
 
     builder.getProperties().set('size', 100);
 
@@ -54,7 +54,7 @@ describe('AttributeHelper', () => {
       },
     });
 
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
 
     builder.getProperties().set('size', 200);
 
@@ -74,7 +74,7 @@ describe('AttributeHelper', () => {
       },
     });
 
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
 
     builder.getProperties().set('size', 200);
 

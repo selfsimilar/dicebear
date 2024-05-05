@@ -11,7 +11,7 @@ import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
 describe('PropertyHelper', () => {
   it('fillProperties #1', () => {
     const style = createStyle(shapeFaceDefinition);
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
     const options = new OptionsCollection(style, {});
 
     PropertyHelper.fillProperties(builder, options);
@@ -30,7 +30,7 @@ describe('PropertyHelper', () => {
 
   it('fillProperties #2', () => {
     const style = createStyle(shapeFaceDefinition);
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
     const options = new OptionsCollection(style, {
       size: 200,
       faceProbability: 0,

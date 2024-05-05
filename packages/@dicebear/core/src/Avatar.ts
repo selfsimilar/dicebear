@@ -6,21 +6,32 @@ import { PropertyHelper } from './helpers/PropertyHelper.js';
 import { AttributeHelper } from './helpers/AttributeHelper.js';
 import { OptionsCollection } from './collections/OptionsCollection.js';
 
-export class Avatar<S extends StyleOptions> {
-  private readonly svg: string;
-  private readonly metadata: Exclude<DefinitionMetadata, undefined>;
-  private readonly properties: [string, unknown][];
+export class Avatar {
+  private constructor(
+    private readonly svg: string,
+    private readonly metadata: Exclude<DefinitionMetadata, undefined>,
+    private readonly properties: [string, unknown][],
+  ) {
+    this.svg = svg;
+    this.metadata = metadata;
+    this.properties = properties;
+  }
 
-  constructor(style: Style<S>, options: Partial<Options<S>> = {}) {
-    const builder = new Builder(style);
+  static create<S extends StyleOptions>(
+    style: Style<S>,
+    options: Partial<Options<S>> = {},
+  ) {
+    const builder = Builder.create(style);
     const optionsCollection = new OptionsCollection(style, options);
 
     PropertyHelper.fillProperties(builder, optionsCollection);
     AttributeHelper.fillAttributes(builder);
 
-    this.svg = builder.build();
-    this.metadata = style.getMetadata();
-    this.properties = builder.getProperties().all();
+    return new Avatar(
+      builder.build(),
+      style.getMetadata(),
+      builder.getProperties().all(),
+    );
   }
 
   toString(): string {

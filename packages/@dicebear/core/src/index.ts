@@ -12,14 +12,14 @@ import type { Definition, Options, StyleOptions } from './types.js';
 export function createStyle<S extends StyleOptions>(
   definition: Definition,
 ): Style<S> {
-  return new Style<S>(definition);
+  return Style.create<S>(definition);
 }
 
 export function createAvatar<S extends StyleOptions>(
   style: Style<S>,
   options: Partial<Options<S>> = {},
 ) {
-  return new Avatar(style, options);
+  return Avatar.create(style, options);
 }
 
 export { Avatar, Style };

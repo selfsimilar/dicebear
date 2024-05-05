@@ -18,6 +18,12 @@ export class Builder<S extends StyleOptions = StyleOptions> {
 
   constructor(private readonly style: Style<S>) {}
 
+  static create<S extends StyleOptions = StyleOptions>(
+    style: Style<S>,
+  ): Builder<S> {
+    return new Builder(style);
+  }
+
   getViewBox(): ViewBox {
     const viewBoxAttribute = this.attributes.getString('viewBox');
 

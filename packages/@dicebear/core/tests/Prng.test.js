@@ -4,14 +4,14 @@ import { describe, it } from 'node:test';
 import { Prng } from '../lib/Prng.js';
 
 describe('Prng', () => {
-  it('fromSeed', () => {
-    const prng = Prng.fromSeed('test');
+  it('create', () => {
+    const prng = Prng.create('test');
 
     assert.equal(typeof prng.getSeed(), 'string');
   });
 
-  it('fromRandom', () => {
-    const prng = Prng.fromRandom();
+  it('createAtRandom', () => {
+    const prng = Prng.createAtRandom();
 
     for (let i = 0; i < 100; i++) {
       assert.equal(typeof prng.getSeed(), 'string');
@@ -20,7 +20,7 @@ describe('Prng', () => {
   });
 
   it('bool', () => {
-    const prng = Prng.fromSeed('test');
+    const prng = Prng.create('test');
 
     assert.equal(prng.bool(), false);
     assert.equal(prng.bool(), true);
@@ -40,7 +40,7 @@ describe('Prng', () => {
   });
 
   it('integer', () => {
-    const prng = Prng.fromSeed('test');
+    const prng = Prng.create('test');
 
     assert.equal(prng.integer(0, 100), 79);
     assert.equal(prng.integer(0, 100), 35);
@@ -60,7 +60,7 @@ describe('Prng', () => {
   });
 
   it('pick', () => {
-    const prng = Prng.fromSeed('test');
+    const prng = Prng.create('test');
 
     assert.equal(prng.pick(['a', 'b', 'c']), 'c');
     assert.equal(prng.pick(['a', 'b', 'c']), 'b');
@@ -77,7 +77,7 @@ describe('Prng', () => {
     assert.equal(prng.pick([], 'fallback'), 'fallback');
 
     // Unsorted array should output the same result
-    const prngUnsorted = Prng.fromSeed('test');
+    const prngUnsorted = Prng.create('test');
 
     assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'c');
     assert.equal(prngUnsorted.pick(['c', 'a', 'b']), 'b');
@@ -92,7 +92,7 @@ describe('Prng', () => {
   });
 
   it('string', () => {
-    const prng = Prng.fromSeed('test');
+    const prng = Prng.create('test');
 
     assert.equal(prng.string(0), '');
     assert.equal(prng.string(2), 'ew');

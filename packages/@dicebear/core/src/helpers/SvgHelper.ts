@@ -129,7 +129,7 @@ export class SvgHelper {
       return body;
     }
 
-    const prng = Prng.fromRandom();
+    const prng = Prng.createAtRandom();
     const ids: Record<string, string> = {};
 
     return body.replace(

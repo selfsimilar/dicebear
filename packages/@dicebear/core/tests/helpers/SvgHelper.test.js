@@ -43,7 +43,7 @@ describe('SvgHelper', () => {
   });
 
   it('addBackground #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       backgroundColor: ['fff000'],
     });
@@ -58,7 +58,7 @@ describe('SvgHelper', () => {
   });
 
   it('addBackground #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       backgroundColor: [],
     });
@@ -73,7 +73,7 @@ describe('SvgHelper', () => {
   });
 
   it('addScale #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       scale: 200,
     });
@@ -88,7 +88,7 @@ describe('SvgHelper', () => {
   });
 
   it('addScale #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       scale: 100,
     });
@@ -100,7 +100,7 @@ describe('SvgHelper', () => {
   });
 
   it('addScale #3', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       scale: undefined,
     });
@@ -112,7 +112,7 @@ describe('SvgHelper', () => {
   });
 
   it('addTranslate #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       translateX: 100,
       translateY: 100,
@@ -128,7 +128,7 @@ describe('SvgHelper', () => {
   });
 
   it('addTranslate #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       translateX: 100,
       translateY: 0,
@@ -144,7 +144,7 @@ describe('SvgHelper', () => {
   });
 
   it('addTranslate #3', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       translateX: 0,
       translateY: 0,
@@ -157,7 +157,7 @@ describe('SvgHelper', () => {
   });
 
   it('addRotate #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       rotate: 90,
     });
@@ -172,7 +172,7 @@ describe('SvgHelper', () => {
   });
 
   it('addRotate #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       rotate: 0,
     });
@@ -184,7 +184,7 @@ describe('SvgHelper', () => {
   });
 
   it('addFlip #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       flip: true,
     });
@@ -199,7 +199,7 @@ describe('SvgHelper', () => {
   });
 
   it('addFlip #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       flip: false,
     });
@@ -211,7 +211,7 @@ describe('SvgHelper', () => {
   });
 
   it('addRadius #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       radius: 50,
     });
@@ -226,7 +226,7 @@ describe('SvgHelper', () => {
   });
 
   it('addRadius #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       radius: 0,
     });
@@ -241,7 +241,7 @@ describe('SvgHelper', () => {
   });
 
   it('addRadius #3', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       radius: 0,
       clip: false,
@@ -254,7 +254,7 @@ describe('SvgHelper', () => {
   });
 
   it('randomizeIds #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       radius: 50,
       randomizeIds: true,
@@ -273,7 +273,7 @@ describe('SvgHelper', () => {
   });
 
   it('randomizeIds #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       radius: 50,
       randomizeIds: false,
@@ -292,7 +292,7 @@ describe('SvgHelper', () => {
   });
 
   it('replacePlaceholders #1', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {
       seed: 'John Doe',
     });
@@ -312,7 +312,7 @@ describe('SvgHelper', () => {
   });
 
   it('replacePlaceholders #2', () => {
-    const builder = new Builder(minimalStyle);
+    const builder = Builder.create(minimalStyle);
     const options = new OptionsCollection(minimalStyle, {});
 
     PropertyHelper.fillProperties(builder, options);
@@ -324,7 +324,7 @@ describe('SvgHelper', () => {
   });
 
   it('createComponentSymbol #1', () => {
-    const builder = new Builder(shapeFaceStyle);
+    const builder = Builder.create(shapeFaceStyle);
     const options = new OptionsCollection(shapeFaceStyle, {
       eyes: ['ellipse'],
       face: ['ellipse'],
@@ -353,7 +353,7 @@ describe('SvgHelper', () => {
   });
 
   it('createComponentSymbol #2', () => {
-    const builder = new Builder(shapeFaceStyle);
+    const builder = Builder.create(shapeFaceStyle);
     const options = new OptionsCollection(shapeFaceStyle, {
       eyes: [],
       face: ['ellipse'],
@@ -420,7 +420,7 @@ describe('SvgHelper', () => {
       ],
     });
 
-    const builder = new Builder(style);
+    const builder = Builder.create(style);
     const options = new OptionsCollection(style, {});
 
     PropertyHelper.fillProperties(builder, options);
@@ -443,7 +443,7 @@ describe('SvgHelper', () => {
   });
 
   it('createColorGradient #1', () => {
-    const builder = new Builder(shapeFaceStyle);
+    const builder = Builder.create(shapeFaceStyle);
     const options = new OptionsCollection(shapeFaceStyle, {
       faceColor: ['fff000'],
     });
@@ -460,7 +460,7 @@ describe('SvgHelper', () => {
   });
 
   it('createColorGradient #2', () => {
-    const builder = new Builder(shapeFaceStyle);
+    const builder = Builder.create(shapeFaceStyle);
     const options = new OptionsCollection(shapeFaceStyle, {
       backgroundColor: [],
     });
