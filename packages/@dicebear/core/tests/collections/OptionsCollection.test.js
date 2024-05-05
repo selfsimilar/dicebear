@@ -4,12 +4,76 @@ import { describe, it } from 'node:test';
 import { createStyle } from '../../lib/index.js';
 import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
 
-import minimalStyle from '../fixtures/definitions/minimal.json' assert { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
+import shapeFaceDefinition from '../fixtures/definitions/shape-face.json' assert { type: 'json' };
 
 describe('OptionsCollection', () => {
+  const minimalStyle = createStyle(minimalDefinition);
+  const shapeFaceStyle = createStyle(shapeFaceDefinition);
+
+  it('constructor', () => {
+    // seed
+    assert.throws(
+      () =>
+        new OptionsCollection(minimalStyle, {
+          seed: 123,
+        }),
+    );
+
+    assert.doesNotThrow(
+      () =>
+        new OptionsCollection(minimalStyle, {
+          seed: '123',
+        }),
+    );
+
+    // rotate
+    assert.throws(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          rotate: '123',
+        }),
+    );
+
+    assert.doesNotThrow(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          rotate: 123,
+        }),
+    );
+
+    // faceRotation
+    assert.throws(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          faceRotation: '123',
+        }),
+    );
+
+    assert.throws(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          faceRotation: 123,
+        }),
+    );
+
+    assert.throws(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          faceRotation: ['123'],
+        }),
+    );
+
+    assert.doesNotThrow(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          faceRotation: [123],
+        }),
+    );
+  });
+
   it('get', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {
+    const collection = new OptionsCollection(minimalStyle, {
       seed: 'John Doe',
     });
 
@@ -18,16 +82,14 @@ describe('OptionsCollection', () => {
   });
 
   it('has', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {});
+    const collection = new OptionsCollection(minimalStyle, {});
 
     assert.equal(collection.has('seed'), true);
     assert.equal(collection.has('does-not-exists'), false);
   });
 
   it('all', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {});
+    const collection = new OptionsCollection(minimalStyle, {});
 
     assert.deepEqual(collection.all(), [
       ['seed', ''],
@@ -45,8 +107,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getString', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {});
+    const collection = new OptionsCollection(minimalStyle, {});
 
     assert.equal(collection.getString('seed'), '');
     assert.throws(() => collection.getString('flip'));
@@ -54,8 +115,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getBoolean', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {});
+    const collection = new OptionsCollection(minimalStyle, {});
 
     assert.equal(collection.getBoolean('flip'), false);
     assert.throws(() => collection.getBoolean('seed'));
@@ -63,8 +123,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getNumber', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {});
+    const collection = new OptionsCollection(minimalStyle, {});
 
     assert.equal(collection.getNumber('scale'), 100);
     assert.throws(() => collection.getNumber('flip'));
@@ -72,8 +131,7 @@ describe('OptionsCollection', () => {
   });
 
   it('getArray', () => {
-    const style = createStyle(minimalStyle);
-    const collection = new OptionsCollection(style, {});
+    const collection = new OptionsCollection(minimalStyle, {});
 
     assert.deepEqual(collection.getArray('backgroundColor'), []);
     assert.throws(() => collection.getArray('seed'));
