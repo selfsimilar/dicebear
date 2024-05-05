@@ -70,6 +70,21 @@ describe('OptionsCollection', () => {
           faceRotation: [123],
         }),
     );
+
+    // face
+    assert.throws(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          face: ['invalid'],
+        }),
+    );
+
+    assert.doesNotThrow(
+      () =>
+        new OptionsCollection(shapeFaceStyle, {
+          face: ['ellipse'],
+        }),
+    );
   });
 
   it('get', () => {
