@@ -15,7 +15,7 @@ export class DependencyHelper {
       colors: new Set(),
     };
 
-    const matches = svg.matchAll(/url\(#(component|color)-([^(]+)\)/gi);
+    const matches = svg.matchAll(/#(component|color)-([a-z0-9-]+)/gi);
 
     for (const match of matches) {
       if (match[1] === 'component') {

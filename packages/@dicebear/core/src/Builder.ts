@@ -57,10 +57,10 @@ export class Builder<S extends StyleOptions = StyleOptions> {
     let body = [
       '<defs>',
       ...colors.map((color) => SvgHelper.createColorGradient(this, color)),
+      '</defs>',
       ...components.map((component) =>
         SvgHelper.createComponentSymbol(this, component),
       ),
-      '</defs>',
       style.getBody().content,
     ].join('');
 

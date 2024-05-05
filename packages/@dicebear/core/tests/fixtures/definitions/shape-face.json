@@ -11,7 +11,7 @@
     }
   },
   "body": {
-    "content": "<g transform=\"translate(0 7)\"><use href=\"url(#component-face)\"/></g><g transform=\"translate(30 37)\"><use href=\"url(#component-eyes)\"/></g>",
+    "content": "<g transform=\"translate(0 7)\"><use href=\"#component-face\"/></g><g transform=\"translate(30 37)\"><use href=\"#component-eyes\"/></g>",
     "width": 115,
     "height": 115
   },

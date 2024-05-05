@@ -21,9 +21,7 @@ describe('DependencyHelper', () => {
     });
 
     assert.deepEqual(
-      DependencyHelper.getDependenciesFromSvg(
-        '<use href="url(#component-foo)" />',
-      ),
+      DependencyHelper.getDependenciesFromSvg('<use href="#component-foo" />'),
       {
         components: new Set(['foo']),
         colors: new Set(),
@@ -32,7 +30,7 @@ describe('DependencyHelper', () => {
 
     assert.deepEqual(
       DependencyHelper.getDependenciesFromSvg(
-        '<use href="url(#component-foo)" /><use fill="url(#color-baz)" href="url(#component-bar)" />',
+        '<use href="#component-foo)" /><use fill="url(#color-baz)" href="#component-bar" />',
       ),
       {
         components: new Set(['foo', 'bar']),
@@ -44,8 +42,7 @@ describe('DependencyHelper', () => {
   it('getDependenciesFromProperties', () => {
     const style = createStyle({
       body: {
-        content:
-          '<use href="url(#component-foo)" /><use href="url(#component-qux)" />',
+        content: '<use href="#component-foo)" /><use href="#component-qux" />',
         width: 100,
         height: 100,
       },
@@ -58,7 +55,7 @@ describe('DependencyHelper', () => {
             {
               name: 'default',
               content:
-                '<use href="url(#component-bar)" /><use href="url(#component-qux)" />',
+                '<use href="#component-bar)" /><use href="#component-qux" />',
             },
           ],
         },
@@ -92,7 +89,7 @@ describe('DependencyHelper', () => {
           values: [
             {
               name: 'default',
-              content: '<use href="url(#component-quux)" />',
+              content: '<use href="#component-quux" />',
             },
           ],
         },
