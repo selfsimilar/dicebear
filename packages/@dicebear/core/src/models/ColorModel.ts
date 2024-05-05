@@ -45,13 +45,15 @@ export class ColorModel {
 
     color = color.replace(/^#/, '');
 
+    let result: Rgba | undefined = undefined;
+
     if (color.length === 8) {
       const r = parseInt(color.substring(0, 2), 16);
       const g = parseInt(color.substring(2, 4), 16);
       const b = parseInt(color.substring(4, 6), 16);
       const a = parseInt(color.substring(6, 8), 16) / 255;
 
-      return [r, g, b, a];
+      result = [r, g, b, a];
     }
 
     if (color.length === 6) {
@@ -59,7 +61,7 @@ export class ColorModel {
       const g = parseInt(color.substring(2, 4), 16);
       const b = parseInt(color.substring(4, 6), 16);
 
-      return [r, g, b, 1];
+      result = [r, g, b, 1];
     }
 
     if (color.length === 3) {
@@ -67,10 +69,20 @@ export class ColorModel {
       const g = parseInt(color.substring(1, 2), 16);
       const b = parseInt(color.substring(2, 3), 16);
 
-      return [r * 17, g * 17, b * 17, 1];
+      result = [r * 17, g * 17, b * 17, 1];
     }
 
-    throw new Error(`Invalid color: ${color}`);
+    if (
+      result === undefined ||
+      isNaN(result[0]) ||
+      isNaN(result[1]) ||
+      isNaN(result[2]) ||
+      isNaN(result[3])
+    ) {
+      throw new Error(`Invalid color: ${color}`);
+    }
+
+    return result;
   }
 
   private toHex(color: [number, number, number, number]): string {
