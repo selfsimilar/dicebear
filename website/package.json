@@ -1,12 +1,10 @@
 {
   "name": "@dicebear/website",
-  "engines": {
-    "node": ">=18.0.0"
-  },
+  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vitepress dev .",
     "build": "vitepress build .",
+    "dev": "vitepress dev .",
     "preview": "vitepress preview ."
   },
   "dependencies": {
@@ -38,5 +36,7 @@
     "vue-confetti": "^2.3.0",
     "vuetify": "^3.4.8"
   },
-  "private": true
+  "engines": {
+    "node": ">=18.0.0"
+  }
 }

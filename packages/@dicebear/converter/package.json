@@ -42,11 +42,11 @@
     "test": "uvu tests"
   },
   "dependencies": {
-    "@fontsource/noto-sans": "^5.0.18",
-    "@resvg/resvg-js": "^2.6.0",
-    "@types/json-schema": "^7.0.11",
-    "exiftool-vendored": "^25.1.0",
-    "sharp": "^0.33.1",
+    "@fontsource/noto-sans": "^5.0.22",
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/json-schema": "^7.0.15",
+    "exiftool-vendored": "^26.0.0",
+    "sharp": "^0.33.3",
     "tmp-promise": "^3.0.3"
   },
   "devDependencies": {
