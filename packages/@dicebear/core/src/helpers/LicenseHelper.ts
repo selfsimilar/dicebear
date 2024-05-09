@@ -55,7 +55,7 @@ export class LicenseHelper {
 
     if (
       metadata.license?.name !== 'MIT' &&
-      metadata.creator?.name !== 'DiceBear' &&
+      !metadata.creator?.url?.includes('www.dicebear.com') &&
       metadata.source?.name
     ) {
       result += 'Remix of ';
