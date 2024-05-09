@@ -1,11 +1,12 @@
 {
-  "name": "@dicebear/collection",
+  "name": "@dicebear/cli",
   "version": "9.0.0-alpha.1",
-  "description": "Avatar style collection for DiceBear",
+  "description": "Dicebear CLI Commands.",
   "keywords": [
     "avatar",
     "dicebear"
   ],
+  "homepage": "https://www.dicebear.com",
   "bugs": {
     "url": "https://github.com/dicebear/dicebear/issues"
   },
@@ -14,22 +15,17 @@
     "url": "git+https://github.com/dicebear/dicebear.git"
   },
   "license": "MIT",
+  "author": "Florian Körner <contact@dicebear.com>",
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./lib/index.d.ts",
-      "default": "./lib/index.js"
-    },
-    "./*.js": {
-      "types": "./lib/*.d.js",
-      "default": "./lib/*.js"
-    }
+    "types": "./lib/index.d.ts",
+    "default": "./lib/index.js"
   },
   "typesVersions": {
     "*": {
       "*": [
-        "./lib/*.d.js"
+        "lib/index.d.ts"
       ]
     }
   },
@@ -40,31 +36,17 @@
   ],
   "scripts": {
     "prebuild": "del-cli lib",
-    "build": "npm-run-all build:generate build:compile",
-    "build:compile": "tsc",
-    "build:generate": "tsx ./scripts/generate-files.ts",
+    "build": "tsc",
     "prepublishOnly": "npm run build",
     "test": "node --no-warnings --test --test-reporter=spec --test-reporter-destination=stdout tests",
     "test:coverage": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
   },
   "dependencies": {
-    "@dicebear/definitions": "9.0.0-beta.1"
+    "superstruct": "^1.0.4"
   },
   "devDependencies": {
-    "@dicebear/core": "^9.0.0-alpha.1",
-    "@rollup/plugin-commonjs": "^25.0.3",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "change-case": "^5.4.3",
-    "del-cli": "^5.0.0",
-    "glob": "^10.3.12",
-    "rollup": "^4.14.0",
-    "tmp": "^0.2.1",
-    "ts-morph": "^22.0.0",
-    "tsx": "^4.7.1",
-    "webpack": "^5.76.3"
-  },
-  "peerDependencies": {
-    "@dicebear/core": "^9.0.0-alpha.0"
+    "@tsconfig/recommended": "^1.0.2",
+    "del-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"

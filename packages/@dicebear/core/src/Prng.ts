@@ -10,14 +10,12 @@ export class Prng {
     this.value = this.hashSeed(seed) || 1;
   }
 
-  static create(seed: string): Prng {
+  static create(seed: string = Prng.generateRandomSeed()): Prng {
     return new Prng(seed);
   }
 
-  static createAtRandom(): Prng {
-    const seed = Math.random().toString(36).substring(2, 7);
-
-    return new Prng(seed);
+  static generateRandomSeed(): string {
+    return Math.random().toString(36).substring(2, 7);
   }
 
   getSeed(): string {

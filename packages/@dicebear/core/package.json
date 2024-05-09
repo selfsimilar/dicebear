@@ -38,7 +38,8 @@
     "prebuild": "del-cli lib",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
+    "test": "node --no-warnings --test --test-reporter=spec --test-reporter-destination=stdout tests",
+    "test:coverage": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
   },
   "dependencies": {
     "superstruct": "^1.0.4"
@@ -48,7 +49,7 @@
     "del-cli": "^5.0.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^18.20 || >=20.10"
   },
   "publishConfig": {
     "access": "public"

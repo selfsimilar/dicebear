@@ -4,19 +4,20 @@ import { describe, it } from 'node:test';
 import { Prng } from '../lib/Prng.js';
 
 describe('Prng', () => {
-  it('create', () => {
+  it('create #1', () => {
     const prng = Prng.create('test');
 
     assert.equal(typeof prng.getSeed(), 'string');
   });
 
-  it('createAtRandom', () => {
-    const prng = Prng.createAtRandom();
+  it('create #2', () => {
+    const prng1 = Prng.create();
+    const prng2 = Prng.create();
 
-    for (let i = 0; i < 100; i++) {
-      assert.equal(typeof prng.getSeed(), 'string');
-      assert.equal(prng.getSeed().length, 5);
-    }
+    assert.equal(typeof prng1.getSeed(), 'string');
+    assert.equal(prng2.getSeed().length, 5);
+
+    assert.notEqual(prng1.getSeed(), prng2.getSeed());
   });
 
   it('bool', () => {

@@ -39,7 +39,8 @@
     "prebuild": "del-cli lib",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "uvu tests"
+    "test": "node --no-warnings --test --test-reporter=spec --test-reporter-destination=stdout tests",
+    "test:coverage": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
   },
   "dependencies": {
     "@fontsource/noto-sans": "^5.0.22",
@@ -51,8 +52,7 @@
   },
   "devDependencies": {
     "@types/sharp": "^0.32.0",
-    "del-cli": "^5.0.0",
-    "uvu": "^0.5.6"
+    "del-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
