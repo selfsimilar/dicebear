@@ -22,8 +22,8 @@
       "default": "./lib/index.js"
     },
     "./*.js": {
-      "types": "./lib/*.d.js",
-      "default": "./lib/*.js"
+      "types": "./lib/styles/*.d.js",
+      "default": "./lib/styles/*.js"
     }
   },
   "typesVersions": {

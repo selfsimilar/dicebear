@@ -61,18 +61,18 @@ export default definition;`;
       .map((name) => `'${name}'`)
       .join(' | ');
 
-    typeProperties.push(`${component.name}?: Array<${values}>`);
+    typeProperties.push(`${component.name}?: Array<${values}>;`);
 
     if (component.offset) {
-      typeProperties.push(`${component.name}Offset?: number`);
+      typeProperties.push(`${component.name}Offset?: number;`);
     }
 
     if (component.probability) {
-      typeProperties.push(`${component.name}Probability?: number`);
+      typeProperties.push(`${component.name}Probability?: number;`);
     }
 
     if (component.rotation) {
-      typeProperties.push(`${component.name}Rotation?: [number, number]`);
+      typeProperties.push(`${component.name}Rotation?: [number, number];`);
     }
   }
 
@@ -81,7 +81,7 @@ export default definition;`;
       continue;
     }
 
-    typeProperties.push(`${color.name}Color?: string[]`);
+    typeProperties.push(`${color.name}Color?: string[];`);
   }
 
   // Style class
