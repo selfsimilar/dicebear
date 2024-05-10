@@ -3,17 +3,17 @@ import { describe, it } from 'node:test';
 
 import { Avatar, Style, createAvatar, createStyle } from '../lib/index.js';
 
-import initials from './fixtures/definitions/initials.json' assert { type: 'json' };
+import initialsDefinition from './fixtures/definitions/loader/initials.cjs';
 
 describe('index', () => {
   it('createStyle', () => {
-    const style = createStyle(initials);
+    const style = createStyle(initialsDefinition);
 
     assert.ok(style instanceof Style);
   });
 
   it('createAvatar', () => {
-    const style = createStyle(initials);
+    const style = createStyle(initialsDefinition);
     const avatar = createAvatar(style);
 
     assert.ok(avatar instanceof Avatar);

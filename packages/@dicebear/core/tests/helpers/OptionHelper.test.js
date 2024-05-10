@@ -1,10 +1,10 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
+import { createStyle } from '../../lib/index.js';
 import { OptionHelper } from '../../lib/helpers/OptionHelper.js';
 
-import shapeFaceDefinition from '../fixtures/definitions/shape-face.json' assert { type: 'json' };
-import { createStyle } from '../../lib/index.js';
+import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
 
 describe('OptionHelper', () => {
   it('validateOptions', () => {

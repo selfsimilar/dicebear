@@ -1,9 +1,9 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { Style, createStyle } from '../lib/index.js';
+import { createStyle } from '../lib/index.js';
 
-import initialsDefinition from './fixtures/definitions/initials.json' assert { type: 'json' };
+import initialsDefinition from './fixtures/definitions/loader/initials.cjs';
 
 describe('Style', () => {
   const initialsStyle = createStyle(initialsDefinition);

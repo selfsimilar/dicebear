@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 
 import { LicenseHelper } from '../../lib/helpers/LicenseHelper.js';
 
-import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/loader/minimal.cjs';
 
 describe('LicenseHelper', () => {
   it('getLicenseAsXml', () => {

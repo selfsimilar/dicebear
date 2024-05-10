@@ -32,7 +32,7 @@ for (const definitionFile of definitionFileList) {
 
   // Definition loader
   const definitionLoaderTarget = join(targetPath, 'loader', `${styleName}.cjs`);
-  const definitionLoaderContent = `export default require('@dicebear/definitions/${definitionFile}');`;
+  const definitionLoaderContent = `module.exports = require('@dicebear/definitions/${definitionFile}');`;
 
   await ensureDir(dirname(definitionLoaderTarget));
   await writeFile(definitionLoaderTarget, definitionLoaderContent);

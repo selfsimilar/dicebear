@@ -16,7 +16,7 @@ export function createStyle<S extends StyleOptions>(
 }
 
 export function createAvatar<S extends StyleOptions>(
-  style: Style<S>,
+  style: Style<S> | { new (): Style<S> },
   options: Partial<Options<S>> = {},
 ) {
   return Avatar.create(style, options);

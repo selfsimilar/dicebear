@@ -1,11 +1,11 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
+import { createStyle } from '../../lib/index.js';
 import { Builder } from '../../lib/Builder.js';
 import { AttributeHelper } from '../../lib/helpers/AttributeHelper.js';
 
-import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
-import { createStyle } from '../../lib/index.js';
+import minimalDefinition from '../fixtures/definitions/loader/minimal.cjs';
 
 describe('AttributeHelper', () => {
   it('fillAttributes', () => {

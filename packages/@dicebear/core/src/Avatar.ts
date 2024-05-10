@@ -7,6 +7,8 @@ import { AttributeHelper } from './helpers/AttributeHelper.js';
 import { OptionsCollection } from './collections/OptionsCollection.js';
 
 export class Avatar {
+  static memoizedStyle = new Map<{ new (): Style }, Style>();
+
   private constructor(
     private readonly svg: string,
     private readonly metadata: Exclude<DefinitionMetadata, undefined>,
@@ -18,18 +20,27 @@ export class Avatar {
   }
 
   static create<S extends StyleOptions>(
-    style: Style<S>,
+    style: Style<S> | { new (): Style<S> },
     options: Partial<Options<S>> = {},
   ) {
-    const builder = Builder.create(style);
-    const optionsCollection = new OptionsCollection(style, options);
+    let styleInstance: Style;
+
+    if (style instanceof Style) {
+      styleInstance = style;
+    } else {
+      styleInstance = this.memoizedStyle.get(style) ?? new style();
+      this.memoizedStyle.set(style, styleInstance);
+    }
+
+    const builder = Builder.create(styleInstance);
+    const optionsCollection = new OptionsCollection(styleInstance, options);
 
     PropertyHelper.fillProperties(builder, optionsCollection);
     AttributeHelper.fillAttributes(builder);
 
     return new Avatar(
       builder.build(),
-      style.getMetadata(),
+      styleInstance.getMetadata(),
       builder.getProperties().all(),
     );
   }

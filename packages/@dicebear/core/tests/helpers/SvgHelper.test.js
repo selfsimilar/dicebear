@@ -9,8 +9,8 @@ import { PropertyHelper } from '../../lib/helpers/PropertyHelper.js';
 import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
 import { createStyle } from '../../lib/index.js';
 
-import minimalDefinition from '../fixtures/definitions/minimal.json' assert { type: 'json' };
-import shapeFaceDefinition from '../fixtures/definitions/shape-face.json' assert { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/loader/minimal.cjs';
+import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
 
 describe('SvgHelper', () => {
   const minimalStyle = createStyle(minimalDefinition);

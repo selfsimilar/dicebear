@@ -41,7 +41,7 @@ for (const definitionFile of definitionFileList) {
 
 declare const definition: Definition;
 
-export default definition;`;
+module.exports = definition;`;
 
   await ensureDir(dirname(definitionLoaderTarget));
   await writeFile(definitionLoaderTarget, definitionLoaderContent);

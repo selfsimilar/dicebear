@@ -3,10 +3,10 @@ import { describe, it } from 'node:test';
 
 import { PropertyHelper } from '../../lib/helpers/PropertyHelper.js';
 import { createStyle } from '../../lib/index.js';
-
-import shapeFaceDefinition from '../fixtures/definitions/shape-face.json' assert { type: 'json' };
 import { Builder } from '../../lib/Builder.js';
 import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
+
+import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
 
 describe('PropertyHelper', () => {
   it('fillProperties #1', () => {

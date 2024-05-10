@@ -1,16 +1,16 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { createStyle } from '../lib/index.js';
 import { Builder } from '../lib/Builder.js';
 import { AttributeHelper } from '../lib/helpers/AttributeHelper.js';
 import { PropertyHelper } from '../lib/helpers/PropertyHelper.js';
-
-import shapeFaceDefinition from './fixtures/definitions/shape-face.json' assert { type: 'json' };
 import { OptionsCollection } from '../lib/collections/OptionsCollection.js';
 
+import { ShapeFace } from './fixtures/definitions/styles/ShapeFace.js';
+import shapeFaceDefinition from './fixtures/definitions/loader/shape-face.cjs';
+
 describe('Builder', () => {
-  const shapeFaceStyle = createStyle(shapeFaceDefinition);
+  const shapeFaceStyle = new ShapeFace();
 
   it('getViewBox', () => {
     const builder = Builder.create(shapeFaceStyle);

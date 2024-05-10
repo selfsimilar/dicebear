@@ -1,17 +1,14 @@
 import assert from 'node:assert';
 import { describe, it } from 'node:test';
 
-import { createAvatar, createStyle } from '../lib/index.js';
+import { createAvatar } from '../lib/index.js';
 
-import initialsDefinition from './fixtures/definitions/initials.json' assert { type: 'json' };
-import minimalDefinition from './fixtures/definitions/minimal.json' assert { type: 'json' };
+import { Initials } from './fixtures/definitions/styles/Initials.js';
+import { Minimal } from './fixtures/definitions/styles/Minimal.js';
 
 describe('Avatar', () => {
-  const initialsStyle = createStyle(initialsDefinition);
-  const minimalStyle = createStyle(minimalDefinition);
-
   it('toString #1', () => {
-    const avatar = createAvatar(initialsStyle, {
+    const avatar = createAvatar(Initials, {
       seed: 'John Doe',
     });
 
@@ -22,7 +19,7 @@ describe('Avatar', () => {
   });
 
   it('toString #2', () => {
-    const avatar = createAvatar(minimalStyle, {
+    const avatar = createAvatar(Minimal, {
       seed: 'John Doe',
     });
 
@@ -33,7 +30,7 @@ describe('Avatar', () => {
   });
 
   it('toDataUri', () => {
-    const avatar = createAvatar(initialsStyle, {
+    const avatar = createAvatar(Initials, {
       seed: 'John Doe',
     });
 
@@ -44,7 +41,7 @@ describe('Avatar', () => {
   });
 
   it('toJson', () => {
-    const avatar = createAvatar(initialsStyle, {
+    const avatar = createAvatar(Initials, {
       seed: 'John Doe',
     });
 
