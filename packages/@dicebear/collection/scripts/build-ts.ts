@@ -31,21 +31,6 @@ for (const definitionFile of definitionFileList) {
   // Index file
   indexContent += `export * from './styles/${className}.js';\n`;
 
-  // Definition loader
-  const definitionLoaderTarget = join(
-    targetPath,
-    'loader',
-    `${styleName}.d.cts`,
-  );
-  const definitionLoaderContent = `import type { Definition } from '@dicebear/core';
-
-declare const definition: Definition;
-
-module.exports = definition;`;
-
-  await ensureDir(dirname(definitionLoaderTarget));
-  await writeFile(definitionLoaderTarget, definitionLoaderContent);
-
   // Type properties
   const typeProperties: string[] = [];
   const definition = JSON.parse(
