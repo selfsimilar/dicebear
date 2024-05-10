@@ -13,14 +13,7 @@ describe('Style', () => {
       license: {
         name: 'CC0 1.0',
         url: 'https://creativecommons.org/publicdomain/zero/1.0/',
-      },
-      creator: {
-        name: 'DiceBear',
-        url: 'https://www.dicebear.com',
-      },
-      source: {
-        name: 'DiceBear',
-        url: 'https://www.dicebear.com',
+        text: '„Initials”, licensed under „CC0 1.0” (https://creativecommons.org/publicdomain/zero/1.0/)',
       },
     });
   });

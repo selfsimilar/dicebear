@@ -9,7 +9,7 @@ export class LicenseHelper {
     const sourceUrl = metadata.source?.url;
     const creatorName = metadata.creator?.name;
     const licenseUrl = metadata.license?.url;
-    const copyright = LicenseHelper.getLicenseAsText(metadata);
+    const licenseText = metadata.license?.text;
 
     // https://nsteffel.github.io/dublin_core_generator/generator.html
     return (
@@ -34,43 +34,12 @@ export class LicenseHelper {
             licenseUrl,
           )}</dcterms:license>`
         : '') +
-      `<dc:rights>${SvgHelper.escape(copyright)}</dc:rights>` +
+      (licenseText
+        ? `<dc:rights>${SvgHelper.escape(licenseText)}</dc:rights>`
+        : '') +
       '</rdf:Description>' +
       '</rdf:RDF>' +
       '</metadata>'
     );
-  }
-
-  static getLicenseAsText(
-    metadata: Exclude<DefinitionMetadata, undefined>,
-  ): string {
-    let title = metadata.source?.name ? `„${metadata.source?.name}”` : 'Design';
-    const creator = `„${metadata.creator?.name ?? 'Unknown'}”`;
-
-    if (metadata.source?.url) {
-      title += ` (${metadata.source.url})`;
-    }
-
-    let result = '';
-
-    if (
-      metadata.license?.name !== 'MIT' &&
-      !metadata.creator?.url?.includes('www.dicebear.com') &&
-      metadata.source?.name
-    ) {
-      result += 'Remix of ';
-    }
-
-    result += `${title} by ${creator}`;
-
-    if (metadata.license?.name) {
-      result += `, licensed under „${metadata.license?.name}”`;
-
-      if (metadata.license?.url) {
-        result += ` (${metadata.license.url})`;
-      }
-    }
-
-    return result;
   }
 }

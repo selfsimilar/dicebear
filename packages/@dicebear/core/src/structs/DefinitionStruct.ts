@@ -16,7 +16,7 @@ export const DefinitionStruct = object({
         object({
           name: optional(string()),
           url: optional(string()),
-          content: optional(string()),
+          text: optional(string()),
         }),
       ),
       creator: optional(
