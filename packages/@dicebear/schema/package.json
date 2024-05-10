@@ -38,8 +38,8 @@
     "prebuild": "del-cli lib",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "node --no-warnings --test --test-reporter=spec --test-reporter-destination=stdout tests",
-    "test:coverage": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
+    "test": "node --test --test-reporter=spec --test-reporter-destination=stdout tests",
+    "test:coverage": "node --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
   },
   "dependencies": {
     "@types/json-schema": "^7.0.15"

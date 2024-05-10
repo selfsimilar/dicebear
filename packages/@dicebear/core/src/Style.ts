@@ -1,6 +1,6 @@
 import { mask } from 'superstruct';
 import { DefinitionStruct } from './structs/DefinitionStruct.js';
-import {
+import type {
   ComponentsFromStyleOptions,
   Definition,
   DefinitionAttributeList,
