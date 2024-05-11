@@ -6,7 +6,7 @@ import { createStyle } from '../../lib/index.js';
 import { Builder } from '../../lib/Builder.js';
 import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
 
-import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
+import shapeFaceDefinition from '../fixtures/definitions/json/shape-face.json' with { type: 'json' };
 
 describe('PropertyHelper', () => {
   it('fillProperties #1', () => {

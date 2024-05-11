@@ -30,17 +30,10 @@ for (const definitionFile of definitionFileList) {
   // Index file
   indexContent += `export * from './styles/${className}.js';\n`;
 
-  // Definition loader
-  const definitionLoaderTarget = join(targetPath, 'loader', `${styleName}.cjs`);
-  const definitionLoaderContent = `module.exports = require('@dicebear/definitions/${definitionFile}');`;
-
-  await ensureDir(dirname(definitionLoaderTarget));
-  await writeFile(definitionLoaderTarget, definitionLoaderContent);
-
   // Style class
   const styleClassTarget = join(targetPath, 'styles', `${className}.js`);
   const styleClassContent = `import { Style } from '@dicebear/core';
-import definition from '../loader/${styleName}.cjs';
+import definition from '@dicebear/definitions/src/${styleName}.json' with { type: 'json' };
 
 export class ${className} extends Style {
   constructor() {

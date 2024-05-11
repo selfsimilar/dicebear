@@ -1,5 +1,5 @@
 import { Style } from '../../../../lib/index.js';
-import definition from '../loader/shape-face.cjs';
+import definition from '../json/shape-face.json' with { type: 'json' };
 
 export class ShapeFace extends Style {
   constructor() {

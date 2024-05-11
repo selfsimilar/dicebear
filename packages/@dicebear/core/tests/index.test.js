@@ -3,7 +3,7 @@ import { describe, it } from 'node:test';
 
 import { Avatar, Style, createAvatar, createStyle } from '../lib/index.js';
 
-import initialsDefinition from './fixtures/definitions/loader/initials.cjs';
+import initialsDefinition from './fixtures/definitions/json/initials.json' with { type: 'json' };
 
 describe('index', () => {
   it('createStyle', () => {

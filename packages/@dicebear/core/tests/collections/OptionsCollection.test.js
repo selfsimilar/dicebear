@@ -4,8 +4,8 @@ import { describe, it } from 'node:test';
 import { createStyle } from '../../lib/index.js';
 import { OptionsCollection } from '../../lib/collections/OptionsCollection.js';
 
-import minimalDefinition from '../fixtures/definitions/loader/minimal.cjs';
-import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
+import minimalDefinition from '../fixtures/definitions/json/minimal.json' with { type: 'json' };
+import shapeFaceDefinition from '../fixtures/definitions/json/shape-face.json' with { type: 'json' };
 
 describe('OptionsCollection', () => {
   const minimalStyle = createStyle(minimalDefinition);

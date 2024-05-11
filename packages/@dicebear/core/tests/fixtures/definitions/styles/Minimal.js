@@ -1,5 +1,5 @@
 import { Style } from '../../../../lib/index.js';
-import definition from '../loader/minimal.cjs';
+import definition from '../json/minimal.json' with { type: 'json' };
 
 export class Minimal extends Style {
   constructor() {

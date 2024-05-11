@@ -5,7 +5,7 @@ import { createStyle } from '../../lib/index.js';
 import { Builder } from '../../lib/Builder.js';
 import { AttributeHelper } from '../../lib/helpers/AttributeHelper.js';
 
-import minimalDefinition from '../fixtures/definitions/loader/minimal.cjs';
+import minimalDefinition from '../fixtures/definitions/json/minimal.json' with { type: 'json' };
 
 describe('AttributeHelper', () => {
   it('fillAttributes', () => {

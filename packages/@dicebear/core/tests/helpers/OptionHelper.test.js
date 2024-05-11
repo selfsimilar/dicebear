@@ -4,7 +4,7 @@ import { describe, it } from 'node:test';
 import { createStyle } from '../../lib/index.js';
 import { OptionHelper } from '../../lib/helpers/OptionHelper.js';
 
-import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
+import shapeFaceDefinition from '../fixtures/definitions/json/shape-face.json' with { type: 'json' };
 
 describe('OptionHelper', () => {
   it('validateOptions', () => {

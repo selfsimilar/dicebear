@@ -7,7 +7,7 @@ import { PropertyHelper } from '../lib/helpers/PropertyHelper.js';
 import { OptionsCollection } from '../lib/collections/OptionsCollection.js';
 
 import { ShapeFace } from './fixtures/definitions/styles/ShapeFace.js';
-import shapeFaceDefinition from './fixtures/definitions/loader/shape-face.cjs';
+import shapeFaceDefinition from './fixtures/definitions/json/shape-face.json' with { type: 'json' };
 
 describe('Builder', () => {
   const shapeFaceStyle = new ShapeFace();

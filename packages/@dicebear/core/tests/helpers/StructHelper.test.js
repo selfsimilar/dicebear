@@ -5,9 +5,9 @@ import { StructHelper } from '../../lib/helpers/StructHelper.js';
 import { Struct } from 'superstruct';
 import { createStyle } from '../../lib/index.js';
 
-import shapeFaceDefinition from '../fixtures/definitions/loader/shape-face.cjs';
-import initialsDefinition from '../fixtures/definitions/loader/initials.cjs';
-import minimalDefinition from '../fixtures/definitions/loader/minimal.cjs';
+import shapeFaceDefinition from '../fixtures/definitions/json/shape-face.json' with { type: 'json' };
+import initialsDefinition from '../fixtures/definitions/json/initials.json' with { type: 'json' };
+import minimalDefinition from '../fixtures/definitions/json/minimal.json' with { type: 'json' };
 
 describe('StructHelper', () => {
   it('createOptionsStruct #1', () => {

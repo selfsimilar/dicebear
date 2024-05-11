@@ -1,4 +1,4 @@
 import { createAvatar } from '@dicebear/core';
-import { identicon } from '../../../lib/index.js';
+import { Identicon } from '../../../lib/index.js';
 
-document.body.innerHTML = createAvatar(identicon, { seed: 'John Doe' });
+document.body.innerHTML = createAvatar(Identicon, { seed: 'John Doe' });
