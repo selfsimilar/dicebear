@@ -52,15 +52,12 @@
   },
   "devDependencies": {
     "@dicebear/core": "^9.0.0-alpha.1",
-    "@rollup/plugin-commonjs": "^25.0.3",
     "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@types/fs-extra": "^11.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "change-case": "^5.4.3",
     "del-cli": "^5.0.0",
-    "fs-extra": "^11.2.0",
     "glob": "^10.3.12",
-    "rollup": "^4.14.0",
+    "rollup": "^4.17.2",
     "tmp": "^0.2.1",
     "tsx": "^4.7.1",
     "webpack": "^5.76.3"

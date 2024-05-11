@@ -2,9 +2,9 @@ import { glob } from 'glob';
 import { dirname, join, basename } from 'node:path';
 import { readFile, writeFile } from 'node:fs/promises';
 import { pascalCase } from 'change-case';
-import { ensureDir } from 'fs-extra';
 import { fileURLToPath } from 'node:url';
 import { Definition } from '@dicebear/core';
+import { Filesystem } from './helper/Filesystem.js';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const targetPath = join(__dirname, '..', 'lib');
@@ -82,7 +82,7 @@ export declare class ${className} extends Style<${className}Options> {
 }
 `;
 
-  await ensureDir(dirname(styleClassTarget));
+  await Filesystem.ensureDir(dirname(styleClassTarget));
   await writeFile(styleClassTarget, styleClassContent);
 }
 

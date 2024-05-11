@@ -4,7 +4,6 @@ import { describe, it } from 'node:test';
 import { fileURLToPath } from 'url';
 import { rollup } from 'rollup';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
@@ -13,7 +12,7 @@ describe('rollup', () => {
   it('Tree shaking', async () => {
     const bundle = await rollup({
       input: `${__dirname}/fixtures/tree-shaking/index.js`,
-      plugins: [nodeResolve(), commonjs(), json()],
+      plugins: [nodeResolve(), json()],
     });
 
     const { output } = await bundle.generate({
