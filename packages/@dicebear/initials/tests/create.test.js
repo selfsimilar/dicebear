@@ -21,6 +21,7 @@ const data = [
     style,
     { seed: 'Felix', backgroundColor: ['ffffff'], textColor: ['000000'] },
   ],
+  [style, { seed: '<"' }],
 ];
 
 data.forEach((params, key) => {
