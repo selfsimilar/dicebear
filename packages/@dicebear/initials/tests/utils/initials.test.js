@@ -13,11 +13,13 @@ const data = [
   ['florian.koerner', 'FK'],
   ['Київ', 'КИ'],
   ['@florian.koerner', 'FK'],
+  ['🥳', ''],
   // U+00E0
   ['àaa', 'ÀA'],
+  ['àaa àaa', 'ÀÀ'],
   // U+0061 U+0300
   ['àaa', 'ÀA'],
-  ['🥳', ''],
+  ['àaa àaa', 'ÀÀ'],
 ];
 
 for (const [input, expected] of data) {
