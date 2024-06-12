@@ -1,22 +1,20 @@
+// @see https://www.regular-expressions.info/unicode.html
 export function getInitials(seed: string, discardAtSymbol = true): string {
   const input = discardAtSymbol ? seed.replace(/@.*/, '') : seed;
-  const matches = Array.from(input.matchAll(/(?:^|\P{L})([^\P{L}]+)/gu));
+  const matches = input.match(/(\p{L}[\p{L}\p{M}]*)/gu);
 
-  if (matches.length === 0) {
+  if (!matches) {
     // Re-run without discarding `@`-symbol, if no matches
     return discardAtSymbol ? getInitials(seed, false) : '';
   }
 
   if (matches.length === 1) {
-    // Array destructuring allows unicode characters to be split correctly.
-    // @see https://stackoverflow.com/a/62341816
-    return [...matches[0][1]].slice(0, 2).join('').toUpperCase();
+    return matches[0].match(/^(?:\p{L}\p{M}*){1,2}/u)![0].toUpperCase();
   }
 
-  const firstWord = matches[0][1];
-  const lastWord = matches[matches.length - 1][1];
+  const firstCharacter = matches[0].match(/^(?:\p{L}\p{M}*)/u)![0];
+  const secondCharacter =
+    matches[matches.length - 1].match(/^(?:\p{L}\p{M}*)/u)![0];
 
-  // Array destructuring allows unicode characters to be split correctly.
-  // @see https://stackoverflow.com/a/62341816
-  return ([...firstWord][0] + [...lastWord][0]).toUpperCase();
+  return (firstCharacter + secondCharacter).toUpperCase();
 }

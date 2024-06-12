@@ -9,11 +9,15 @@ const data = [
   ['Frank Walter Östernbach', 'FÖ'],
   ['陳方 陈方', '陳陈'],
   ['contact@dicebear.com', 'CO'],
-  ['@dicebear.com', 'DC'],
   ['<"', ''],
   ['florian.koerner', 'FK'],
   ['Київ', 'КИ'],
   ['@florian.koerner', 'FK'],
+  // U+00E0
+  ['àaa', 'ÀA'],
+  // U+0061 U+0300
+  ['àaa', 'ÀA'],
+  ['🥳', ''],
 ];
 
 for (const [input, expected] of data) {
