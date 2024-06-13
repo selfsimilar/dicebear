@@ -63,7 +63,7 @@
   );
 
   @each $style in $styles {
-    &[href='/styles/#{$style}/'] {
+    &[href='/styles/#{$style}/']:not(.next, .prev) {
       display: flex;
       align-items: center;
 
@@ -82,7 +82,7 @@
   }
 }
 
-img[src^="https://api.dicebear.com/"]
+img[src^="https://api.dicebear.com/"]:not(.next, .prev)
 {
   background: repeating-conic-gradient(
       var(--avatar-background-color-1) 0% 25%,
