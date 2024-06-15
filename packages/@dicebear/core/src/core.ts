@@ -1,19 +1,13 @@
-import type {
-  Result,
-  ResultConvertOptions,
-  Style,
-  StyleOptions,
-} from './types.js';
+import type { Result, Style, StyleOptions } from './types.js';
 import * as svgUtils from './utils/svg.js';
 import { merge as mergeOptions } from './utils/options.js';
 import { create as createPrng } from './utils/prng.js';
 import * as license from './utils/license.js';
-import { toFormat } from '@dicebear/converter';
 import { getBackgroundColors } from './utils/color.js';
 
 export function createAvatar<O extends {}>(
   style: Style<O>,
-  options: StyleOptions<O> = {}
+  options: StyleOptions<O> = {},
 ): Result {
   options = mergeOptions(style, options);
 
@@ -27,8 +21,12 @@ export function createAvatar<O extends {}>(
   } = getBackgroundColors(prng, options.backgroundColor ?? [], backgroundType);
 
   const backgroundRotation = prng.integer(
-    options.backgroundRotation?.length ? Math.min(...options.backgroundRotation) : 0,
-    options.backgroundRotation?.length ? Math.max(...options.backgroundRotation) : 0,
+    options.backgroundRotation?.length
+      ? Math.min(...options.backgroundRotation)
+      : 0,
+    options.backgroundRotation?.length
+      ? Math.max(...options.backgroundRotation)
+      : 0,
   );
 
   if (options.size) {
@@ -52,7 +50,7 @@ export function createAvatar<O extends {}>(
     result.body = svgUtils.addTranslate(
       result,
       options.translateX,
-      options.translateY
+      options.translateY,
     );
   }
 
@@ -65,7 +63,7 @@ export function createAvatar<O extends {}>(
       primaryBackgroundColor,
       secondaryBackgroundColor,
       backgroundType,
-      backgroundRotation
+      backgroundRotation,
     );
   }
 
@@ -80,7 +78,6 @@ export function createAvatar<O extends {}>(
 
   const attributes = svgUtils.createAttrString(result);
   const metadata = license.xml(style);
-  const exif = license.exif(style);
 
   const svg = `<svg ${attributes}>${metadata}${result.body}</svg>`;
 
@@ -96,15 +93,8 @@ export function createAvatar<O extends {}>(
         ...result.extra?.(),
       },
     }),
-    toDataUriSync: () => {
+    toDataUri: () => {
       return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-    },
-    ...toFormat(svg, 'svg'),
-    png: ({ includeExif = false }: ResultConvertOptions = {}) => {
-      return toFormat(svg, 'png', includeExif ? exif : undefined);
-    },
-    jpeg: ({ includeExif = false }: ResultConvertOptions = {}) => {
-      return toFormat(svg, 'jpeg', includeExif ? exif : undefined);
     },
   };
 }

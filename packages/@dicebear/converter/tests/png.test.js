@@ -1,4 +1,4 @@
-import { toFormat } from '../lib/node/index.js';
+import { toPng } from '../lib/node/index.js';
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,11 +11,11 @@ const avatar = fs.readFileSync(path.resolve(__dirname, 'fixtures/avatar.svg'), {
 });
 
 test(`Convert to png buffer`, async () => {
-  not.throws(() => toFormat(avatar, 'png').toArrayBuffer());
+  not.throws(() => toPng(avatar).toArrayBuffer());
 });
 
 test(`Convert to png data uri`, async () => {
-  not.throws(() => toFormat(avatar, 'png').toDataUri());
+  not.throws(() => toPng(avatar).toDataUri());
 });
 
 test.run();

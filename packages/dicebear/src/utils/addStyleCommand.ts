@@ -1,5 +1,6 @@
-import { Style } from '@dicebear/core';
+import type { Style } from '@dicebear/core';
 import { createAvatar } from '@dicebear/core';
+import { toJpeg, toPng } from '@dicebear/converter';
 import yargs from 'yargs';
 import cliProgress from 'cli-progress';
 import PQueue from 'p-queue';
@@ -13,6 +14,7 @@ import { getOptionsBySchema } from './getOptionsBySchema.js';
 import { validateInputBySchema } from './validateInputBySchema.js';
 import { outputStyleLicenseBanner } from './outputStyleLicenseBanner.js';
 import { createRandomSeed } from './createRandomSeed.js';
+import { writeFile } from './writeFile.js';
 
 export function addStyleCommand(
   cli: yargs.Argv<{}>,
@@ -76,20 +78,29 @@ export function addStyleCommand(
 
           switch (format) {
             case 'svg':
-              await avatar.toFile(fileName);
+              await writeFile(fileName, avatar.toString());
               break;
 
             case 'png':
-              await avatar.png({ includeExif }).toFile(fileName);
+              await writeFile(
+                fileName,
+                await toPng(avatar.toString(), { includeExif }).toArrayBuffer()
+              );
               break;
 
             case 'jpg':
             case 'jpeg':
-              await avatar.jpeg({ includeExif }).toFile(fileName);
+              await writeFile(
+                fileName,
+                await toJpeg(avatar.toString(), { includeExif }).toArrayBuffer()
+              );
               break;
 
             case 'json':
-              await fs.writeJSON(fileName, avatar.toJson(), { spaces: 2 });
+              await writeFile(
+                fileName,
+                JSON.stringify(avatar.toJson(), null, 2)
+              );
               break;
           }
 

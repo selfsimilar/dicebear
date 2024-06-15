@@ -1,19 +1,16 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { Result as ConverterResult } from '@dicebear/converter';
 
 export interface ResultConvertOptions {
   includeExif?: boolean;
 }
 
-export interface Result extends ConverterResult {
-  png(options?: ResultConvertOptions): ConverterResult;
-  jpeg(options?: ResultConvertOptions): ConverterResult;
+export interface Result {
   toString(): string;
   toJson(): {
     svg: string;
     extra: Record<string, unknown>;
   };
-  toDataUriSync(): string;
+  toDataUri(): string;
 }
 
 export type BackgroundType = 'solid' | 'gradientLinear';
@@ -61,7 +58,7 @@ export interface StyleCreateProps<O extends {}> {
 }
 
 export type StyleCreate<O extends {}> = (
-  props: StyleCreateProps<O>
+  props: StyleCreateProps<O>,
 ) => StyleCreateResult;
 
 export interface StyleCreateResultAttributes {

@@ -1,4 +1,4 @@
-import type { Style } from "@dicebear/core";
+import type { Style } from '@dicebear/core';
 
 export type ConfigStyleOption = {
   hasProbability?: boolean;
@@ -28,7 +28,7 @@ export type SelectedStyleCombination = {
   options: SelectedStyleOptions;
   avatar: {
     toString: () => string;
-    toDataUriSync: () => string;
+    toDataUri: () => string;
   };
 };
 

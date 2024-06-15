@@ -1,24 +1,28 @@
-import type { Result, Exif, Format, ToFormat } from './types.js';
+import type { Result, Exif, Avatar, ToJpeg, ToPng } from './types.js';
 import { getMimeType } from './utils/mime-type.js';
 import { ensureSize } from './utils/svg.js';
-import { getEncoder } from './utils/text.js';
 
-export const toFormat: ToFormat = function (
-  svg: string,
-  format: Format,
-  exif?: Exif
-): Result {
-  return {
-    toDataUri: () => toDataUri(svg, format, exif),
-    toFile: (name: string) => toFile(name, svg, format, exif),
-    toArrayBuffer: () => toArrayBuffer(svg, format, exif),
-  };
+export const toPng: ToPng = (avatar: Avatar) => {
+  return toFormat(avatar, 'png');
 };
+
+export const toJpeg: ToJpeg = (avatar: Avatar) => {
+  return toFormat(avatar, 'jpeg');
+};
+
+function toFormat(avatar: Avatar, format: 'png' | 'jpeg'): Result {
+  const svg = typeof avatar === 'string' ? avatar : avatar.toString();
+
+  return {
+    toDataUri: () => toDataUri(svg, format),
+    toArrayBuffer: () => toArrayBuffer(svg, format),
+  };
+}
 
 async function toDataUri(
   svg: string,
-  format: Format,
-  exif?: Exif
+  format: 'svg' | 'png' | 'jpeg',
+  exif?: Exif,
 ): Promise<string> {
   if ('svg' === format) {
     return `data:${getMimeType(format)};utf8,${encodeURIComponent(svg)}`;
@@ -31,13 +35,9 @@ async function toDataUri(
 
 async function toArrayBuffer(
   rawSvg: string,
-  format: Format,
-  exif?: Exif
+  format: 'png' | 'jpeg',
+  exif?: Exif,
 ): Promise<ArrayBufferLike> {
-  if ('svg' === format) {
-    return getEncoder().encode(rawSvg);
-  }
-
   const canvas = await toCanvas(rawSvg, format, exif);
 
   return await new Promise<ArrayBufferLike>((resolve, reject) => {
@@ -49,32 +49,19 @@ async function toArrayBuffer(
   });
 }
 
-async function toFile(
-  name: string,
-  svg: string,
-  format: Format,
-  exif?: Exif
-): Promise<void> {
-  const link = document.createElement('a');
-  link.href = await toDataUri(svg, format, exif);
-  link.download = name;
-  link.click();
-  link.remove();
-}
-
 async function toCanvas(
   rawSvg: string,
-  format: Exclude<Format, 'svg'>,
-  exif?: Exif
+  format: 'png' | 'jpeg',
+  exif?: Exif,
 ): Promise<HTMLCanvasElement> {
   if (exif) {
     console.warn(
       'The `exif` option is not supported in the browser version of `@dicebear/converter`. \n' +
-        'Please use the node version of `@dicebear/converter` to generate images with exif data.'
+        'Please use the node version of `@dicebear/converter` to generate images with exif data.',
     );
   }
 
-  let { svg, size } = ensureSize(rawSvg);
+  const { svg, size } = ensureSize(rawSvg);
 
   const canvas = document.createElement('canvas');
   canvas.width = size;
@@ -91,7 +78,7 @@ async function toCanvas(
     context.fillRect(0, 0, size, size);
   }
 
-  var img = document.createElement('img');
+  const img = document.createElement('img');
   img.width = size;
   img.height = size;
 

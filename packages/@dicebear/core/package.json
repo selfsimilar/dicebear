@@ -32,7 +32,6 @@
     "test": "uvu tests"
   },
   "dependencies": {
-    "@dicebear/converter": "8.0.2",
     "@types/json-schema": "^7.0.11"
   },
   "devDependencies": {
@@ -42,7 +41,7 @@
     "uvu": "^0.5.6"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "publishConfig": {
     "access": "public"
