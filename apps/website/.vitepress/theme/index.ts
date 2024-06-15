@@ -5,11 +5,14 @@ import Layout from './Layout.vue';
 import { createPinia } from 'pinia';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { useData } from 'vitepress';
+import VPBadge from 'vitepress/dist/client/theme-default/components/VPBadge.vue';
 
 export default {
   ...DefaultTheme,
   Layout,
   enhanceApp({ app }: { app: App }) {
+    app.component('Badge', VPBadge);
+
     const isSsr = typeof window === 'undefined';
 
     const pinia = createPinia();
