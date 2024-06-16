@@ -13,7 +13,22 @@ The easiest way to host the HTTP API yourself is to use the docker image. You
 can find the image on [Docker Hub](https://hub.docker.com/r/dicebear/api).
 
 ```
-docker run --read-only --tmpfs /run --tmpfs /tmp -p 3000:3000 -i -t dicebear/api:2
+docker run --tmpfs /run --tmpfs /tmp -p 3000:3000 -i -t dicebear/api:2
+```
+
+Or you can use `docker-compose.yml` to configure the HTTP API and start it with
+"docker compose up".
+
+```
+services:
+  dicebear:
+    image: dicebear/api:2
+    restart: always
+    ports:
+      - '3000:3000'
+    tmpfs:
+      - '/run'
+      - '/tmp'
 ```
 
 ## Without docker
@@ -103,9 +118,13 @@ Enable EXIF data for the JPEG endpoint. Defaults to `1` (true).
 ### VERSIONS
 
 Comma separated specification of desired DiceBear Major versions. Default to
-`5,6,7,8`.
+`5,6,7,8,9`.
 
 ### CACHE_CONTROL_AVATARS
 
 Cache duration for the avatars endpoint in seconds. Defaults to `31536000` (1
 year).
+
+### WORKERS
+
+The number of node worker threads to use. Defaults to `1`.
