@@ -77,6 +77,12 @@ SVG is the more modern format, scales indefinitely, and requires less traffic.
 Because the PNG and JPG formats put more load on the API, the size is limited to
 256x256. PNG and JPG also have a lower [rate limit](#rate-limits).
 
+PNG and JPG use the
+[Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans) font and currently
+supports the following subsets: `cyrillic`, `cyrillic-ext`, `devanagari`,
+`greek`, `greek-ext`, `japanese`, `korean`, `latin`, `latin-ext`,
+`simplified-chinese`, `thai` and `vietnamese`.
+
 <BrowserPreview url="https://api.dicebear.com/9.x/bottts/svg" />
 <BrowserPreview url="https://api.dicebear.com/9.x/bottts/png" />
 <BrowserPreview url="https://api.dicebear.com/9.x/bottts/jpg" />
