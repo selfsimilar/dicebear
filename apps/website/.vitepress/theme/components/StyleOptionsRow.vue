@@ -170,6 +170,11 @@ const touchless = { left: () => {}, right: () => {} };
 <template>
   <h3 :id="headerId" tabindex="-1" class="row-title">
     {{ name }}
+    <Badge
+      type="warning"
+      text="deprecated"
+      v-if="['fontFamily', 'fontSize', 'chars', 'fontWeight'].includes(name)"
+    />
     <a class="header-anchor" :href="`#${headerId}`" aria-hidden="true"></a>
   </h3>
 
@@ -204,6 +209,14 @@ const touchless = { left: () => {}, right: () => {} };
       >PRNG</a
     >. With the PRNG you can create the same avatar over and over again based.
   </p>
+
+  <div
+    class="warning custom-block"
+    v-if="['fontWeight', 'fontFamily'].includes(name)"
+  >
+    <p class="custom-block-title">WARNING</p>
+    <p>This option is not supported by the HTTP-API for PNG and JPEG.</p>
+  </div>
 
   <p v-if="name === 'backgroundRotation'">
     Specify an array of two numbers for this option. The PRNG will generate a
