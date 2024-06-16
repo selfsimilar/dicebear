@@ -18,7 +18,7 @@ export const toJpeg: ToJpeg = (avatar: Avatar, options: Options = {}) => {
 function toFormat(
   avatar: Avatar,
   format: 'png' | 'jpeg',
-  options: Options,
+  options: Options
 ): Result {
   const svg = typeof avatar === 'string' ? avatar : avatar.toString();
 
@@ -35,7 +35,7 @@ async function toDataUri(
   svg: string,
   format: 'svg' | 'png' | 'jpeg',
   exif: Exif,
-  options: Options,
+  options: Options
 ): Promise<string> {
   if (format === 'svg') {
     return `data:${getMimeType(format)};utf8,${encodeURIComponent(svg)}`;
@@ -50,7 +50,7 @@ async function toArrayBuffer(
   rawSvg: string,
   format: 'png' | 'jpeg',
   exif: Exif,
-  options: Options,
+  options: Options
 ): Promise<ArrayBufferLike> {
   return (await toBuffer(rawSvg, format, exif, options)).buffer;
 }
@@ -59,17 +59,17 @@ async function toBuffer(
   rawSvg: string,
   format: 'png' | 'jpeg',
   exif: Exif,
-  options: Options,
+  options: Options
 ): Promise<Buffer> {
-  const fonts = options.fonts ?? [];
+  const hasFonts = Array.isArray(options.fonts);
 
   const { svg } = ensureSize(rawSvg);
 
   let buffer = (
     await renderAsync(svg, {
       font: {
-        loadSystemFonts: fonts.length === 0,
-        fontFiles: fonts.length > 0 ? fonts : undefined,
+        loadSystemFonts: !hasFonts,
+        fontFiles: hasFonts ? options.fonts : undefined,
       },
     })
   ).asPng();
@@ -102,7 +102,7 @@ function getExif(svg: string): Exif {
   const sourceUrl = svg.match(/<dc:source[^>]*>(.*?)<\/dc:source>/s);
   const creatorName = svg.match(/<dc:creator[^>]*>(.*?)<\/dc:creator>/s);
   const licenseUrl = svg.match(
-    /<dcterms:license[^>]*>(.*?)<\/dcterms:license>/s,
+    /<dcterms:license[^>]*>(.*?)<\/dcterms:license>/s
   );
   const copyright = svg.match(/<dc:rights[^>]*>(.*?)<\/dc:rights>/s);
 
