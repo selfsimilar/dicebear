@@ -76,6 +76,15 @@ settings, you can export your avatar style.
 
 <video src="/guides/create-an-avatar-style-with-figma/6.mp4" controls muted></video>
 
+::: tip
+
+It's important that you choose the correct version for your export. This guide
+only covers the currently stable versions 5.x - 9.x.
+
+![You can find the version option in the "General" tab](/guides/create-an-avatar-style-with-figma/version-hint.png)
+
+:::
+
 ## Step 7
 
 Now you can unzip the created zip archive. Then open the console. Make sure that
