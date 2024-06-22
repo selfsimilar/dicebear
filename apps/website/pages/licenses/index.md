@@ -11,7 +11,7 @@ import Licenses from '@theme/components/Licenses.vue';
 
 # Licenses
 
-While our code is MIT licensed, the designs are licensed under different
-licenses that the designers can choose themselves.
+While our code is MIT licensed, the avatar styles are licensed under different
+licenses that the artists can choose themselves.
 
 <Licenses />

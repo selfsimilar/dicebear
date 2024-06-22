@@ -31,9 +31,10 @@ https://api.dicebear.com/9.x/<styleName>/svg
 
 :::info
 
-We provide a large number of avatar styles from different designers. The designs
-are licensed under different licenses that the designers can choose themselves.
-For a quick overview we have created an [license overview](/licenses/) for you.
+We provide a large number of avatar styles from different artists. The avatar
+styles are licensed under different licenses that the artists can choose
+themselves. For a quick overview we have created an
+[license overview](/licenses/) for you.
 
 :::
 
