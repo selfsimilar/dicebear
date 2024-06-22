@@ -1,5 +1,5 @@
 {
-  "name": "@dicebear/website",
+  "name": "@dicebear/docs",
   "engines": {
     "node": ">=18.0.0"
   },

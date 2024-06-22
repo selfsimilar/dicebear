@@ -23,7 +23,7 @@ jobs:
         run: npm ci
 
       - name: Build with VitePress
-        run: npm run build -- --ignore "@dicebear/@(cli|website)"
+        run: npm run build -- --ignore "@dicebear/@(cli|docs)"
 
       - name: Deploy to Bunny.net
         uses: ayeressian/bunnycdn-storage-deploy@v2.2.2

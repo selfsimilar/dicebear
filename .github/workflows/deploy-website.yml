@@ -25,7 +25,7 @@ jobs:
       - name: Download legal pages
         env:
           PAT: ${{ secrets.PAT }}
-        run: ./apps/website/scripts/download-legal-pages.sh
+        run: ./apps/docs/scripts/download-legal-pages.sh
 
       - name: Build with VitePress
         run: npm run build -- --ignore "@dicebear/@(cli|editor)"
@@ -33,7 +33,7 @@ jobs:
       - name: Deploy to Bunny.net
         uses: ayeressian/bunnycdn-storage-deploy@v2.2.2
         with:
-          source: 'apps/website/.vitepress/dist'
+          source: 'apps/docs/.vitepress/dist'
           destination: ''
           storageZoneName: '${{ secrets.WEBSITE_STORAGE_NAME }}'
           storagePassword: '${{ secrets.WEBSITE_STORAGE_PASSWORD }}'
