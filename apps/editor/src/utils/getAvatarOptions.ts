@@ -1,6 +1,6 @@
-import type { SelectedStyleOptions } from "@/types";
-import type { StyleOptions } from "@dicebear/core";
-import styleCollection from "@/config/styles";
+import type { SelectedStyleOptions } from '@/types';
+import type { StyleOptions } from '@dicebear/core';
+import styleCollection from '@/config/styles';
 
 export default function getAvatarOptions(
   styleName: string,
@@ -13,7 +13,7 @@ export default function getAvatarOptions(
   const configStyleOptions = styleCollection[styleName].options;
 
   for (const key in options) {
-    if (false === options.hasOwnProperty(key)) {
+    if (false === Object.prototype.hasOwnProperty.call(options, key)) {
       continue;
     }
 

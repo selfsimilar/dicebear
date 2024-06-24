@@ -1,6 +1,6 @@
-import type { ConfigStyleOptions, SelectedStyleOptions } from "@/types";
-import getRandomBoolean from "@/utils/getRandomBoolean";
-import getRandomNumber from "@/utils/getRandomNumber";
+import type { ConfigStyleOptions, SelectedStyleOptions } from '@/types';
+import getRandomBoolean from '@/utils/getRandomBoolean';
+import getRandomNumber from '@/utils/getRandomNumber';
 
 export default function getRandomOptions(
   configStyleOptions: ConfigStyleOptions
@@ -8,7 +8,9 @@ export default function getRandomOptions(
   const result: SelectedStyleOptions = {};
 
   for (const key in configStyleOptions) {
-    if (false === configStyleOptions.hasOwnProperty(key)) {
+    if (
+      false === Object.prototype.hasOwnProperty.call(configStyleOptions, key)
+    ) {
       continue;
     }
 
