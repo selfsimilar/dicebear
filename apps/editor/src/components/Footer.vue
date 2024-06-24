@@ -71,7 +71,7 @@ const metaList = computed(() => {
       {{ t('licenses') }}
     </div>
     <p class="footer-licenses" v-if="metaList.length > 0">
-      <template v-for="(meta, i) in metaList" :key="i">
+      <template v-for="meta in metaList">
         <a :href="meta.source" target="_blank" rel="noopener noreferrer">{{
           meta.title
         }}</a>
