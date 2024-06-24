@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import ColorPicker, { ColorPickerChangeEvent } from 'primevue/colorpicker';
 import useMainStore from '@/stores/main';
 import type { SelectedStyleOptions } from '@/types';
 import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Avatar from './Avatar.vue';
 import Footer from './Footer.vue';
+import { useDebounceFn } from '@vueuse/core';
 
 const props = defineProps<{
   navOffetTop: number;
@@ -21,8 +23,9 @@ const tabs = computed(() => {
     Array<{
       avatar: string;
       active?: boolean;
+      options?: SelectedStyleOptions;
       onClick: () => void;
-      onColorInput?: (e: Event) => void;
+      onColorInput?: (e: ColorPickerChangeEvent) => void;
     }>
   > = {};
 
@@ -36,19 +39,20 @@ const tabs = computed(() => {
     result[key] = store.selectedStyleCombinations[key].map((combination) => ({
       avatar: combination.avatar.toString(),
       active: combination.active,
+      options: combination.options,
       onClick: () => changeOptions(combination.options),
       onColorInput: combination.isCustomColor
-        ? (e: Event) =>
-            changeOptionsWithOverride(
-              combination.options,
-              key,
-              (e.target as HTMLInputElement).value.slice(1)
-            )
+        ? (e: ColorPickerChangeEvent) =>
+            changeOptionsWithOverride(combination.options, key, e.value)
         : undefined,
     }));
   }
 
   return result;
+});
+
+const selectedTabOptionName = computed(() => {
+  return Object.keys(tabs.value)[selectedTab.value];
 });
 
 function changeStyleName(styleName: string) {
@@ -66,16 +70,16 @@ function changeOptions(options: SelectedStyleOptions) {
   store.selectedStyleOptions = options;
 }
 
-function changeOptionsWithOverride(
-  options: SelectedStyleOptions,
-  optionKey: string,
-  value: string
-) {
-  store.selectedStyleOptions = {
-    ...options,
-    [optionKey]: value,
-  };
-}
+const changeOptionsWithOverride = useDebounceFn(
+  function (options: SelectedStyleOptions, optionKey: string, value: string) {
+    store.selectedStyleOptions = {
+      ...options,
+      [optionKey]: value,
+    };
+  },
+  50,
+  { maxWait: 50 }
+);
 </script>
 
 <template>
@@ -113,7 +117,15 @@ function changeOptionsWithOverride(
                 v-if="combination.onColorInput"
                 class="options-body-avatar-wheel"
               >
-                <input type="color" @input="combination.onColorInput" />
+                <div class="options-body-avatar-wheel-picker">
+                  <ColorPicker
+                    :defaultColor="
+                      store.selectedStyleOptions[selectedTabOptionName.value]
+                    "
+                    @change="combination.onColorInput"
+                  >
+                  </ColorPicker>
+                </div>
               </label>
             </button>
           </div>
@@ -180,6 +192,7 @@ function changeOptionsWithOverride(
       }
 
       &-wheel {
+        display: block;
         position: absolute;
         top: 0;
         right: 0;
@@ -187,8 +200,14 @@ function changeOptionsWithOverride(
         bottom: 0;
         cursor: pointer;
 
-        input {
-          visibility: hidden;
+        &-picker {
+          position: absolute;
+          bottom: 0;
+          right: 0;
+
+          :global(input) {
+            visibility: hidden;
+          }
         }
 
         &::before {

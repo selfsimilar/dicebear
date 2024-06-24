@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
+import PrimeVue from 'primevue/config';
+import Aura from '@primevue/themes/aura';
 import messages from '@intlify/unplugin-vue-i18n/messages';
 import App from './App.vue';
 import './vant';
@@ -19,5 +21,10 @@ app.use(
     messages,
   })
 );
+app.use(PrimeVue, {
+  theme: {
+    preset: Aura,
+  },
+});
 
 app.mount('#app');
