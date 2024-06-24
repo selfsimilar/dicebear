@@ -22,6 +22,7 @@ const tabs = computed(() => {
       avatar: string;
       active?: boolean;
       onClick: () => void;
+      onColorInput?: (e: Event) => void;
     }>
   > = {};
 
@@ -36,6 +37,14 @@ const tabs = computed(() => {
       avatar: combination.avatar.toString(),
       active: combination.active,
       onClick: () => changeOptions(combination.options),
+      onColorInput: combination.isCustomColor
+        ? (e: Event) =>
+            changeOptionsWithOverride(
+              combination.options,
+              key,
+              (e.target as HTMLInputElement).value.slice(1)
+            )
+        : undefined,
     }));
   }
 
@@ -55,6 +64,17 @@ function changeStyleName(styleName: string) {
 
 function changeOptions(options: SelectedStyleOptions) {
   store.selectedStyleOptions = options;
+}
+
+function changeOptionsWithOverride(
+  options: SelectedStyleOptions,
+  optionKey: string,
+  value: string
+) {
+  store.selectedStyleOptions = {
+    ...options,
+    [optionKey]: value,
+  };
 }
 </script>
 
@@ -89,6 +109,12 @@ function changeOptions(options: SelectedStyleOptions) {
                 :invisible="selectedTab != i"
                 class="options-body-avatar-component"
               />
+              <label
+                v-if="combination.onColorInput"
+                class="options-body-avatar-wheel"
+              >
+                <input type="color" @input="combination.onColorInput" />
+              </label>
             </button>
           </div>
           <Footer :tab="key" />
@@ -144,11 +170,62 @@ function changeOptions(options: SelectedStyleOptions) {
         border-radius: 18px;
         border: 0 solid #1689cc;
         transition: border-width 0.12s ease-in-out;
+        pointer-events: none;
       }
 
       &-active {
         &::after {
           border-width: 3px;
+        }
+      }
+
+      &-wheel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        cursor: pointer;
+
+        input {
+          visibility: hidden;
+        }
+
+        &::before {
+          content: '';
+          position: absolute;
+          right: 2px;
+          bottom: 2px;
+          width: 28px;
+          height: 28px;
+          border: 2px solid #fff;
+          border-radius: 50%;
+          background: conic-gradient(
+            red 0%,
+            red 14.29%,
+            orange 14.29%,
+            orange 28.57%,
+            yellow 28.57%,
+            yellow 42.86%,
+            green 42.86%,
+            green 57.14%,
+            blue 57.14%,
+            blue 71.43%,
+            indigo 71.43%,
+            indigo 85.71%,
+            violet 85.71%
+          );
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 11px;
+          bottom: 11px;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: #fff;
         }
       }
 

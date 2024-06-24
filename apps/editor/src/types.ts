@@ -25,6 +25,7 @@ export type SelectedStyleOptionsCollection = Record<
 
 export type SelectedStyleCombination = {
   active?: boolean;
+  isCustomColor?: boolean;
   options: SelectedStyleOptions;
   avatar: {
     toString: () => string;

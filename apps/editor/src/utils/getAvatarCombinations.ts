@@ -1,5 +1,9 @@
 import availableStyles from '@/config/styles';
-import type { SelectedStyleCombinations, SelectedStyleOptions } from '@/types';
+import type {
+  SelectedStyleCombination,
+  SelectedStyleCombinations,
+  SelectedStyleOptions,
+} from '@/types';
 import { createAvatar } from './createAvatar';
 
 export default function getAvatarCombinations(
@@ -27,6 +31,8 @@ export default function getAvatarCombinations(
     const styleOption = configStyleOptions[key];
     const avatarOption = selectedStyleOptions[key];
 
+    let activeItem: SelectedStyleCombination | null = null;
+
     for (const value of styleOption.values) {
       const options = {
         ...selectedStyleOptions,
@@ -38,12 +44,32 @@ export default function getAvatarCombinations(
       const isIdentical = currentAvatar === avatar.toString();
 
       if (!isIdentical || active) {
-        combinations[key].push({
+        const item: SelectedStyleCombination = {
           active: avatarOption === value,
           avatar,
           options,
-        });
+        };
+
+        if (item.active) {
+          activeItem = item;
+        }
+
+        combinations[key].push(item);
       }
+    }
+
+    if (styleOption.isColor) {
+      const options = {
+        ...selectedStyleOptions,
+        [key]: avatarOption,
+      };
+
+      combinations[key].unshift({
+        active: !activeItem,
+        isCustomColor: true,
+        avatar: createAvatar(styleName, options),
+        options,
+      });
     }
   }
 
