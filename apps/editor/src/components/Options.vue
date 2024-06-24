@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ColorPicker, { ColorPickerChangeEvent } from 'primevue/colorpicker';
+import ColorPicker from 'primevue/colorpicker';
 import useMainStore from '@/stores/main';
 import type { SelectedStyleOptions } from '@/types';
 import { computed, ref } from 'vue';
@@ -25,7 +25,7 @@ const tabs = computed(() => {
       active?: boolean;
       options?: SelectedStyleOptions;
       onClick: () => void;
-      onColorInput?: (e: ColorPickerChangeEvent) => void;
+      onColorInput?: (value: string) => void;
     }>
   > = {};
 
@@ -42,8 +42,8 @@ const tabs = computed(() => {
       options: combination.options,
       onClick: () => changeOptions(combination.options),
       onColorInput: combination.isCustomColor
-        ? (e: ColorPickerChangeEvent) =>
-            changeOptionsWithOverride(combination.options, key, e.value)
+        ? (value: string) =>
+            changeOptionsWithOverride(combination.options, key, value)
         : undefined,
     }));
   }
@@ -53,6 +53,12 @@ const tabs = computed(() => {
 
 const selectedTabOptionName = computed(() => {
   return Object.keys(tabs.value)[selectedTab.value];
+});
+
+const customColorDefaultValue = computed({
+  get: () => store.selectedStyleOptions[selectedTabOptionName.value],
+  set: (value) =>
+    tabs.value[selectedTabOptionName.value][0].onColorInput?.(value),
 });
 
 function changeStyleName(styleName: string) {
@@ -118,13 +124,7 @@ const changeOptionsWithOverride = useDebounceFn(
                 class="options-body-avatar-wheel"
               >
                 <div class="options-body-avatar-wheel-picker">
-                  <ColorPicker
-                    :defaultColor="
-                      store.selectedStyleOptions[selectedTabOptionName.value]
-                    "
-                    @change="combination.onColorInput"
-                  >
-                  </ColorPicker>
+                  <ColorPicker v-model="customColorDefaultValue"> </ColorPicker>
                 </div>
               </label>
             </button>
