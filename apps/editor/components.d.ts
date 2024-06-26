@@ -10,13 +10,19 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Avatar: typeof import('./src/components/Avatar.vue')['default']
+    Button: typeof import('primevue/button')['default']
+    ColorPicker: typeof import('primevue/colorpicker')['default']
+    Dialog: typeof import('primevue/dialog')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     Options: typeof import('./src/components/Options.vue')['default']
+    OptionsTabs: typeof import('./src/components/OptionsTabs.vue')['default']
     Preview: typeof import('./src/components/Preview.vue')['default']
     Spinner: typeof import('./src/components/Spinner.vue')['default']
-    VanDialog: typeof import('vant/es')['Dialog']
-    VanTab: typeof import('vant/es')['Tab']
-    VanTabs: typeof import('vant/es')['Tabs']
+    Tab: typeof import('primevue/tab')['default']
+    TabList: typeof import('primevue/tablist')['default']
+    TabPanel: typeof import('primevue/tabpanel')['default']
+    TabPanels: typeof import('primevue/tabpanels')['default']
+    Tabs: typeof import('primevue/tabs')['default']
   }
 }

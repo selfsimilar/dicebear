@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import useMainStore from '@/stores/main';
-import { SparklesIcon } from '@heroicons/vue/24/outline';
 import getRandomOptions from '@/utils/getRandomOptions';
 import availableStyles from '@/config/styles';
 import getApiUrl from '@/utils/getApiUrl';
@@ -47,10 +46,12 @@ async function onDownload() {
 </script>
 
 <template>
-  <van-dialog
-    v-model:show="show"
-    :title="t('downloadStarted')"
-    :confirm-button-text="t('close')"
+  <Dialog
+    v-model:visible="show"
+    modal
+    :draggable="false"
+    :header="t('downloadStarted')"
+    :style="{ maxWidth: '400px' }"
   >
     <p class="header-dialog-text">{{ t('downloadStartedDescription') }}</p>
     <p
@@ -67,13 +68,22 @@ async function onDownload() {
         })
       "
     ></p>
-  </van-dialog>
+  </Dialog>
 
   <div class="header">
-    <button class="header-shuffle" @click="onShuffle" :title="t('shuffle')">
-      <SparklesIcon></SparklesIcon>
-    </button>
-    <button class="header-save" @click="onDownload">{{ t('save') }}</button>
+    <Button
+      icon="pi pi-sparkles"
+      severity="secondary"
+      rounded
+      :aria-label="t('shuffle')"
+      @click="onShuffle"
+    />
+    <Button
+      rounded
+      severity="secondary"
+      :label="t('save')"
+      @click="onDownload"
+    />
   </div>
 </template>
 
@@ -87,44 +97,6 @@ async function onDownload() {
     text-align: center;
     font-size: 14px;
     margin: 16px 12px;
-  }
-
-  &-shuffle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    background-color: #fff;
-    color: #0f172a;
-    opacity: 0.9;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-
-  &-save {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    border-radius: 20px;
-    padding: 0 16px;
-    font-weight: 600;
-    line-height: 1;
-    background-color: #fff;
-    color: #0f172a;
-    opacity: 0.9;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 }
 </style>

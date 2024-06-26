@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import Components from 'unplugin-vue-components/vite';
-import { VantResolver } from 'unplugin-vue-components/resolvers';
+import { PrimeVueResolver } from '@primevue/auto-import-resolver';
 
 const commitHash = (
   process.env.GIT_REV ?? execSync('git rev-parse --short HEAD').toString()
@@ -16,7 +16,7 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
-      resolvers: [VantResolver()],
+      resolvers: [PrimeVueResolver()],
     }),
     VueI18nPlugin({
       include: './src/messages/*.json',

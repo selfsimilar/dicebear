@@ -6,6 +6,7 @@ import Options from './components/Options.vue';
 import useMainStore from './stores/main';
 import tinycolor from 'tinycolor2';
 import Header from './components/Header.vue';
+import OptionsTabs from './components/OptionsTabs.vue';
 import { useElementSize } from '@vueuse/core';
 import { ref } from 'vue';
 
@@ -39,7 +40,9 @@ watchEffect(() => (document.documentElement.lang = i18n.locale.value));
     <div class="app-preview" ref="preview">
       <Preview />
     </div>
-    <div class="app-border"></div>
+    <div class="app-tabs">
+      <OptionsTabs />
+    </div>
     <div class="app-options">
       <Options :navOffetTop="navOffsetTop" />
     </div>
@@ -61,7 +64,7 @@ watchEffect(() => (document.documentElement.lang = i18n.locale.value));
 
   &-header,
   &-preview,
-  &-border,
+  &-tabs,
   &-options {
     width: 100%;
     max-width: 960px;
@@ -80,23 +83,14 @@ watchEffect(() => (document.documentElement.lang = i18n.locale.value));
     z-index: 1;
   }
 
-  &-border {
-    top: calc((v-bind('headerHeight') + v-bind('previewHeight')) * 1px);
+  &-tabs {
     z-index: 1;
-
-    &::after {
-      display: block;
-      background-color: #fff;
-      border-top-left-radius: 16px;
-      border-top-right-radius: 16px;
-      height: 8px;
-      content: '';
-    }
+    top: calc((v-bind('headerHeight') + v-bind('previewHeight')) * 1px);
   }
 
   &-header,
   &-preview,
-  &-border {
+  &-tabs {
     position: sticky;
     background-color: v-bind('backgroundColor');
   }

@@ -1,14 +1,32 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
-import PrimeVue from 'primevue/config';
-import Aura from '@primevue/themes/aura';
 import messages from '@intlify/unplugin-vue-i18n/messages';
+import { definePreset } from '@primevue/themes';
 import App from './App.vue';
-import './vant';
 
 import './assets/reset.scss';
-import './assets/vant.scss';
+import 'primeicons/primeicons.css';
+
+import PrimeVue from 'primevue/config';
+import Aura from '@primevue/themes/aura';
+
+const Theme = definePreset(Aura, {
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          secondary: {
+            hoverBackground: '{surface.0}',
+            activeBackground: '{surface.0}',
+            hoverBorderColor: '{surface.0}',
+            activeBorderColor: '{surface.0}',
+          },
+        },
+      },
+    },
+  },
+});
 
 const app = createApp(App);
 
@@ -23,7 +41,10 @@ app.use(
 );
 app.use(PrimeVue, {
   theme: {
-    preset: Aura,
+    preset: Theme,
+    options: {
+      darkModeSelector: '.dark',
+    },
   },
 });
 

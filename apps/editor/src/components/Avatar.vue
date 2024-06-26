@@ -1,38 +1,15 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   svg: string;
-  invisible?: boolean;
 }>();
 
-const src = ref<string | null>(null);
-
-watch(
-  () => [props.svg, props.invisible],
-  () => {
-    if (props.invisible) {
-      const timer = setTimeout(() => {
-        src.value = null;
-      }, 250);
-
-      return () => clearTimeout(timer);
-    } else {
-      src.value = `data:image/svg+xml;utf8,${encodeURIComponent(props.svg)}`;
-    }
-  },
-  { immediate: true }
+const src = computed(
+  () => `data:image/svg+xml;utf8,${encodeURIComponent(props.svg)}`
 );
 </script>
 
 <template>
-  <img v-if="src" :src="src" loading="lazy" />
-  <div v-else class="avatar-invisible"></div>
+  <img :src="src" loading="lazy" />
 </template>
-
-<style scoped lang="scss">
-.avatar-invisible {
-  aspect-ratio: 1/1;
-  background-color: #f7f7f7;
-}
-</style>

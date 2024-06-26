@@ -1,6 +1,6 @@
 import getRandomOptions from '@/utils/getRandomOptions';
 import { defineStore } from 'pinia';
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type {
   SelectedStyleCombinations,
   SelectedStyleOptionsCollection,
@@ -72,8 +72,16 @@ const useMainStore = defineStore('main', () => {
     );
   });
 
+  const selectedTab = ref('0');
+
+  watch(
+    () => selectedTab.value,
+    () => window.scrollTo({ top: 0 })
+  );
+
   return {
     availableStyles,
+    selectedTab,
     selectedStyleName,
     selectedStylePreview,
     selectedStyleCombinations,
