@@ -5,10 +5,12 @@ import getRandomOptions from '@/utils/getRandomOptions';
 import availableStyles from '@/config/styles';
 import getApiUrl from '@/utils/getApiUrl';
 import { computed, ref } from 'vue';
+import { useFullscreen } from '@vueuse/core';
 
 const { t } = useI18n();
 const store = useMainStore();
 const show = ref(false);
+const { isFullscreen, enter } = useFullscreen();
 
 const styleMeta = computed(
   () => availableStyles[store.selectedStyleName].style.meta
@@ -43,6 +45,10 @@ async function onDownload() {
 
   URL.revokeObjectURL(file);
 }
+
+function onFullscreen() {
+  enter();
+}
 </script>
 
 <template>
@@ -71,13 +77,23 @@ async function onDownload() {
   </Dialog>
 
   <div class="header">
-    <Button
-      icon="pi pi-sparkles"
-      severity="secondary"
-      rounded
-      :aria-label="t('shuffle')"
-      @click="onShuffle"
-    />
+    <div class="header-actions">
+      <Button
+        icon="pi pi-sparkles"
+        severity="secondary"
+        rounded
+        :aria-label="t('shuffle')"
+        @click="onShuffle"
+      />
+      <Button
+        v-if="!isFullscreen"
+        icon="pi pi-window-maximize"
+        severity="secondary"
+        rounded
+        :aria-label="t('shuffle')"
+        @click="onFullscreen"
+      />
+    </div>
     <Button
       rounded
       severity="secondary"
@@ -92,6 +108,11 @@ async function onDownload() {
   display: flex;
   justify-content: space-between;
   padding-top: 16px;
+
+  &-actions {
+    display: flex;
+    gap: 8px;
+  }
 
   &-dialog-text {
     text-align: center;
