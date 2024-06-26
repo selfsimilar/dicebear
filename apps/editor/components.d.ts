@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     Options: typeof import('./src/components/Options.vue')['default']
     OptionsTabs: typeof import('./src/components/OptionsTabs.vue')['default']
     Preview: typeof import('./src/components/Preview.vue')['default']
+    ProgressSpinner: typeof import('primevue/progressspinner')['default']
     Spinner: typeof import('./src/components/Spinner.vue')['default']
     Tab: typeof import('primevue/tab')['default']
     TabList: typeof import('primevue/tablist')['default']

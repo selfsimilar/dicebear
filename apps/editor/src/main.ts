@@ -1,9 +1,9 @@
-import { createApp } from 'vue';
+import { createApp, defineAsyncComponent } from 'vue';
 import { createPinia } from 'pinia';
 import { createI18n } from 'vue-i18n';
 import messages from '@intlify/unplugin-vue-i18n/messages';
 import { definePreset } from '@primevue/themes';
-import App from './App.vue';
+import Loader from './Loader.vue';
 
 import './assets/reset.scss';
 import 'primeicons/primeicons.css';
@@ -28,7 +28,12 @@ const Theme = definePreset(Aura, {
   },
 });
 
-const app = createApp(App);
+const AsyncApp = defineAsyncComponent({
+  loader: () => import('./App.vue'),
+  loadingComponent: Loader,
+});
+
+const app = createApp(AsyncApp);
 
 app.use(createPinia());
 app.use(
