@@ -1,90 +1,57 @@
-import type { JSONSchema7 } from 'json-schema';
+import { Infer } from 'superstruct';
+import { DefinitionStruct } from './structs/DefinitionStruct.js';
+import { BaseOptionsStruct } from './structs/BaseOptionsStruct.js';
 
-export interface ResultConvertOptions {
-  includeExif?: boolean;
-}
+// Utilities
+type PickEndsWith<T, U extends string> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [K in keyof T as K extends `${infer Rest}${U}` ? K : never]: T[K];
+};
 
-export interface Result {
-  toString(): string;
-  toJson(): {
-    svg: string;
-    extra: Record<string, unknown>;
-  };
-  toDataUri(): string;
-}
+type OmitEndsWith<T, U extends string> = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [K in keyof T as K extends `${infer Rest}${U}` ? never : K]: T[K];
+};
 
-export type BackgroundType = 'solid' | 'gradientLinear';
+type ArrayElement<T> = T extends (infer E)[] ? E : never;
 
-export interface Options {
-  seed?: string;
-  flip?: boolean;
-  rotate?: number;
-  scale?: number;
-  radius?: number;
-  size?: number;
-  backgroundColor?: string[];
-  backgroundType?: BackgroundType[];
-  backgroundRotation?: number[];
-  translateX?: number;
-  translateY?: number;
-  clip?: boolean;
-  randomizeIds?: boolean;
-}
+// Attributes
+export type ViewBox = { x: number; y: number; width: number; height: number };
 
-export interface Exif {
-  [key: string]: string;
-}
+// Definition
+export type Definition = Infer<typeof DefinitionStruct>;
 
-export type SchemaDefaults = Record<string, unknown>;
+export type DefinitionMetadata = Definition['metadata'];
 
-export interface Prng {
-  seed: string;
-  next(): void;
-  bool(likelihood?: number): boolean;
-  integer(min: number, max: number): number;
-  pick<T>(arr: T[], fallback: T): T;
-  pick<T>(arr: T[]): T | undefined;
-  shuffle<T>(arr: T[]): T[];
-  string(length: number, characters?: string): string;
-}
+export type DefinitionBody = Definition['body'];
 
-export type StyleSchema = JSONSchema7;
+export type DefinitionAttributeList = Definition['attributes'];
+export type DefinitionAttribute = ArrayElement<DefinitionAttributeList>;
 
-export type StyleOptions<O extends {}> = Partial<O & Options>;
+export type DefinitionColorList = Definition['colors'];
+export type DefinitionColor = ArrayElement<DefinitionColorList>;
 
-export interface StyleCreateProps<O extends {}> {
-  prng: Prng;
-  options: StyleOptions<O>;
-}
+export type DefinitionComponentList = Definition['components'];
+export type DefinitionComponent = ArrayElement<DefinitionComponentList>;
 
-export type StyleCreate<O extends {}> = (
-  props: StyleCreateProps<O>,
-) => StyleCreateResult;
+export type DefinitionComponentValueList = DefinitionComponent['values'];
+export type DefinitionComponentValue =
+  ArrayElement<DefinitionComponentValueList>;
 
-export interface StyleCreateResultAttributes {
-  viewBox: string;
-  [key: string]: string;
-}
+// Dependencies
+export type Dependencies = {
+  components: Set<string>;
+  colors: Set<string>;
+};
 
-export interface StyleCreateResult {
-  attributes: StyleCreateResultAttributes;
-  body: string;
-  extra?: () => Record<string, unknown>;
-}
+// Options
+export type BaseOptions = Infer<typeof BaseOptionsStruct>;
+export type StyleOptions = Record<string, unknown>;
 
-export interface StyleMeta {
-  title?: string;
-  source?: string;
-  creator?: string;
-  homepage?: string;
-  license?: {
-    name: string;
-    url: string;
-  };
-}
+export type Options<S extends StyleOptions = StyleOptions> = BaseOptions & S;
 
-export interface Style<O extends {}> {
-  meta?: StyleMeta;
-  schema?: StyleSchema;
-  create: StyleCreate<O>;
-}
+export type ColorsFromStyleOptions<S extends StyleOptions = StyleOptions> =
+  PickEndsWith<S, 'Color'>;
+
+export type ComponentsFromStyleOptions<S extends StyleOptions = StyleOptions> =
+  OmitEndsWith<S, 'Color' | 'Probability' | 'Rotation' | 'OffsetX' | 'OffsetY'>;

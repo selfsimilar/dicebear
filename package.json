@@ -16,7 +16,7 @@
     "lint": "lerna run lint"
   },
   "devDependencies": {
-    "@dicebear/collection": "^9.0.0-alpha.1",
+    "@dicebear/collection": "^10.0.0-beta.3",
     "@eslint/js": "^9.0.0",
     "@tsconfig/recommended": "^1.0.2",
     "eslint": "^8.57.0",

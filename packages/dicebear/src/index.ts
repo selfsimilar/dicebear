@@ -1,22 +1,22 @@
 import updateNotifier from 'update-notifier';
-import * as collection from '@dicebear/collection';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
+import fs from 'fs-extra';
 
-import { getPackageJson } from './utils/getPackageJson.js';
-import { addStyleCommand } from './utils/addStyleCommand.js';
+import { createCommand } from './commands/create/index.js';
 
 (async () => {
-  const pkg = await getPackageJson();
+  const pkg = await fs.readJson(
+    new URL('../package.json', import.meta.url).pathname,
+  );
+
   updateNotifier({ pkg }).notify();
 
-  const cli = yargs(hideBin(process.argv));
-
-  for (let name of Object.keys(collection)) {
-    const style = collection[name as keyof typeof collection];
-
-    addStyleCommand(cli, name, style);
-  }
-
-  cli.demandCommand().help().locale('en').parse();
+  yargs(hideBin(process.argv))
+    .command(createCommand)
+    .strictCommands()
+    .demandCommand()
+    .help()
+    .locale('en')
+    .parse();
 })();

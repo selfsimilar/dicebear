@@ -1,10 +1,10 @@
 {
   "name": "@dicebear/core",
-  "version": "9.0.1",
+  "version": "10.0.0-alpha.1",
   "description": "An avatar library for designers and developers.",
   "keywords": [
     "avatar",
-    "identicon"
+    "dicebear"
   ],
   "homepage": "https://www.dicebear.com",
   "bugs": {
@@ -15,11 +15,20 @@
     "url": "git+https://github.com/dicebear/dicebear.git"
   },
   "license": "MIT",
-  "author": "Florian Körner <contact@florian-koerner.com>",
+  "author": "Florian Körner <contact@dicebear.com>",
+  "sideEffects": false,
   "type": "module",
-  "main": "./lib/index.js",
-  "exports": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "exports": {
+    "types": "./lib/index.d.ts",
+    "default": "./lib/index.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "lib/index.d.ts"
+      ]
+    }
+  },
   "files": [
     "LICENSE",
     "lib",
@@ -29,19 +38,19 @@
     "prebuild": "del-cli lib",
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "test": "uvu tests"
+    "test": "node --no-warnings --test --test-reporter=spec --test-reporter-destination=stdout tests",
+    "test:coverage": "node --no-warnings --test --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --experimental-test-coverage tests"
   },
   "dependencies": {
-    "@types/json-schema": "^7.0.11"
+    "ky": "^1.2.4",
+    "superstruct": "^1.0.4"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.2",
-    "del-cli": "^5.0.0",
-    "typescript": "^5.1.6",
-    "uvu": "^0.5.6"
+    "del-cli": "^5.0.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "^18.20 || >=20.10"
   },
   "publishConfig": {
     "access": "public"

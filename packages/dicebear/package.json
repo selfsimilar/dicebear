@@ -1,18 +1,20 @@
 {
   "name": "dicebear",
-  "version": "9.0.1",
+  "version": "10.0.0-alpha.1",
   "private": false,
   "description": "CLI for DiceBear - An avatar library for designers and developers",
+  "keywords": [
+    "avatar",
+    "dicebear"
+  ],
   "homepage": "https://github.com/dicebear/dicebear",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dicebear/dicebear.git"
   },
   "license": "MIT",
-  "author": "Florian Körner <contact@florian-koerner.com>",
+  "author": "Florian Körner <contact@dicebear.com>",
   "type": "module",
-  "exports": "./lib/index.js",
-  "types": "./lib/index.d.ts",
   "bin": "./bin/index.js",
   "files": [
     "LICENSE",
@@ -25,28 +27,26 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@dicebear/collection": "9.0.1",
-    "@dicebear/converter": "9.0.1",
-    "@dicebear/core": "9.0.1",
+    "@dicebear/collection": "10.0.0-alpha.1",
+    "@dicebear/converter": "10.0.0-alpha.1",
+    "@dicebear/core": "10.0.0-alpha.1",
     "ajv": "^8.12.0",
     "chalk": "^5.2.0",
     "chalk-template": "^1.0.0",
     "cli-progress": "^3.12.0",
     "fs-extra": "^11.1.1",
     "json-schema-merge-allof": "^0.8.1",
-    "p-queue": "^7.3.4",
-    "update-notifier": "^6.0.2",
+    "p-queue": "^8.0.1",
+    "update-notifier": "^7.0.0",
     "yargs": "^17.7.1"
   },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.2",
     "@types/cli-progress": "^3.11.0",
     "@types/fs-extra": "^11.0.1",
     "@types/json-schema-merge-allof": "^0.6.1",
-    "@types/update-notifier": "^6.0.2",
+    "@types/update-notifier": "^6.0.8",
     "@types/yargs": "^17.0.23",
-    "del-cli": "^5.0.0",
-    "typescript": "^5.1.6"
+    "del-cli": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
