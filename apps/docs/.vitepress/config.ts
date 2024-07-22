@@ -63,6 +63,9 @@ export default defineConfigWithTheme<ThemeOptions>({
       light: '/logo.svg',
     },
     externalLinkIcon: true,
+    search: {
+      provider: 'local',
+    },
     nav: [
       {
         text: 'Why DiceBear?',
