@@ -68,7 +68,7 @@ Take a look at our [HTTP-API](/how-to-use/http-api/) documentation.
 ### JS-Library
 
 Worried about privacy? We love transparency! Our
-[Privacy Policy](/legal/privacy-policy) explains what information we collect
+[Privacy Policy](/legal/privacy-policy/) explains what information we collect
 through our HTTP-API and how we use it. Alternatively, you can use the
 [JavaScript library](/how-to-use/js-library/) and [CLI](/how-to-use/cli/), which
 do not send any data to us. Also the JavaScript library is very easy to use:
