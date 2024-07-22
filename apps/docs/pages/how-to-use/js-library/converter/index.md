@@ -86,6 +86,66 @@ const jpeg = toJpeg(svg, {
 });
 ```
 
+### `toWebp(svg, options)`
+
+**Return type:** Object with [.toDataUri()](#todatauri) and
+[.toArrayBuffer()](#toarraybuffer) methods.
+
+Converts the avatar from SVG to WEBP. Expects an SVG `string` or an `object`
+with `toString` method as first argument. Expects an optional `options` argument
+of type `object`. See [options](#options) for more information.
+
+<!-- prettier-ignore -->
+```js
+import { toWebp } from '@dicebear/convert';
+
+const svg = '<svg>...</svg>';
+
+const png = toWebp(svg, {
+  // ... options
+});
+```
+
+::: warning Limited browser support
+
+This function uses an HTML canvas element in the browser and is dependent on the
+browser being able to export the canvas as a WebP. If the browser does not
+support WebP, PNG is usually used as a fallback. See
+[mdn web docs](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
+for more information.
+
+:::
+
+### `toAvif(svg, options)`
+
+**Return type:** Object with [.toDataUri()](#todatauri) and
+[.toArrayBuffer()](#toarraybuffer) methods.
+
+Converts the avatar from SVG to AVIF. Expects an SVG `string` or an `object`
+with `toString` method as first argument. Expects an optional `options` argument
+of type `object`. See [options](#options) for more information.
+
+<!-- prettier-ignore -->
+```js
+import { toWebp } from '@dicebear/convert';
+
+const svg = '<svg>...</svg>';
+
+const png = toWebp(svg, {
+  // ... options
+});
+```
+
+::: warning Limited browser support
+
+This function uses an HTML canvas element in the browser and is dependent on the
+browser being able to export the canvas as a AVIF. If the browser does not
+support AVIF, PNG is usually used as a fallback. See
+[mdn web docs](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob)
+for more information.
+
+:::
+
 ### `.toDataUri()`
 
 **Return type:** `Promise<string>`

@@ -73,12 +73,13 @@ Boolean values can be set as strings (`true` and `false`).
 
 ## File format
 
-The API supports SVG, PNG, JPG and JSON. **We recommend using SVG if possible!**
-SVG is the more modern format, scales indefinitely, and requires less traffic.
-Because the PNG and JPG formats put more load on the API, the size is limited to
-256x256. PNG and JPG also have a lower [rate limit](#rate-limits).
+The API supports SVG, PNG, JPG, WebP, AVIF and JSON. **We recommend using SVG if
+possible!** SVG is the more modern format, scales indefinitely, and requires
+less traffic. Because the PNG, JPG, WebP and AVIF formats put more load on the
+API, the size is limited to 256x256. PNG, JPG, WebP and AVIF also have a lower
+[rate limit](#rate-limits).
 
-PNG and JPG use the
+PNG, JPG, WebP and AVIF use the
 [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans) font and currently
 supports the following subsets: `cyrillic`, `cyrillic-ext`, `devanagari`,
 `greek`, `greek-ext`, `japanese`, `korean`, `latin`, `latin-ext`,
@@ -87,6 +88,8 @@ supports the following subsets: `cyrillic`, `cyrillic-ext`, `devanagari`,
 <BrowserPreview url="https://api.dicebear.com/9.x/bottts/svg" />
 <BrowserPreview url="https://api.dicebear.com/9.x/bottts/png" />
 <BrowserPreview url="https://api.dicebear.com/9.x/bottts/jpg" />
+<BrowserPreview url="https://api.dicebear.com/9.x/bottts/webp" />
+<BrowserPreview url="https://api.dicebear.com/9.x/bottts/avif" />
 
 ## Versioning
 
@@ -118,8 +121,8 @@ We are happy to answer any questions you may have. Just open an
 ## Rate limits
 
 We currently limit the number of requests per second to 50 for SVG and to 10 for
-PNG and JPG. We reserve the right to change these limits at any time without
-notice.
+PNG, JPG, WebP and AVIF. We reserve the right to change these limits at any time
+without notice.
 
 ## Changes and Availability
 

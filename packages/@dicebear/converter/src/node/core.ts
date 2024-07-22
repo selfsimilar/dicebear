@@ -1,4 +1,13 @@
-import type { Result, Exif, Avatar, Options, ToPng, ToJpeg } from '../types.js';
+import type {
+  Result,
+  Exif,
+  Avatar,
+  Options,
+  ToPng,
+  ToJpeg,
+  ToWebp,
+  ToAvif,
+} from '../types.js';
 import { promises as fs } from 'node:fs';
 import { getMimeType } from '../utils/mime-type.js';
 import { ensureSize } from '../utils/svg.js';
@@ -15,9 +24,17 @@ export const toJpeg: ToJpeg = (avatar: Avatar, options: Options = {}) => {
   return toFormat(avatar, 'jpeg', options);
 };
 
+export const toWebp: ToWebp = (avatar: Avatar, options: Options = {}) => {
+  return toFormat(avatar, 'webp', options);
+};
+
+export const toAvif: ToAvif = (avatar: Avatar, options: Options = {}) => {
+  return toFormat(avatar, 'avif', options);
+};
+
 function toFormat(
   avatar: Avatar,
-  format: 'png' | 'jpeg',
+  format: 'png' | 'jpeg' | 'webp' | 'avif',
   options: Options
 ): Result {
   const svg = typeof avatar === 'string' ? avatar : avatar.toString();
@@ -33,7 +50,7 @@ function toFormat(
 
 async function toDataUri(
   svg: string,
-  format: 'svg' | 'png' | 'jpeg',
+  format: 'svg' | 'png' | 'jpeg' | 'webp' | 'avif',
   exif: Exif,
   options: Options
 ): Promise<string> {
@@ -48,7 +65,7 @@ async function toDataUri(
 
 async function toArrayBuffer(
   rawSvg: string,
-  format: 'png' | 'jpeg',
+  format: 'png' | 'jpeg' | 'webp' | 'avif',
   exif: Exif,
   options: Options
 ): Promise<ArrayBufferLike> {
@@ -57,7 +74,7 @@ async function toArrayBuffer(
 
 async function toBuffer(
   rawSvg: string,
-  format: 'png' | 'jpeg',
+  format: 'png' | 'jpeg' | 'webp' | 'avif',
   exif: Exif,
   options: Options
 ): Promise<Buffer> {
@@ -74,11 +91,14 @@ async function toBuffer(
     })
   ).asPng();
 
-  if ('jpeg' === format) {
-    buffer = await sharp(buffer)
-      .flatten({ background: '#ffffff' })
-      .toFormat(format)
-      .toBuffer();
+  if (format !== 'png') {
+    const sharpInstance = sharp(buffer);
+
+    if (format === 'jpeg') {
+      sharpInstance.flatten({ background: '#ffffff' });
+    }
+
+    buffer = await sharpInstance.toFormat(format).toBuffer();
   }
 
   if (Object.keys(exif).length > 0) {

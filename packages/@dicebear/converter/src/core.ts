@@ -1,4 +1,12 @@
-import type { Result, Exif, Avatar, ToJpeg, ToPng } from './types.js';
+import type {
+  Result,
+  Exif,
+  Avatar,
+  ToJpeg,
+  ToPng,
+  ToWebp,
+  ToAvif,
+} from './types.js';
 import { getMimeType } from './utils/mime-type.js';
 import { ensureSize } from './utils/svg.js';
 
@@ -10,7 +18,18 @@ export const toJpeg: ToJpeg = (avatar: Avatar) => {
   return toFormat(avatar, 'jpeg');
 };
 
-function toFormat(avatar: Avatar, format: 'png' | 'jpeg'): Result {
+export const toWebp: ToWebp = (avatar: Avatar) => {
+  return toFormat(avatar, 'webp');
+};
+
+export const toAvif: ToAvif = (avatar: Avatar) => {
+  return toFormat(avatar, 'avif');
+};
+
+function toFormat(
+  avatar: Avatar,
+  format: 'png' | 'jpeg' | 'webp' | 'avif'
+): Result {
   const svg = typeof avatar === 'string' ? avatar : avatar.toString();
 
   return {
@@ -21,8 +40,8 @@ function toFormat(avatar: Avatar, format: 'png' | 'jpeg'): Result {
 
 async function toDataUri(
   svg: string,
-  format: 'svg' | 'png' | 'jpeg',
-  exif?: Exif,
+  format: 'svg' | 'png' | 'jpeg' | 'webp' | 'avif',
+  exif?: Exif
 ): Promise<string> {
   if ('svg' === format) {
     return `data:${getMimeType(format)};utf8,${encodeURIComponent(svg)}`;
@@ -35,8 +54,8 @@ async function toDataUri(
 
 async function toArrayBuffer(
   rawSvg: string,
-  format: 'png' | 'jpeg',
-  exif?: Exif,
+  format: 'png' | 'jpeg' | 'webp' | 'avif',
+  exif?: Exif
 ): Promise<ArrayBufferLike> {
   const canvas = await toCanvas(rawSvg, format, exif);
 
@@ -51,13 +70,13 @@ async function toArrayBuffer(
 
 async function toCanvas(
   rawSvg: string,
-  format: 'png' | 'jpeg',
-  exif?: Exif,
+  format: 'png' | 'jpeg' | 'webp' | 'avif',
+  exif?: Exif
 ): Promise<HTMLCanvasElement> {
   if (exif) {
     console.warn(
       'The `exif` option is not supported in the browser version of `@dicebear/converter`. \n' +
-        'Please use the node version of `@dicebear/converter` to generate images with exif data.',
+        'Please use the node version of `@dicebear/converter` to generate images with exif data.'
     );
   }
 

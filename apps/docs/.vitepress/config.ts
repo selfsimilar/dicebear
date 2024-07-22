@@ -65,6 +65,10 @@ export default defineConfigWithTheme<ThemeOptions>({
     externalLinkIcon: true,
     nav: [
       {
+        text: 'Why DiceBear?',
+        link: '/why-dicebear/',
+      },
+      {
         text: 'Documentation',
         link: '/introduction/',
         activeMatch: '^/(introduction|how-to-use|guides)',

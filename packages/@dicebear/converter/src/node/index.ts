@@ -5,5 +5,5 @@
  * Copyright (c) 2024 Florian Körner
  */
 
-export { toPng, toJpeg } from './core.js';
+export { toPng, toJpeg, toWebp, toAvif } from './core.js';
 export type * from '../types.js';

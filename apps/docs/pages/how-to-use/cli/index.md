@@ -78,7 +78,7 @@ options:
 
 ```
 --count      Defines how many avatars to create.          [number]
---format                                                  [string] [choices: "svg", "png", "jpg", "jpeg", "json"]
+--format                                                  [string] [choices: "svg", "png", "jpg", "jpeg", "webp", "avif", "json"]
 --exif       Include Exif Metadata                        [boolean]
 --json       Save JSON file in addition to image file     [boolean]
 ```

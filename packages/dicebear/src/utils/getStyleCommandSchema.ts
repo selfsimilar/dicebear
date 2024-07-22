@@ -17,7 +17,7 @@ export function getStyleCommandSchema(style: Style<any>): JSONSchema7 {
             },
             format: {
               type: 'string',
-              enum: ['svg', 'png', 'jpg', 'jpeg', 'json'],
+              enum: ['svg', 'png', 'jpg', 'jpeg', 'webp', 'avif', 'json'],
               default: 'svg',
             },
             exif: {
@@ -29,7 +29,7 @@ export function getStyleCommandSchema(style: Style<any>): JSONSchema7 {
               description: 'Save JSON file in addition to image file',
               type: 'boolean',
               default: false,
-            }
+            },
           },
         },
         coreSchema,

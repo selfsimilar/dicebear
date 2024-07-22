@@ -1,6 +1,6 @@
 import type { Style } from '@dicebear/core';
 import { createAvatar } from '@dicebear/core';
-import { toJpeg, toPng } from '@dicebear/converter';
+import { toJpeg, toPng, toWebp, toAvif } from '@dicebear/converter';
 import yargs from 'yargs';
 import cliProgress from 'cli-progress';
 import PQueue from 'p-queue';
@@ -93,6 +93,20 @@ export function addStyleCommand(
               await writeFile(
                 fileName,
                 await toJpeg(avatar.toString(), { includeExif }).toArrayBuffer()
+              );
+              break;
+
+            case 'webp':
+              await writeFile(
+                fileName,
+                await toWebp(avatar.toString(), { includeExif }).toArrayBuffer()
+              );
+              break;
+
+            case 'avif':
+              await writeFile(
+                fileName,
+                await toAvif(avatar.toString(), { includeExif }).toArrayBuffer()
               );
               break;
 
