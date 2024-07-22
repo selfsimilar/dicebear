@@ -18,6 +18,44 @@ unique avatars in no time. Whether you're looking for geometric shapes, cute
 characters or even pixel art, DiceBear offers a wide range of avatar styles to
 bring your projects to life.
 
+<p class="why-dicebear-tools">
+  <a href="/playground/" aria-label="Playground" title="Playground" target="_blank">
+    <img src="/why-dicebear/playground.webp" alt="Playground" />
+    <span>Playground</span>
+  </a>
+  
+  <a href="https://editor.dicebear.com/" aria-label="Editor" title="Editor" target="_blank">
+    <img src="/why-dicebear/editor.webp" alt="Editor" />
+    <span>Editor</span>
+  </a>
+</p>
+
+<style>
+  .why-dicebear-tools {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .why-dicebear-tools {
+    margin: 32px 0 24px !important;
+  }
+
+  .why-dicebear-tools a::after {
+    display: none !important;
+  }
+
+  .why-dicebear-tools a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: inherit;
+    font-size: 14px;
+  }
+</style>
+
 One of the coolest aspects of DiceBear is the ability to create deterministic
 avatars. This means you can generate the same avatar for every username or email
 address - perfect for user profiles! Imagine how excited your users will be when
@@ -30,12 +68,29 @@ You can choose from 28 different avatar styles by fantastic artists. Here is
 just a small sample.
 
 <p class="why-dicebear-preview">
-  <img src="https://api.dicebear.com/9.x/adventurer-neutral/svg?size=96" />
-  <img src="https://api.dicebear.com/9.x/initials/svg?size=96&seed=Kitty" />
-  <img src="https://api.dicebear.com/9.x/lorelei-neutral/svg?size=96" />
-  <img src="https://api.dicebear.com/9.x/pixel-art-neutral/svg?size=96" />
-  <img src="https://api.dicebear.com/9.x/shapes/svg?size=96" />
-  <img src="https://api.dicebear.com/9.x/thumbs/svg?size=96" />
+  <a href="/styles/adventurer/" aria-label="Adventurer" title="Adventurer" target="_blank">
+    <img alt="Example avatar #1" src="https://api.dicebear.com/9.x/adventurer-neutral/svg?size=96" />
+  </a>
+
+  <a href="/styles/initials/" aria-label="Initials" title="Initials" target="_blank">
+    <img alt="Example avatar #2" src="https://api.dicebear.com/9.x/initials/svg?size=96&seed=Kitty" />
+  </a>
+
+  <a href="/styles/lorelei-neutral/" aria-label="Lorelei Neutral" title="Lorelei Neutral" target="_blank">
+    <img alt="Example avatar #3" src="https://api.dicebear.com/9.x/lorelei-neutral/svg?size=96" />
+  </a>
+
+  <a href="/styles/pixel-art-neutral/" aria-label="Pixel Art Neutral" title="Pixel Art Neutral" target="_blank">
+    <img alt="Example avatar #4" src="https://api.dicebear.com/9.x/pixel-art-neutral/svg?size=96" />
+  </a>
+
+  <a href="/styles/shapes/" aria-label="Shapes" title="Shapes" target="_blank">
+    <img alt="Example avatar #5" src="https://api.dicebear.com/9.x/shapes/svg?size=96" />
+  </a>
+
+  <a href="/styles/thumbs/" aria-label="Thumbs" title="Thumbs" target="_blank">
+    <img alt="Example avatar #6" src="https://api.dicebear.com/9.x/thumbs/svg?size=96" />
+  </a>
 </p>
 
 Just wanna see all of them? Check out our [overview](/styles/)!
@@ -43,7 +98,12 @@ Just wanna see all of them? Check out our [overview](/styles/)!
 <style>
   .why-dicebear-preview {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
+  }
+
+  .why-dicebear-preview a::after {
+    display: none !important;
   }
 </style>
 

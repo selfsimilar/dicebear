@@ -92,6 +92,10 @@ defineProps<{
 
     &-anchor {
       display: inline-block;
+
+      &::after {
+        display: none !important;
+      }
     }
   }
 }
