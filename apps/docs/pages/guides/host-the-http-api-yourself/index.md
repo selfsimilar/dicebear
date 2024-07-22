@@ -109,6 +109,46 @@ The default size for the JPEG endpoint. Defaults to `128`.
 
 Enable EXIF data for the JPEG endpoint. Defaults to `1` (true).
 
+### WEBP
+
+Enable the WebP endpoint. Defaults to `1` (true).
+
+### WEBP_SIZE_MIN
+
+The minimum size for the WebP endpoint. Defaults to `1`.
+
+### WEBP_SIZE_MAX
+
+The maximum size for the WebP endpoint. Defaults to `128`.
+
+### WEBP_SIZE_DEFAULT
+
+The default size for the WebP endpoint. Defaults to `128`.
+
+### WEBP_EXIF
+
+Enable EXIF data for the WebP endpoint. Defaults to `1` (true).
+
+### AVIF
+
+Enable the AVIF endpoint. Defaults to `1` (true).
+
+### AVIF_SIZE_MIN
+
+The minimum size for the AVIF endpoint. Defaults to `1`.
+
+### AVIF_SIZE_MAX
+
+The maximum size for the AVIF endpoint. Defaults to `128`.
+
+### AVIF_SIZE_DEFAULT
+
+The default size for the AVIF endpoint. Defaults to `128`.
+
+### AVIF_EXIF
+
+Enable EXIF data for the AVIF endpoint. Defaults to `1` (true).
+
 #### Requirements
 
 - Perl (https://www.npmjs.com/package/exiftool-vendored#installation)
