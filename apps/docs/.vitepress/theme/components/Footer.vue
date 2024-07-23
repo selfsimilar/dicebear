@@ -114,6 +114,7 @@ const styles = computed(() => {
 
 <style lang="scss" scoped>
 .container {
+  z-index: 10;
   margin: 0 auto;
   max-width: var(--vp-layout-max-width);
   padding: 0 32px;

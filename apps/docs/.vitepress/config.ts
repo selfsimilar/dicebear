@@ -84,7 +84,7 @@ export default defineConfigWithTheme<ThemeOptions>({
       { text: 'Playground', link: '/playground/', activeMatch: '^/playground' },
       { text: 'Editor', link: 'https://editor.dicebear.com' },
     ],
-    outline: [2, 3],
+    outline: [2, 2],
     socialLinks: [
       { icon: 'github', link: 'https://github.com/dicebear/dicebear' },
     ],
