@@ -9,6 +9,7 @@ import * as bottts from '@dicebear/bottts';
 import * as botttsNeutral from '@dicebear/bottts-neutral';
 import * as croodles from '@dicebear/croodles';
 import * as croodlesNeutral from '@dicebear/croodles-neutral';
+import * as dylan from '@dicebear/dylan';
 import * as funEmoji from '@dicebear/fun-emoji';
 import * as icons from '@dicebear/icons';
 import * as identicon from '@dicebear/identicon';
@@ -39,6 +40,7 @@ export {
   botttsNeutral,
   croodles,
   croodlesNeutral,
+  dylan,
   funEmoji,
   icons,
   identicon,

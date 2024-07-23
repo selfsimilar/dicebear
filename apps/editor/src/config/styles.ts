@@ -47,6 +47,10 @@ const availableStyles: ConfigStyleCollection = {
     style: collection.croodlesNeutral,
     options: getSchemaOptions(collection.croodlesNeutral.schema ?? {}),
   },
+  dylan: {
+    style: collection.dylan,
+    options: getSchemaOptions(collection.dylan.schema ?? {}),
+  },
   funEmoji: {
     style: collection.funEmoji,
     options: getSchemaOptions(collection.funEmoji.schema ?? {}),
