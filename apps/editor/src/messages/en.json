@@ -64,5 +64,6 @@
   "privacyPolicyLink": "https://www.dicebear.com/legal/privacy-policy",
   "documentation": "Documentation",
   "documentationLink": "https://www.dicebear.com/docs",
-  "licenses": "Licenses"
+  "licenses": "Licenses",
+  "mood": "Mood"
 }
