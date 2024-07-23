@@ -6,10 +6,9 @@
  */
 
 export interface Options {
-  facial?: (
+  facialHair?: (
     | 'default'
   )[];
-  facialProbability?: number;
   mood?: (
     | 'happy'
     | 'angry'

@@ -15,10 +15,10 @@ type Props = {
 }
 
 export function getComponents({ prng, options }: Props): ComponentPickCollection {
-  const facialComponent = pickComponent({
+  const facialHairComponent = pickComponent({
     prng,
-    group: 'facial',
-    values: options.facial,
+    group: 'facialHair',
+    values: options.facialHair,
   });
   const moodComponent = pickComponent({
     prng,
@@ -32,7 +32,7 @@ export function getComponents({ prng, options }: Props): ComponentPickCollection
   });
 
   return {
-    'facial': prng.bool(options.facialProbability) ? facialComponent : undefined,
+    'facialHair': facialHairComponent,
     'mood': moodComponent,
     'hair': hairComponent,
   }

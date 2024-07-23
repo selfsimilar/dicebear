@@ -22,7 +22,7 @@ export const schema: StyleSchema = {
         "29e051"
       ]
     },
-    "facial": {
+    "facialHair": {
       "type": "array",
       "items": {
         "type": "string",
@@ -33,12 +33,6 @@ export const schema: StyleSchema = {
       "default": [
         "default"
       ]
-    },
-    "facialProbability": {
-      "type": "integer",
-      "minimum": 0,
-      "maximum": 100,
-      "default": 25
     },
     "hair": {
       "type": "array",

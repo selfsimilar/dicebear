@@ -5,6 +5,6 @@
  * File: https://www.figma.com/design/rjF7B4FgtEB3FC8ruNuUGf/%40dicebear%2Fdylan
  */
 
-export { facial } from './facial.js';
+export { facialHair } from './facialHair.js';
 export { mood } from './mood.js';
 export { hair } from './hair.js';
