@@ -7,25 +7,27 @@
 
 export interface Options {
   shape2?: (
+    | 'g'
+    | 'r'
+    | 'a'
     | 'd'
     | 'i'
-    | 'c'
     | 'e'
-    | 'b'
-    | 'a'
-    | 'r'
+    | 'n'
+    | 't'
   )[];
   shape2Rotation?: number[];
   shape2OffsetX?: number[];
   shape2OffsetY?: number[];
   shape1?: (
+    | 'g'
+    | 'r'
+    | 'a'
     | 'd'
     | 'i'
-    | 'c'
     | 'e'
-    | 'b'
-    | 'a'
-    | 'r'
+    | 'n'
+    | 't'
   )[];
   shape1Rotation?: number[];
   shape1OffsetX?: number[];
