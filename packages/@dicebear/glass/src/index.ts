@@ -11,7 +11,7 @@
  * Code licensed under MIT License.
  * Copyright (c) 2024 Florian Körner
  *
- * Design "Glass" by Florian Körner licensed under CC0 1.0. / Remix of the original.
+ * Design "Glass" by DiceBear licensed under CC0 1.0. / Remix of the original.
  * Source: https://www.dicebear.com
  * Homepage: https://www.dicebear.com
  * License: https://creativecommons.org/publicdomain/zero/1.0/
@@ -26,7 +26,7 @@ import { getColors } from './utils/getColors.js';
 
 export const meta: StyleMeta = {
   title: 'Glass',
-  creator: 'Florian Körner',
+  creator: 'DiceBear',
   source: 'https://www.dicebear.com',
   homepage: 'https://www.dicebear.com',
   license: {
@@ -45,7 +45,7 @@ export const create: StyleCreate<Options> = ({ prng, options }) => {
       fill: 'none',
       'shape-rendering': 'auto'
     },
-    body: `<g style="mix-blend-mode:screen" opacity="0.6" filter="url(#dicebearGlass-a)"><g transform="translate(-25 -25)">${components.shape2?.value(components, colors) ?? ''}</g></g><g style="mix-blend-mode:screen" opacity="0.6" filter="url(#dicebearGlass-b)"><g transform="translate(-25 -25)">${components.shape1?.value(components, colors) ?? ''}</g></g><defs><filter id="dicebearGlass-a" x="-57" y="-57" width="214" height="214" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="16" result="effect1_foregroundBlur_18_184"/></filter><filter id="dicebearGlass-b" x="-57" y="-57" width="214" height="214" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="16" result="effect1_foregroundBlur_18_184"/></filter></defs>`,
+    body: `<g style="mix-blend-mode:screen" opacity="0.6" filter="url(#dicebearGlass-a)"><g transform="translate(-25 -25)">${components.shape2?.value(components, colors) ?? ''}</g></g><g style="mix-blend-mode:screen" opacity="0.6" filter="url(#dicebearGlass-b)"><g transform="translate(-25 -25)">${components.shape1?.value(components, colors) ?? ''}</g></g><defs><filter id="dicebearGlass-a" x="-57" y="-57" width="214" height="214" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="16" result="effect1_foregroundBlur_25_7"/></filter><filter id="dicebearGlass-b" x="-57" y="-57" width="214" height="214" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="16" result="effect1_foregroundBlur_25_7"/></filter></defs>`,
     extra: () => ({
       ...Object.entries(components).reduce<Record<string, string | undefined>>(
         (acc, [key, value]) => {
