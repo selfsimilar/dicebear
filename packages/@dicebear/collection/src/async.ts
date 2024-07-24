@@ -11,6 +11,7 @@ export const croodles = () => import('@dicebear/croodles');
 export const croodlesNeutral = () => import('@dicebear/croodles-neutral');
 export const dylan = () => import('@dicebear/dylan');
 export const funEmoji = () => import('@dicebear/fun-emoji');
+export const glass = () => import('@dicebear/glass');
 export const icons = () => import('@dicebear/icons');
 export const identicon = () => import('@dicebear/identicon');
 export const initials = () => import('@dicebear/initials');

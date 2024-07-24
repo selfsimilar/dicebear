@@ -11,6 +11,7 @@ import * as croodles from '@dicebear/croodles';
 import * as croodlesNeutral from '@dicebear/croodles-neutral';
 import * as dylan from '@dicebear/dylan';
 import * as funEmoji from '@dicebear/fun-emoji';
+import * as glass from '@dicebear/glass';
 import * as icons from '@dicebear/icons';
 import * as identicon from '@dicebear/identicon';
 import * as initials from '@dicebear/initials';
@@ -42,6 +43,7 @@ export {
   croodlesNeutral,
   dylan,
   funEmoji,
+  glass,
   icons,
   identicon,
   initials,
