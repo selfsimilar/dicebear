@@ -29,22 +29,8 @@ const options = computed(() => {
   };
 });
 
-async function downloadSvg() {
-  const avatarStyle = await loadAvatarStyle(store.avatarStyleName);
-  const avatar = createAvatar(avatarStyle, {
-    ...options.value,
-    size: 512,
-  });
-
-  const timestamp = new Date().getTime();
-
-  await avatar.toFile(`${store.avatarStyleName}-${timestamp}.svg`);
-
-  open.value = true;
-}
-
-// Download via API so that Exif headers are stored in the image.
-async function downloadBinary(format: 'png' | 'jpg' | 'webp' | 'avif') {
+// Download via API
+async function downloadBinary(format: 'svg' | 'png' | 'jpg' | 'webp' | 'avif') {
   open.value = true;
 
   const response = await fetch(
@@ -63,6 +49,10 @@ async function downloadBinary(format: 'png' | 'jpg' | 'webp' | 'avif') {
   link.remove();
 
   URL.revokeObjectURL(file);
+}
+
+async function downloadSvg() {
+  downloadBinary('svg');
 }
 
 function downloadPng() {
