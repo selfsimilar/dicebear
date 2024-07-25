@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { mdiClose, mdiDownload } from '@mdi/js';
+import {
+  mdiClose,
+  mdiDownload,
+  mdiSvg,
+  mdiFilePngBox,
+  mdiFileJpgBox,
+  mdiImageOutline,
+} from '@mdi/js';
 import { computed, mergeProps, ref } from 'vue';
-import { mdiSvg, mdiFilePngBox, mdiFileJpgBox } from '@mdi/js';
 import useStore from '@playground/store';
 import { getAvatarApiUrl, loadAvatarStyle } from '@shared/utils/avatar';
 import { createAvatar } from '@dicebear/core';
@@ -38,7 +44,7 @@ async function downloadSvg() {
 }
 
 // Download via API so that Exif headers are stored in the image.
-async function downloadBinary(format: 'png' | 'jpg') {
+async function downloadBinary(format: 'png' | 'jpg' | 'webp' | 'avif') {
   open.value = true;
 
   const response = await fetch(
@@ -65,6 +71,14 @@ function downloadPng() {
 
 function downloadJpg() {
   downloadBinary('jpg');
+}
+
+function downloadWebp() {
+  downloadBinary('webp');
+}
+
+function downloadAvif() {
+  downloadBinary('avif');
 }
 
 function onClose() {
@@ -108,6 +122,18 @@ function onClose() {
           <v-icon :icon="mdiFileJpgBox"></v-icon>
         </template>
         <v-list-item-title>Download as JPEG</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="downloadWebp">
+        <template v-slot:prepend>
+          <v-icon :icon="mdiImageOutline"></v-icon>
+        </template>
+        <v-list-item-title>Download as WebP</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="downloadAvif">
+        <template v-slot:prepend>
+          <v-icon :icon="mdiImageOutline"></v-icon>
+        </template>
+        <v-list-item-title>Download as AVIF</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
