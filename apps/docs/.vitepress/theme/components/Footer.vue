@@ -15,7 +15,10 @@ const styles = computed(() => {
   const knownWork: string[] = [];
 
   for (const val of Object.values(theme.value.avatarStyles)) {
-    if (val.meta.creator === 'Florian Körner') {
+    if (
+      val.meta.creator === 'Florian Körner' ||
+      val.meta.creator === 'DiceBear'
+    ) {
       continue;
     }
 
