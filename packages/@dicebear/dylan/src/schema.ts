@@ -34,6 +34,12 @@ export const schema: StyleSchema = {
         "default"
       ]
     },
+    "facialHairProbability": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100,
+      "default": 20
+    },
     "hair": {
       "type": "array",
       "items": {

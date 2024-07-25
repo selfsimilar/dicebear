@@ -32,7 +32,7 @@ export function getComponents({ prng, options }: Props): ComponentPickCollection
   });
 
   return {
-    'facialHair': facialHairComponent,
+    'facialHair': prng.bool(options.facialHairProbability) ? facialHairComponent : undefined,
     'mood': moodComponent,
     'hair': hairComponent,
   }
