@@ -47,11 +47,11 @@ file of the respective page in the documentation below each page.
 
 ## Verifying your changes
 
-You can start the website locally on your computer with the following command to
-check your changes:
+You can start the documentation locally on your computer with the following
+command to check your changes:
 
 ```
-npm run dev --workspace @dicebear/website
+npm run dev --workspace @dicebear/docs
 ```
 
 Open `http://localhost:5173/` in your browser to see your changes.
