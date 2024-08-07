@@ -8,8 +8,7 @@ import { useData } from 'vitepress';
 import { useTheme } from 'vuetify';
 import './styles/main.scss';
 import HomeImage from './components/HomeImage.vue';
-import { onMounted } from 'vue';
-import { nextTick } from 'vue';
+import { onMounted, nextTick } from 'vue';
 
 const { Layout } = DefaultTheme;
 

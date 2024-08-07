@@ -71,6 +71,9 @@ const styles = computed(() => {
         </VPLink>
       </li>
       <li>
+        <VPLink class="link" href="/stats/">Statistics</VPLink>
+      </li>
+      <li>
         <VPLink class="link" href="/licenses/">Licenses</VPLink>
       </li>
       <li>

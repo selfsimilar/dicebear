@@ -30,7 +30,8 @@
   border-radius: 6px !important;
 }
 
-.VPLink:not(.no-icon) {
+.VPLink:not(.no-icon),
+.VPButton:not(.no-icon) {
   $styles: (
     'big-ears-neutral',
     'adventurer',
