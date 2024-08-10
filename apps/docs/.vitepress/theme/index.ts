@@ -6,6 +6,8 @@ import { createPinia } from 'pinia';
 import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import { useData } from 'vitepress';
 import VPBadge from 'vitepress/dist/client/theme-default/components/VPBadge.vue';
+import PrimeVue from 'primevue/config';
+import Aura from '@primevue/themes/aura';
 
 export default {
   ...DefaultTheme,
@@ -16,6 +18,16 @@ export default {
     const isSsr = typeof window === 'undefined';
 
     const pinia = createPinia();
+
+    app.use(PrimeVue, {
+      theme: {
+        preset: Aura,
+        options: {
+          darkModeSelector: '.dark',
+          cssLayer: false,
+        },
+      },
+    });
 
     const vuetify = createVuetify({
       ssr: isSsr,

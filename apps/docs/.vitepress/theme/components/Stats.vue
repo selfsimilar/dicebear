@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { computed, effect, onUnmounted, ref } from 'vue';
-import { VAlert, VBtn, VProgressLinear } from 'vuetify/components';
+import { computed } from 'vue';
 import { useFetch } from '@vueuse/core';
 import { VPButton } from 'vitepress/theme';
-import Chart from './Chart.vue';
-import { CrosshairMode, LineStyle } from 'lightweight-charts';
 import { capitalCase } from 'change-case';
 
 const { isFetching, error, data } = useFetch('/stats.json').get().json<{
@@ -101,7 +98,6 @@ const requestChartOptions = {
     vertLine: {
       width: 1,
       color: '#0284c7',
-      style: LineStyle.Solid,
       labelBackgroundColor: '#0284c7',
     },
 
