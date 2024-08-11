@@ -14,4 +14,6 @@ import Stats from '@theme/components/Stats.vue';
 
 Interested in statistics? Here are the statistics for our HTTP API.
 
-<Stats :displayCharts="true" :displayLoader="true" />
+<ClientOnly>
+  <Stats :displayCharts="true" :displayLoader="true" />
+</ClientOnly>

@@ -16,12 +16,6 @@ Our HTTP API is probably the easiest way to use DiceBear. Thanks to our sponsor
 official instance or run your own. Yes, the
 [API is also OpenSource](https://github.com/dicebear/api)!
 
-## Stats
-
-<Stats />
-
-See our [statistics page](/stats/) for more statistics.
-
 ## Usage
 
 Use the following address and replace `<styleName>` with your preferred avatar
@@ -44,6 +38,14 @@ themselves. For a quick overview we have created an
 [license overview](/licenses/) for you.
 
 :::
+
+## Stats
+
+<ClientOnly>
+  <Stats />
+</ClientOnly>
+
+See our [statistics page](/stats/) for more statistics.
 
 ## Options
 

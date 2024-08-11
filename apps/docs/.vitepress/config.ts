@@ -47,7 +47,7 @@ export default defineConfigWithTheme<ThemeOptions>({
       }),
     ],
     ssr: {
-      noExternal: ['vuetify'],
+      noExternal: ['vuetify', 'vue-countup-v3'],
     },
     resolve: {
       alias: {
