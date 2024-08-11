@@ -8,7 +8,6 @@ import ProgressBar from 'primevue/progressbar';
 
 const { data } = useWebSocket<string>('wss://insights.dicebear.com', {
   autoReconnect: true,
-  heartbeat: true,
 });
 
 const props = defineProps<{
