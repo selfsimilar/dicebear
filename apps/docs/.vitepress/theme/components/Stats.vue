@@ -6,7 +6,10 @@ import { ChartData, ChartOptions } from 'chart.js';
 import CountUp from 'vue-countup-v3';
 import ProgressBar from 'primevue/progressbar';
 
-const { data } = useWebSocket<string>('wss://insights.dicebear.com');
+const { data } = useWebSocket<string>('wss://insights.dicebear.com', {
+  autoReconnect: true,
+  heartbeat: true,
+});
 
 const props = defineProps<{
   displayCharts: boolean;
@@ -56,6 +59,11 @@ watch(
 
 const requestChartOptions: ChartOptions = {
   animation: false,
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
 };
 
 const requestsChartData = computed<ChartData>(() => {
