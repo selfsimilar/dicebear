@@ -12,8 +12,6 @@ import Stats from '@theme/components/Stats.vue';
 
 # HTTP-API Stats
 
-Interested in statistics? Here are the statistics for our HTTP API for the last
-30 days. The data has been collected **since 6 August 2024** and may be
-incomplete at this time.
+Interested in statistics? Here are the statistics for our HTTP API.
 
-<Stats />
+<Stats :displayCharts="true" :displayLoader="true" />

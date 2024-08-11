@@ -25,6 +25,7 @@
     "canvas-confetti": "^1.6.0",
     "cat-names": "^3.1.0",
     "change-case": "^4.1.2",
+    "chart.js": "^4.4.3",
     "copy-to-clipboard": "^3.3.3",
     "highlight.js": "^11.8.0",
     "json-schema-merge-allof": "^0.8.1",
@@ -46,6 +47,7 @@
     "vue": "^3.3.4",
     "vue-chartjs": "^5.3.1",
     "vue-confetti": "^2.3.0",
+    "vue-countup-v3": "^1.4.2",
     "vuetify": "^3.4.8"
   },
   "private": true

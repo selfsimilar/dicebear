@@ -6,6 +6,7 @@ description: >
 
 <script setup>
 import BrowserPreview from '@theme/components/BrowserPreview.vue';
+import Stats from '@theme/components/Stats.vue';
 </script>
 
 # HTTP-API
@@ -14,6 +15,12 @@ Our HTTP API is probably the easiest way to use DiceBear. Thanks to our sponsor
 [bunny.net](https://bunny.net/) it is lightning fast worldwide. You can use our
 official instance or run your own. Yes, the
 [API is also OpenSource](https://github.com/dicebear/api)!
+
+## Stats
+
+<Stats />
+
+See our [statistics page](/stats/) for more statistics.
 
 ## Usage
 

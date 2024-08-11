@@ -1,216 +1,204 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useFetch } from '@vueuse/core';
-import { VPButton } from 'vitepress/theme';
-import { capitalCase } from 'change-case';
+import { computed, ref, watch, watchEffect } from 'vue';
+import { useWebSocket } from '@vueuse/core';
+import Chart from 'primevue/chart';
+import { ChartData, ChartOptions } from 'chart.js';
+import CountUp from 'vue-countup-v3';
+import ProgressBar from 'primevue/progressbar';
 
-const { isFetching, error, data } = useFetch('/stats.json').get().json<{
-  requests: Record<string, number>;
-  versions: Record<string, number>;
-  styles: Record<string, number>;
-  formats: Record<string, number>;
+const { data } = useWebSocket<string>('wss://insights.dicebear.com');
+
+const props = defineProps<{
+  displayCharts: boolean;
+  displayLoader: boolean;
 }>();
 
-const styles = computed(() => {
-  if (isFetching.value || !data.value) {
-    return [];
-  }
-
-  return Array.from(Object.keys(data.value.styles)).map((key, i) => {
-    return {
-      position: i + 1,
-      name: capitalCase(key),
-      href: `/styles/${key}/`,
-    };
-  });
-});
-
-const formats = computed(() => {
-  if (isFetching.value || !data.value) {
-    return [];
-  }
-
-  return Array.from(Object.entries(data.value.formats)).map(
-    ([format, requests]) => {
-      const int = Intl.NumberFormat('en-US');
-
-      return {
-        format,
-        requests: int.format(requests),
+const lastMessage = computed<{
+  totalRequests: number;
+  requests: { [date: string]: number };
+  versions: { [version: string]: number };
+  styles: { [style: string]: number };
+  formats: { [format: string]: number };
+}>(() => {
+  return data.value
+    ? JSON.parse(data.value)
+    : {
+        totalRequests: 0,
+        requests: {},
+        versions: {},
+        styles: {},
+        formats: {},
       };
-    }
-  );
 });
 
-const versions = computed(() => {
-  if (isFetching.value || !data.value) {
-    return [];
+const totalRequestsOnMount = ref(0);
+const totalRequestsStartValue = ref(0);
+const totalRequestsEndValue = ref(0);
+
+watchEffect(() => {
+  if (
+    lastMessage.value &&
+    lastMessage.value.totalRequests &&
+    !totalRequestsOnMount.value
+  ) {
+    totalRequestsOnMount.value = lastMessage.value.totalRequests;
   }
-
-  return Array.from(Object.entries(data.value.versions)).map(
-    ([version, requests]) => {
-      const int = Intl.NumberFormat('en-US');
-
-      return {
-        version,
-        requests: int.format(requests),
-      };
-    }
-  );
 });
 
-const requestsTotal = computed(() => {
-  if (isFetching.value || !data.value) {
-    return 0;
+watch(
+  () => lastMessage.value.totalRequests,
+  () => {
+    totalRequestsStartValue.value = totalRequestsEndValue.value;
+    totalRequestsEndValue.value =
+      lastMessage.value.totalRequests - totalRequestsOnMount.value;
   }
+);
 
-  return Object.values(data.value.requests)
-    .reduce((a, b) => a + b, 0)
-    .toLocaleString('en-US');
+const requestChartOptions: ChartOptions = {
+  animation: false,
+};
+
+const requestsChartData = computed<ChartData>(() => {
+  return {
+    labels: Object.keys(lastMessage.value.requests),
+    datasets: [
+      {
+        label: 'Requests',
+        data: Object.values(lastMessage.value.requests),
+        fill: true,
+        tension: 0.1,
+      },
+    ],
+  };
 });
 
-const requestChartData = computed(() => {
-  if (isFetching.value || !data.value) {
-    return [];
-  }
+const versionChartOptions: ChartOptions = {
+  animation: false,
+};
 
-  return Array.from(Object.entries(data.value.requests)).map(
-    ([time, value]) => ({
-      time: parseInt(time),
-      value,
-    })
-  );
+const versionChartData = computed<ChartData>(() => {
+  return {
+    labels: Object.keys(lastMessage.value.versions),
+    datasets: [
+      {
+        label: 'Requests',
+        data: Object.values(lastMessage.value.versions),
+      },
+    ],
+  };
 });
 
-const requestChartOptions = {
-  localization: {
-    priceFormatter: Intl.NumberFormat('en-US').format,
-  },
-  layout: {
-    background: { color: '#222' },
-    textColor: 'rgba(255, 255, 255, 0.86)',
-  },
-  grid: {
-    vertLines: { color: '#444' },
-    horzLines: { color: '#444' },
-  },
-  crosshair: {
-    vertLine: {
-      width: 1,
-      color: '#0284c7',
-      labelBackgroundColor: '#0284c7',
-    },
-
-    horzLine: {
-      color: '#0284c7',
-      labelBackgroundColor: '#0284c7',
+const styleChartOptions: ChartOptions = {
+  animation: false,
+  indexAxis: 'y',
+  responsive: true,
+  maintainAspectRatio: false,
+  scales: {
+    y: {
+      ticks: {
+        autoSkip: false,
+      },
     },
   },
 };
 
-const requestChartSeriesOptions = {
-  color: '#0284c7',
-  lastValueVisible: false,
-  priceLineVisible: false,
+const styleChartData = computed<ChartData>(() => {
+  const values = Object.values(lastMessage.value.styles);
+  const max = Math.max(...values);
+
+  return {
+    labels: Object.keys(lastMessage.value.styles),
+    datasets: [
+      {
+        label: 'Popularity',
+        data: values.map((v) => Math.round((v / max) * 100 * 10) / 10),
+        minBarLength: 3,
+      },
+    ],
+  };
+});
+
+const formatChartOptions: ChartOptions = {
+  animation: false,
 };
+
+const formatChartData = computed<ChartData>(() => {
+  return {
+    labels: Object.keys(lastMessage.value.formats),
+    datasets: [
+      {
+        label: 'Requests',
+        data: Object.values(lastMessage.value.formats),
+        minBarLength: 3,
+      },
+    ],
+  };
+});
 </script>
 
 <template>
-  <template v-if="error">
-    <div class="error">
-      <VAlert text="Failed to fetch stats." type="error" />
+  <template v-if="totalRequestsEndValue || !props.displayLoader">
+    <div class="bg-neutral-50 dark:bg-neutral-800 p-5 pt-4 rounded-lg relative">
+      <div class="text-lg pb-2 pr-12">
+        HTTP-API requests since you are on this page
+      </div>
+      <div class="text-4xl font-bold tabular-nums">
+        <CountUp
+          :start-val="totalRequestsStartValue"
+          :end-val="totalRequestsEndValue"
+          :duration="2"
+          :options="{ useEasing: false }"
+        />
+      </div>
+      <div
+        class="bg-red-700 text-white px-2 py-1 rounded absolute top-4 right-4 text-sm font-medium"
+      >
+        Live
+      </div>
     </div>
-  </template>
-  <template v-else-if="isFetching">
-    <div class="loading">
-      <VProgressLinear color="primary" indeterminate></VProgressLinear>
-    </div>
+
+    <template v-if="props.displayCharts">
+      <h2>Requests</h2>
+      <div class="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-lg">
+        <Chart
+          type="line"
+          :data="requestsChartData"
+          :options="requestChartOptions"
+        />
+      </div>
+
+      <h2>Most used versions</h2>
+      <div class="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-lg">
+        <Chart
+          type="bar"
+          :data="versionChartData"
+          :options="versionChartOptions"
+        />
+      </div>
+
+      <h2>Popular avatar styles</h2>
+      <div class="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-lg">
+        <Chart
+          type="bar"
+          :data="styleChartData"
+          :options="styleChartOptions"
+          class="h-[60rem]"
+        />
+      </div>
+
+      <h2>Popular file formats</h2>
+      <div class="bg-neutral-50 dark:bg-neutral-800 p-3 rounded-lg">
+        <Chart
+          type="bar"
+          :data="formatChartData"
+          :options="formatChartOptions"
+        />
+      </div>
+    </template>
   </template>
   <template v-else>
-    <h2>{{ requestsTotal }} requests in the last 30 days</h2>
-    <div class="chart">
-      <Chart
-        :data="requestChartData"
-        :chartOptions="requestChartOptions"
-        :seriesOptions="requestChartSeriesOptions"
-      />
-    </div>
-
-    <h2>Avatar styles by popularity</h2>
-
-    <div class="styles">
-      <VPButton
-        v-for="style in styles"
-        theme="alt"
-        :key="style.name"
-        :href="style.href"
-        :text="style.name"
-      ></VPButton>
-    </div>
-
-    <h2>Most used file formats</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th v-for="format in formats" :key="format.format">
-            {{ format.format }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Requests</th>
-          <td v-for="format in formats" :key="format.format">
-            {{ format.requests }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <h2>Most used versions</h2>
-
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th v-for="version in versions" :key="version.version">
-            {{ version.version }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th>Requests</th>
-          <td v-for="version in versions" :key="version.version">
-            {{ version.requests }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <ProgressBar mode="indeterminate" style="height: 6px"></ProgressBar>
   </template>
 </template>
 
-<style lang="scss" scoped>
-.error,
-.loading {
-  margin-top: 40px;
-}
-
-.chart {
-  height: 300px;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.styles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-
-  :deep(a) {
-    text-decoration: none;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
