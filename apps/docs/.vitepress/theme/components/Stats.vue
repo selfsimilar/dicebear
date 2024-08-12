@@ -70,7 +70,7 @@ const requestsChartData = computed<ChartData>(() => {
     labels: Object.keys(lastMessage.value.requests),
     datasets: [
       {
-        label: 'Requests',
+        label: 'Requests (last year)',
         data: Object.values(lastMessage.value.requests),
         fill: true,
         tension: 0.1,
@@ -88,7 +88,7 @@ const versionChartData = computed<ChartData>(() => {
     labels: Object.keys(lastMessage.value.versions),
     datasets: [
       {
-        label: 'Requests',
+        label: 'Requests (last 30 days)',
         data: Object.values(lastMessage.value.versions),
       },
     ],
@@ -117,7 +117,7 @@ const styleChartData = computed<ChartData>(() => {
     labels: Object.keys(lastMessage.value.styles),
     datasets: [
       {
-        label: 'Popularity',
+        label: 'Popularity (last 30 days)',
         data: values.map((v) => Math.round((v / max) * 100 * 10) / 10),
         minBarLength: 3,
       },
@@ -134,7 +134,7 @@ const formatChartData = computed<ChartData>(() => {
     labels: Object.keys(lastMessage.value.formats),
     datasets: [
       {
-        label: 'Requests',
+        label: 'Requests (last 30 days)',
         data: Object.values(lastMessage.value.formats),
         minBarLength: 3,
       },
