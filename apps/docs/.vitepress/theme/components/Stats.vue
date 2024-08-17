@@ -15,14 +15,24 @@ const props = defineProps<{
   displayLoader: boolean;
 }>();
 
-const lastMessage = computed<{
-  totalRequests: number;
-  requests: { [date: string]: number };
-  versions: { [version: string]: number };
-  styles: { [style: string]: number };
-  formats: { [format: string]: number };
-}>(() => {
-  return data.value
+const totalRequests = ref(0);
+const requests = ref<{ [date: string]: number }>({});
+const versions = ref<{ [version: string]: number }>({});
+const styles = ref<{ [style: string]: number }>({});
+const formats = ref<{ [format: string]: number }>({});
+
+const totalRequestsOnMount = ref(0);
+const totalRequestsStartValue = ref(0);
+const totalRequestsEndValue = ref(0);
+
+watch(data, () => {
+  const json: {
+    totalRequests: number;
+    requests: { [date: string]: number };
+    versions: { [version: string]: number };
+    styles: { [style: string]: number };
+    formats: { [format: string]: number };
+  } = data.value
     ? JSON.parse(data.value)
     : {
         totalRequests: 0,
@@ -31,28 +41,32 @@ const lastMessage = computed<{
         styles: {},
         formats: {},
       };
-});
 
-const totalRequestsOnMount = ref(0);
-const totalRequestsStartValue = ref(0);
-const totalRequestsEndValue = ref(0);
+  if (json.totalRequests !== totalRequests.value) {
+    if (totalRequests.value === 0) {
+      totalRequestsOnMount.value = json.totalRequests;
+    }
 
-watchEffect(() => {
-  if (
-    lastMessage.value &&
-    lastMessage.value.totalRequests &&
-    !totalRequestsOnMount.value
-  ) {
-    totalRequestsOnMount.value = lastMessage.value.totalRequests;
+    totalRequests.value = json.totalRequests;
+  }
+
+  const newDate =
+    Object.keys(json.requests).length !== Object.keys(requests.value).length;
+
+  if (newDate) {
+    requests.value = json.requests;
+    versions.value = json.versions;
+    styles.value = json.styles;
+    formats.value = json.formats;
   }
 });
 
 watch(
-  () => lastMessage.value.totalRequests,
+  () => totalRequests.value,
   () => {
     totalRequestsStartValue.value = totalRequestsEndValue.value;
     totalRequestsEndValue.value =
-      lastMessage.value.totalRequests - totalRequestsOnMount.value;
+      totalRequests.value - totalRequestsOnMount.value;
   }
 );
 
@@ -67,11 +81,11 @@ const requestChartOptions: ChartOptions = {
 
 const requestsChartData = computed<ChartData>(() => {
   return {
-    labels: Object.keys(lastMessage.value.requests),
+    labels: Object.keys(requests.value),
     datasets: [
       {
         label: 'Requests (last year)',
-        data: Object.values(lastMessage.value.requests),
+        data: Object.values(requests.value),
         fill: true,
         tension: 0.1,
       },
@@ -85,11 +99,11 @@ const versionChartOptions: ChartOptions = {
 
 const versionChartData = computed<ChartData>(() => {
   return {
-    labels: Object.keys(lastMessage.value.versions),
+    labels: Object.keys(versions.value),
     datasets: [
       {
         label: 'Requests (last 30 days)',
-        data: Object.values(lastMessage.value.versions),
+        data: Object.values(versions.value),
       },
     ],
   };
@@ -110,11 +124,11 @@ const styleChartOptions: ChartOptions = {
 };
 
 const styleChartData = computed<ChartData>(() => {
-  const values = Object.values(lastMessage.value.styles);
+  const values = Object.values(styles.value);
   const max = Math.max(...values);
 
   return {
-    labels: Object.keys(lastMessage.value.styles),
+    labels: Object.keys(styles.value),
     datasets: [
       {
         label: 'Popularity (last 30 days)',
@@ -131,11 +145,11 @@ const formatChartOptions: ChartOptions = {
 
 const formatChartData = computed<ChartData>(() => {
   return {
-    labels: Object.keys(lastMessage.value.formats),
+    labels: Object.keys(formats.value),
     datasets: [
       {
         label: 'Requests (last 30 days)',
-        data: Object.values(lastMessage.value.formats),
+        data: Object.values(formats.value),
         minBarLength: 3,
       },
     ],
