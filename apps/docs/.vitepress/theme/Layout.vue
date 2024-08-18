@@ -3,7 +3,6 @@ import 'vuetify/styles';
 import DefaultTheme from 'vitepress/theme';
 import Footer from './components/Footer.vue';
 import SidebarBefore from './components/SidebarBefore.vue';
-import Notification from './components/Notification.vue';
 import { watchEffect } from 'vue';
 import { useData } from 'vitepress';
 import { useTheme } from 'vuetify';
@@ -36,28 +35,6 @@ onMounted(() => {
     <Layout>
       <template #sidebar-nav-before>
         <SidebarBefore />
-      </template>
-      <template #home-hero-before>
-        <a
-          href="https://github.com/dicebear/dicebear"
-          class="bg-sky-600 hover:bg-sky-500 font-medium text-sm text-white text-center block p-1 no-underline z-10 transition-colors"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          ⭐️ DiceBear is fully open source! Please consider starring it on
-          <u>GitHub</u>. Thank you! ⭐️
-        </a>
-      </template>
-      <template #doc-before>
-        <a
-          href="https://github.com/dicebear/dicebear"
-          class="bg-sky-600 hover:bg-sky-500 font-medium text-sm text-white text-center block p-2 no-underline z-10 transition-colors mb-12 rounded"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          ⭐️ DiceBear is fully open source! Please consider starring it on
-          <u>GitHub</u>. Thank you! ⭐️
-        </a>
       </template>
       <template #layout-bottom>
         <Footer />
