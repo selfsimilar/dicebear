@@ -7,13 +7,13 @@ description: >
 # Converter
 
 Sometimes you need the avatar in a different format than SVG. For this we have
-created a package called `@dicebear/convert` which can convert the avatar to PNG
+created a package called `@dicebear/converter` which can convert the avatar to PNG
 and JPEG.
 
 ## Installation
 
 ```
-npm install @dicebear/convert
+npm install @dicebear/converter
 ```
 
 ::: tip
@@ -30,11 +30,11 @@ Although the converter can be used without the core library, we use it in our
 example to create the avatar.
 
 ```js
-import { toPng } from '@dicebear/convert';
+import { toPng } from '@dicebear/converter';
 import { createAvatar } from '@dicebear/core';
 import { lorelei } from '@dicebear/collection';
 
-const svg = createAvatar(lorelei, {
+const avatar = createAvatar(lorelei, {
   seed: 'John Doe',
   // ... other options
 });
@@ -57,7 +57,7 @@ type `object`. See [options](#options) for more information.
 
 <!-- prettier-ignore -->
 ```js
-import { toJpeg } from '@dicebear/convert';
+import { toJpeg } from '@dicebear/converter';
 
 const svg = '<svg>...</svg>';
 
@@ -77,7 +77,7 @@ of type `object`. See [options](#options) for more information.
 
 <!-- prettier-ignore -->
 ```js
-import { toJpeg } from '@dicebear/convert';
+import { toJpeg } from '@dicebear/converter';
 
 const svg = '<svg>...</svg>';
 
@@ -97,7 +97,7 @@ of type `object`. See [options](#options) for more information.
 
 <!-- prettier-ignore -->
 ```js
-import { toWebp } from '@dicebear/convert';
+import { toWebp } from '@dicebear/converter';
 
 const svg = '<svg>...</svg>';
 
@@ -127,7 +127,7 @@ of type `object`. See [options](#options) for more information.
 
 <!-- prettier-ignore -->
 ```js
-import { toWebp } from '@dicebear/convert';
+import { toWebp } from '@dicebear/converter';
 
 const svg = '<svg>...</svg>';
 
@@ -153,7 +153,7 @@ for more information.
 Returns the avatar as [data uri](https://en.wikipedia.org/wiki/Data_URI_scheme).
 
 ```js
-import { toPng } from '@dicebear/convert';
+import { toPng } from '@dicebear/converter';
 
 const svg = '<svg>...</svg>';
 
@@ -172,7 +172,7 @@ Converts the avatar to an
 [ArrayBuffer](https://developer.mozilla.org/en-US/Web/JavaScript/Reference/Global_Objects/ArrayBuffer).
 
 ```js
-import { toPng } from '@dicebear/convert';
+import { toPng } from '@dicebear/converter';
 
 const svg = '<svg>...</svg>';
 
