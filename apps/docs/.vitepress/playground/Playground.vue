@@ -2,9 +2,9 @@
 import ClientOnly from '@theme/components/ClientOnly.vue';
 import Loader from './components/Loader.vue';
 import Preview from './components/Preview.vue';
-import { all as catNames } from 'cat-names';
+import nameList from '@shared/utils/name-list';
 
-const names = [...catNames].sort(() => 0.5 - Math.random()).slice(0, 20);
+const names = [...nameList].sort(() => 0.5 - Math.random()).slice(0, 20);
 </script>
 
 <template>

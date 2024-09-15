@@ -3,7 +3,6 @@ import type { JSONSchema7 } from 'json-schema';
 import { useData } from 'vitepress';
 import { computed } from 'vue';
 import { ThemeOptions } from '@shared/types';
-import mergeAllOf from 'json-schema-merge-allof';
 import { schema as coreSchema } from '@dicebear/core';
 import StyleOptionsRow from './StyleOptionsRow.vue';
 
@@ -18,13 +17,14 @@ const style = computed(() => {
 });
 
 const properties = computed(() => {
-  const schema = mergeAllOf<JSONSchema7>(
-    {
-      allOf: [coreSchema, style.value.schema],
-      additionalItems: true,
+  const schema = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
+    type: 'object',
+    properties: {
+      ...coreSchema.properties,
+      ...style.value.schema.properties,
     },
-    { ignoreAdditionalProperties: true }
-  );
+  };
 
   if (undefined === schema.properties) {
     return {};

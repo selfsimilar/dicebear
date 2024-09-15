@@ -3,7 +3,7 @@ import { ThemeOptions } from '@shared/types';
 import { useData } from 'vitepress';
 import { computed, onMounted, onUnmounted, ref, watchEffect } from 'vue';
 import randomItem from 'random-item';
-import { all as nameList } from 'cat-names';
+import nameList from '@shared/utils/name-list';
 import { paramCase } from 'change-case';
 import Prando from 'prando';
 import randomInt from 'random-int';

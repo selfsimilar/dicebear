@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { useData } from 'vitepress';
 import { ThemeOptions } from '@shared/types';
-import { paramCase } from 'param-case';
+import { paramCase } from 'change-case';
 
 const { theme } = useData<ThemeOptions>();
 const props = defineProps<{
@@ -25,26 +25,16 @@ const editorUrl = computed(() => {
 <template>
   <p>
     <template v-if="style.meta?.creator !== 'DiceBear' && style.meta?.title">
-        <template v-if="style.meta?.license?.name !== 'MIT'">
-            This avatar style is a remix of:
-        </template>
-        <template v-else>
-            This avatar style is based on:
-        </template>
+      <template v-if="style.meta?.license?.name !== 'MIT'">
+        This avatar style is a remix of:
+      </template>
+      <template v-else> This avatar style is based on: </template>
     </template>
-    <a
-      :href="style.meta?.source"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a :href="style.meta?.source" target="_blank" rel="noopener noreferrer">
       {{ style.meta?.title ?? 'Design' }}
     </a>
     by
-    <a
-      :href="style.meta?.homepage"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a :href="style.meta?.homepage" target="_blank" rel="noopener noreferrer">
       {{ style.meta?.creator }} </a
     >, licensed under
     <a
@@ -60,7 +50,8 @@ const editorUrl = computed(() => {
   <div class="info custom-block" v-if="style.meta.license?.name !== 'MIT'">
     <p class="custom-block-title">LICENSE</p>
     <p>
-      While our code is MIT licensed, the design of this avatar style is licensed under
+      While our code is MIT licensed, the design of this avatar style is
+      licensed under
       <a
         :href="style.meta.license?.url"
         target="_blank"

@@ -1,4 +1,3 @@
-import mergeAllOf from 'json-schema-merge-allof';
 import { schema, StyleMeta, StyleSchema } from '@dicebear/core';
 import { AvatarStyle, ThemeOptions } from '@shared/types';
 import { useData } from 'vitepress';
@@ -63,12 +62,14 @@ export function useAvatarStyleSchema(
       }
     }
 
-    return mergeAllOf(
-      {
-        allOf: [coreSchema, styleSchema],
+    return {
+      $schema: 'http://json-schema.org/draft-07/schema#',
+      type: 'object',
+      properties: {
+        ...coreSchema.properties,
+        ...styleSchema.properties,
       },
-      { ignoreAdditionalProperties: true }
-    );
+    };
   });
 }
 
