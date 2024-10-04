@@ -9,6 +9,8 @@ import { escape } from '@dicebear/core';
 import type { ComponentGroup, ComponentPickCollection, ColorPickCollection } from '../types.js';
 
 export const hat: ComponentGroup = {
+  'variant12': (components: ComponentPickCollection, colors: ColorPickCollection) => `<path d="M15 15v-1h-1V3h-1V2h-1V1H4v1H3v1H2v11H1v1H0v1h16v-1h-1ZM4 11v-1H3V4h1V3h8v1h1v6h-1v1h-1v1H5v-1H4Z" fill="${escape.xml(`${colors.hat}`)}"/>`,
+  'variant11': (components: ComponentPickCollection, colors: ColorPickCollection) => `<path d="M13 3V2h-1V1H4v1H3v1H2v11h12V3h-1Zm0 2v5h-1v1h-1v1H5v-1H4v-1H3V4h1V3h8v1h1v1Z" fill="${escape.xml(`${colors.hat}`)}"/>`,
   'variant10': (components: ComponentPickCollection, colors: ColorPickCollection) => `<path d="M12 0H4v2H2v3h12V2h-2V0Z" fill="${escape.xml(`${colors.hat}`)}"/><path fill="#fff" fill-opacity=".3" d="M10 2h1v3h-1zM8 3h1v2H8z"/>`,
   'variant09': (components: ComponentPickCollection, colors: ColorPickCollection) => `<path d="M4 0h8v1h1v1h1v3H2V2h1V1h1V0Z" fill="${escape.xml(`${colors.hat}`)}"/><path fill="#fff" fill-opacity=".3" d="M11 2h1v3h-1zM9 2h1v3H9z"/>`,
   'variant08': (components: ComponentPickCollection, colors: ColorPickCollection) => `<path d="M4 0h8v1h1v1h1v2H2V2h1V1h1V0Z" fill="${escape.xml(`${colors.hat}`)}"/><path fill="#fff" fill-opacity=".3" d="M12 2v1H9V2z"/>`,

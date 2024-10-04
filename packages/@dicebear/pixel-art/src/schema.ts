@@ -390,6 +390,8 @@ export const schema: StyleSchema = {
       "items": {
         "type": "string",
         "enum": [
+          "variant12",
+          "variant11",
           "variant10",
           "variant09",
           "variant08",
@@ -403,6 +405,8 @@ export const schema: StyleSchema = {
         ]
       },
       "default": [
+        "variant12",
+        "variant11",
         "variant10",
         "variant09",
         "variant08",

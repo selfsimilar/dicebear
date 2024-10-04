@@ -153,6 +153,8 @@ export interface Options {
     | 'long01'
   )[];
   hat?: (
+    | 'variant12'
+    | 'variant11'
     | 'variant10'
     | 'variant09'
     | 'variant08'
